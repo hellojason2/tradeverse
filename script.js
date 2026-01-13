@@ -2,16 +2,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 1. Mobile Menu Toggle
     const mobileBtn = document.querySelector('.mobile-menu-btn');
-    const navLinks = document.querySelector('.nav-links');
-    const navActions = document.querySelector('.nav-actions');
+    const mobileMenu = document.getElementById('mobile-menu');
 
-    if (mobileBtn) {
+    if (mobileBtn && mobileMenu) {
         mobileBtn.addEventListener('click', () => {
-            // In a real implementation we'd toggle a specific class for the mobile drawer
-            // For now we just alert as placeholder or simple toggle logic
-            // To make this functional we'd need more CSS for the mobile menu state
-            // Let's just log it for now or assume CSS handles .active
-            console.log('Mobile menu toggled');
+            mobileMenu.classList.toggle('hidden');
+            // Add a simple fade/slide effect if desired, but toggling hidden is sufficient for functional logic
+            const icon = mobileBtn.querySelector('svg');
+            if (icon) {
+                if (mobileMenu.classList.contains('hidden')) {
+                    // Reset icon to menu
+                    icon.innerHTML = '<line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line>';
+                } else {
+                    // Change icon to close (X)
+                    icon.innerHTML = '<path d="M18 6 6 18"></path><path d="m6 6 12 12"></path>';
+                }
+            }
         });
     }
 

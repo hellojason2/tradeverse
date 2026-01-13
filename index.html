@@ -10,33 +10,103 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;700&family=Newsreader:opsz,wght@6..72,400..800&family=Oswald:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            corePlugins: {
+                preflight: false,
+            }
+        }
+    </script>
 </head>
 
 <body>
+    <!-- Background Effects -->
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div
+            class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-[1000px] h-[600px] bg-blue-500/10 rounded-full blur-[120px] opacity-40">
+        </div>
+        <div
+            class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150 mix-blend-soft-light">
+        </div>
+    </div>
 
     <!-- Navigation (Finex Template Style) -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="#" class="logo">Trade<span style="color: #fff;">Verse</span></a>
+    <!-- Navigation (Reference Style) -->
+    <nav class="flex z-50 w-full pt-6 pr-4 pl-4 fixed top-0 left-0 right-0 items-center justify-center">
+        <div class="flex bg-black/80 backdrop-blur-md w-full max-w-5xl border-white/10 border rounded-full pt-2 pr-2 pb-2 pl-6 relative shadow-2xl items-center justify-between scroll-item scroll-fade-up"
+            style="animation-play-state: running;">
+            <!-- Logo -->
+            <a href="#"
+                class="text-2xl font-bold font-oswald tracking-tight text-white hover:text-blue-400 transition-colors">
+                Trade<span class="text-blue-500">Verse</span>
+            </a>
 
-            <div class="nav-links">
-                <a href="#features">Platform</a>
-                <a href="#markets">Solutions</a>
-                <a href="#pricing">Pricing</a>
-                <a href="#">Developers</a>
-                <a href="#">Company</a>
+            <!-- Centered Links -->
+            <div class="hidden md:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
+                <a href="#features"
+                    class="text-[14px] font-medium text-white hover:text-gray-300 transition-colors font-sans tracking-wide">
+                    Platform
+                </a>
+                <a href="#markets"
+                    class="text-[14px] font-medium text-white hover:text-gray-300 transition-colors font-sans tracking-wide">
+                    Solutions
+                </a>
+                <a href="#pricing"
+                    class="text-[14px] font-medium text-white hover:text-gray-300 transition-colors font-sans tracking-wide">
+                    Pricing
+                </a>
+                <a href="#"
+                    class="text-[14px] font-medium text-white hover:text-gray-300 transition-colors font-sans tracking-wide">
+                    Developers
+                </a>
+                <a href="#"
+                    class="text-[14px] font-medium text-white hover:text-gray-300 transition-colors font-sans tracking-wide">
+                    Company
+                </a>
             </div>
 
-            <div class="nav-actions">
-                <button class="mobile-menu-btn">
-                    <i class="fas fa-bars"></i>
+            <!-- Right Action -->
+            <div class="flex items-center gap-4">
+                <!-- Mobile Menu Trigger -->
+                <button class="md:hidden p-2 text-white mobile-menu-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-menu">
+                        <line x1="4" x2="20" y1="12" y2="12"></line>
+                        <line x1="4" x2="20" y1="6" y2="6"></line>
+                        <line x1="4" x2="20" y1="18" y2="18"></line>
+                    </svg>
                 </button>
-                <a href="#" class="btn-cta">Get Started</a>
+
+                <!-- Button -->
+                <a href="#"
+                    class="hidden md:block bg-white text-black hover:bg-gray-200 transition-colors px-6 py-2.5 rounded-full text-sm font-semibold tracking-tight font-sans">
+                    Get Started
+                </a>
             </div>
+        </div>
+        <!-- Mobile Menu Overlay -->
+        <div id="mobile-menu"
+            class="hidden absolute top-24 left-4 right-4 bg-[#0A0A0C]/95 backdrop-blur-xl border border-white/10 rounded-3xl p-6 flex flex-col gap-6 shadow-2xl z-40 transform transition-all duration-300 origin-top">
+            <a href="#features"
+                class="text-lg text-white font-medium hover:text-blue-400 font-oswald tracking-wide border-b border-white/10 pb-2">Platform</a>
+            <a href="#markets"
+                class="text-lg text-white font-medium hover:text-blue-400 font-oswald tracking-wide border-b border-white/10 pb-2">Solutions</a>
+            <a href="#pricing"
+                class="text-lg text-white font-medium hover:text-blue-400 font-oswald tracking-wide border-b border-white/10 pb-2">Pricing</a>
+            <a href="#"
+                class="text-lg text-white font-medium hover:text-blue-400 font-oswald tracking-wide border-b border-white/10 pb-2">Developers</a>
+            <a href="#"
+                class="text-lg text-white font-medium hover:text-blue-400 font-oswald tracking-wide border-b border-white/10 pb-2">Company</a>
+            <a href="#" class="btn-cta bg-white text-black text-center py-3 rounded-full font-bold font-sans mt-2">Get
+                Started</a>
         </div>
     </nav>
 
@@ -51,82 +121,1697 @@
                 !function () { if (!window.UnicornStudio) { window.UnicornStudio = { isInitialized: !1 }; var i = document.createElement("script"); i.src = "https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v1.4.29/dist/unicornStudio.umd.js", i.onload = function () { window.UnicornStudio.isInitialized || (UnicornStudio.init(), window.UnicornStudio.isInitialized = !0) }, (document.head || document.body).appendChild(i) } }();
             </script>
         </div>
-        <div class="container hero-content">
-            <div class="hero-text">
-                <h1 class="fade-in-up">The Global Intelligent <br><span class="gradient-text">Investment Engine</span>
+        <div class="container hero-content flex-col md:flex-row items-center gap-12">
+            <div class="hero-text w-full md:w-1/2 z-10">
+                <!-- Version Badge -->
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm mb-8 hover:bg-white/10 transition-colors cursor-pointer group scroll-item scroll-fade-up"
+                    style="animation-play-state: running;">
+                    <span
+                        class="bg-blue-500/20 text-blue-400 rounded px-1.5 py-0.5 text-[10px] font-medium tracking-wide font-sans">
+                        NEW
+                    </span>
+                    <span
+                        class="text-xs text-gray-300 font-medium group-hover:text-white transition-colors pr-1 font-sans">
+                        Version 3.0 is live
+                    </span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        data-lucide="arrow-right"
+                        class="lucide lucide-arrow-right w-3 h-3 text-gray-500 group-hover:text-white transition-colors">
+                        <path d="M5 12h14"></path>
+                        <path d="m12 5 7 7-7 7"></path>
+                    </svg>
+                </div>
+
+                <h1
+                    class="fade-in-up text-5xl md:text-7xl leading-[1.1] font-oswald font-light tracking-tight text-white mb-6">
+                    The Global Intelligent <br>
+                    <span class="text-blue-500 font-oswald font-light tracking-tight">Investment Engine</span>
                 </h1>
-                <p class="fade-in-up delay-1">Equipping Every Investor with World-Class
-                    Intelligence.<br>Future-Oriented, Ecosystem Co-Creation, Multi-Asset, One-Stop Coverage.</p>
-                <div class="hero-btns fade-in-up delay-2">
-                    <button onclick="window.location.href='#'"
-                        style="position: relative; display: inline-flex; gap: 12px; align-items: center; justify-content: center; padding: 16px 32px; background: linear-gradient(0deg, #000, #272727); border-radius: 10px; border: none; color: white; cursor: pointer; font-weight: 900; transition-duration: .2s; text-transform: uppercase; letter-spacing: 1px; font-size: 14px;">
-                        <div
-                            style="position: absolute; left: -2px; top: -2px; border-radius: 10px; background: linear-gradient(45deg, #fb0094, #0000ff, #00ff00, #ffff00, #ff0000, #fb0094, #0000ff, #00ff00, #ffff00, #ff0000); background-size: 400%; width: calc(100% + 4px); height: calc(100% + 4px); z-index: -1; animation: steam 20s linear infinite;">
+                <p class="fade-in-up delay-1 text-xl text-gray-400 max-w-lg leading-relaxed font-light font-sans mb-10">
+                    Equipping Every Investor with World-Class Intelligence. Future-Oriented, Ecosystem Co-Creation,
+                    Multi-Asset Coverage.
+                </p>
+                <div class="hero-btns fade-in-up delay-2 flex flex-col sm:flex-row items-center gap-4">
+                    <!-- Animated Beam Button -->
+                    <button
+                        class="group inline-flex overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_40px_-10px_rgba(59,130,246,0.5)] focus:outline-none sm:w-auto text-sm font-medium text-white w-full h-[54px] rounded-full pt-4 pr-8 pb-4 pl-8 relative items-center justify-center"
+                        style="position: relative; --border-gradient: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.2)); --border-radius-before: 9999px">
+
+                        <!-- Full Border Beam -->
+                        <div class="absolute inset-0 -z-20 rounded-full overflow-hidden p-[1px]">
+                            <div class="absolute inset-[-100%] bg-[conic-gradient(from_0deg,transparent_0_300deg,#3b82f6_360deg)]"
+                                style="animation: beam-spin 3s linear infinite;"></div>
+                            <div class="absolute inset-[1px] rounded-full bg-[#050505]"></div>
                         </div>
+
+                        <!-- Inner Background & Effects -->
                         <div
-                            style="position: absolute; left: -2px; top: -2px; border-radius: 10px; background: linear-gradient(45deg, #fb0094, #0000ff, #00ff00, #ffff00, #ff0000, #fb0094, #0000ff, #00ff00, #ffff00, #ff0000); background-size: 400%; width: calc(100% + 4px); height: calc(100% + 4px); z-index: -1; animation: steam 20s linear infinite; filter: blur(50px);">
+                            class="overflow-hidden bg-[#0A0A0A] rounded-full absolute top-[2px] right-[2px] bottom-[2px] left-[2px]">
+                            <div
+                                class="bg-gradient-to-b from-blue-900/20 to-transparent absolute top-0 right-0 bottom-0 left-0">
+                            </div>
+                            <div class="opacity-[0.07] mix-blend-plus-lighter absolute top-0 right-0 bottom-0 left-0"
+                                style="background-image: repeating-linear-gradient(90deg, #fff, #fff 1px, transparent 1px, transparent 8px);  background-size: 24px 100%;  animation: lines-slide 1.5s linear infinite; position: relative;">
+                            </div>
                         </div>
-                        <span style="position: relative; z-index: 30; font-weight: 600;">Start Trading Now</span>
+
+                        <!-- Content -->
                         <span
-                            style="position: relative; display: flex; width: 20px; height: 20px; align-items: center; justify-content: center; z-index: 30;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" style="height: 16px; width: 16px;">
-                                <path d="M5 12h14"></path>
-                                <path d="m12 5 7 7-7 7"></path>
-                            </svg>
+                            class="transition-colors group-hover:text-white uppercase font-semibold text-white/90 tracking-tight z-10 relative font-sans">
+                            Start Trading Now
                         </span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-arrow-right relative z-10 ml-2 transition-transform duration-300 group-hover:translate-x-1">
+                            <path d="M5 12h14" class=""></path>
+                            <path d="m12 5 7 7-7 7" class=""></path>
+                        </svg>
                         <style>
-                            @keyframes steam {
-                                0% {
-                                    background-position: 0 0;
-                                }
-
-                                50% {
-                                    background-position: 400% 0;
-                                }
-
-                                100% {
-                                    background-position: 0 0;
-                                }
+                            [style*="--border-gradient"]::before {
+                                content: "";
+                                position: absolute;
+                                inset: 0;
+                                padding: 1px;
+                                border-radius: var(--border-radius-before, inherit);
+                                -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+                                -webkit-mask-composite: xor;
+                                mask-composite: exclude;
+                                background: var(--border-gradient);
+                                pointer-events: none;
                             }
                         </style>
                     </button>
-                    <a href="#features" class="btn btn-outline btn-lg">Explore Features</a>
-                </div>
-                <div class="hero-stats fade-in-up delay-3">
-                    <div class="stat-item">
-                        <span class="stat-number">100+</span>
-                        <span class="stat-label">Crypto Assets</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-number">$500K</span>
-                        <span class="stat-label">Insurance Pool</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-number">24/7</span>
-                        <span class="stat-label">AI Monitoring</span>
-                    </div>
+
+                    <button
+                        class="sm:w-auto hover:bg-blue-500/10 hover:border-blue-400 hover:shadow-[0_0_35px_rgba(59,130,246,0.6),inset_0_0_20px_rgba(59,130,246,0.4)] hover:scale-[1.02] transition-all duration-300 flex group text-base font-medium text-white bg-black/60 w-full border-blue-500 border rounded-full pt-3.5 pr-8 pb-3.5 pl-8 shadow-[0_0_20px_rgba(59,130,246,0.5),inset_0_0_10px_rgba(59,130,246,0.2)] gap-x-2 gap-y-2 items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            data-lucide="play-circle"
+                            class="lucide lucide-play-circle w-4 h-4 text-blue-400 group-hover:text-blue-300 transition-colors">
+                            <path
+                                d="M9 9.003a1 1 0 0 1 1.517-.859l4.997 2.997a1 1 0 0 1 0 1.718l-4.997 2.997A1 1 0 0 1 9 14.996z">
+                            </path>
+                            <circle cx="12" cy="12" r="10"></circle>
+                        </svg>
+                        Watch Demo
+                    </button>
                 </div>
             </div>
-            <div class="hero-visual fade-in-left delay-2">
-                <!-- Abstract 3D Representation using CSS/SVG or Placeholder for now -->
-                <div class="glass-card float-animation">
-                    <div class="card-icon"><i class="fas fa-robot"></i></div>
-                    <h3>AI Analysis</h3>
-                    <p>Optimizing Portfolio...</p>
-                    <div class="loading-bar">
-                        <div class="bar-fill"></div>
+
+            <!-- Hero Visual (Phone Mockup) -->
+            <div
+                class="hero-visual w-full md:w-1/2 relative h-[600px] flex items-center justify-center fade-in-left delay-2">
+                <!-- Visual / Phone Mockup Section -->
+                <div class="flex w-full h-[750px] max-w-5xl relative items-center justify-center"
+                    style="animation-play-state: running;">
+                    <!-- Floating Element: Salary (Top Left) -->
+                    <div
+                        class="absolute left-0 lg:left-0 top-20 z-20 hidden md:flex items-center gap-3 p-2.5 pr-4 bg-[#111] border border-white/10 rounded-lg shadow-2xl animate-[bounce_6s_infinite]">
+                        <div
+                            class="w-8 h-8 rounded bg-green-900/30 flex items-center justify-center border border-green-500/20">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-briefcase w-4 h-4 text-green-400">
+                                <path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                                <rect width="20" height="14" x="2" y="6" rx="2"></rect>
+                            </svg>
+                        </div>
+                        <span class="text-xs font-medium text-gray-400 font-sans">
+                            + $4.250 Profit
+                        </span>
+                    </div>
+
+                    <!-- Floating Element: Holidays (Left Middle) -->
+                    <div
+                        class="absolute left-4 lg:-left-12 top-64 z-10 hidden md:flex items-center gap-3 p-2.5 pr-4 bg-[#111] border border-white/10 rounded-lg shadow-2xl animate-[pulse_5s_infinite]">
+                        <div
+                            class="w-8 h-8 rounded bg-red-900/30 flex items-center justify-center border border-red-500/20">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-plane w-4 h-4 text-red-400">
+                                <path d="M2 12h20"></path>
+                                <path d="M13 2v20"></path>
+                                <path d="m9 2 9.5 9.5-2 2.5-9-9.5V2Z"></path>
+                                <path d="M13 22 3.5 12.5l2-2.5 9 9.5v2.5Z"></path>
+                            </svg>
+                        </div>
+                        <span class="text-xs font-medium text-gray-400 font-sans">
+                            - $1.200 Withdraw
+                        </span>
+                    </div>
+
+                    <!-- Floating Element: Coffee (Top Right) -->
+                    <div
+                        class="absolute right-0 lg:-right-8 top-10 z-20 hidden md:flex items-center gap-3 p-2.5 pr-4 bg-[#111] border border-white/10 rounded-lg shadow-2xl animate-[bounce_7s_infinite]">
+                        <div
+                            class="w-8 h-8 rounded bg-teal-900/30 flex items-center justify-center border border-teal-500/20">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-coffee w-4 h-4 text-teal-400">
+                                <path d="M17 8h1a4 4 0 1 1 0 8h-1"></path>
+                                <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z" class=""></path>
+                                <line x1="6" x2="6" y1="2" y2="4"></line>
+                                <line x1="10" x2="10" y1="2" y2="4"></line>
+                                <line x1="14" x2="14" y1="2" y2="4"></line>
+                            </svg>
+                        </div>
+                        <span class="text-xs font-medium text-gray-400 font-sans">
+                            AI Signal
+                        </span>
+                    </div>
+
+                    <!-- Floating Element: Dividend (Right Middle) -->
+                    <div
+                        class="absolute right-4 lg:-right-4 top-48 z-10 hidden md:flex items-center gap-3 p-2.5 pr-4 bg-[#111] border border-white/10 rounded-lg shadow-2xl animate-[pulse_4s_infinite]">
+                        <div
+                            class="w-8 h-8 rounded bg-pink-900/30 flex items-center justify-center border border-pink-500/20">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-trending-up w-4 h-4 text-pink-400">
+                                <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
+                                <polyline points="16 7 22 7 22 13"></polyline>
+                            </svg>
+                        </div>
+                        <span class="text-xs font-medium text-gray-400 font-sans">
+                            + $250 Dividend
+                        </span>
+                    </div>
+
+                    <!-- Phone Frame -->
+                    <div
+                        class="border-[8px] border-[#222] overflow-hidden flex flex-col min-h-[620px] bg-[#050505] w-full max-w-[320px] max-h-[720px] ring-white/10 ring-1 rounded-[3rem] mr-auto ml-auto relative shadow-2xl transform scale-90 sm:scale-100">
+                        <img src="phone_mockup_screen.png" alt="App Screen" class="w-full h-full object-cover">
                     </div>
                 </div>
-                <div class="glass-card float-animation delay-1" style="top: 200px; right: 0;">
-                    <div class="card-icon"><i class="fas fa-shield-alt"></i></div>
-                    <h3>AtlasGo Protected</h3>
-                    <p>Risk Coverage Active</p>
+
+            </div>
+    </header>
+    <!-- INTELLIGENCE SECTION -->
+    <section class="z-10 w-full max-w-7xl mt-32 mr-auto mb-24 ml-auto pr-0 pl-0 relative space-y-20">
+        <!-- Grid -->
+        <div class="flex flex-col bg-[#0A0A0C] border-[#ffffff]/10 border rounded-3xl mt-24 mb-24 pt-8 pr-8 pb-16 pl-8 gap-x-16 gap-y-16"
+            style="">
+            <!-- Header Section -->
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-8 w-full">
+                <div class="flex flex-col gap-6 max-w-3xl">
+                    <div class="flex gap-3 gap-x-3 gap-y-3 items-center scroll-item scroll-fade-up"
+                        style="animation-play-state: running;">
+                        <span
+                            class="flex items-center justify-center w-7 h-7 rounded-lg bg-blue-500/10 text-[11px] font-mono font-medium text-blue-400 border border-blue-500/20 shadow-[0_0_10px_rgba(59,130,246,0.2)] font-sans"
+                            style="">
+                            01
+                        </span>
+                        <span class="text-sm font-medium tracking-widest uppercase text-gray-500 font-sans" style="">
+                            Intelligence
+                        </span>
+                    </div>
+                    <h2 class="text-4xl md:text-5xl lg:text-6xl text-white leading-[1.1] font-oswald font-light tracking-tight scroll-item scroll-fade-up delay-100"
+                        style="animation-play-state: running;">
+                        Predictive Analytics
+                        <span class="text-gray-600 font-oswald font-light tracking-tight" style="">
+                            for Modern Growth
+                        </span>
+                    </h2>
+                    <p class="leading-relaxed text-lg font-light text-gray-400 max-w-xl scroll-item scroll-fade-up delay-200"
+                        style="animation-play-state: running;">
+                        Leverage AI-driven insights to forecast trends, optimize
+                        spending, and maximize returns across all your financial
+                        channels with precision.
+                    </p>
+                </div>
+                <button
+                    class="group flex items-center gap-2 pl-6 pr-5 py-3 bg-white text-black rounded-full text-sm font-medium hover:bg-gray-200 transition-all duration-200 font-sans whitespace-nowrap scroll-item scroll-fade-up delay-300"
+                    style="animation-play-state: running;">
+                    <span class="font-sans" style="">Explore Features</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-arrow-right w-4 h-4 transition-transform group-hover:translate-x-1">
+                        <path d="M5 12h14"></path>
+                        <path d="m12 5 7 7-7 7"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Features Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 lg:auto-rows-[400px] gap-6 gap-x-6 gap-y-6"
+                id="dashboard-grid">
+                <style>
+                    /* Looping Animations Definitions */
+                    @keyframes draw-path-loop {
+                        0% {
+                            stroke-dashoffset: 1000;
+                            opacity: 0;
+                        }
+
+                        5% {
+                            opacity: 1;
+                        }
+
+                        40% {
+                            stroke-dashoffset: 0;
+                        }
+
+                        90% {
+                            stroke-dashoffset: 0;
+                            opacity: 1;
+                        }
+
+                        100% {
+                            stroke-dashoffset: 0;
+                            opacity: 0;
+                        }
+                    }
+
+                    @keyframes width-grow-loop {
+                        0% {
+                            width: 0;
+                            opacity: 1;
+                        }
+
+                        40% {
+                            width: var(--target-width);
+                        }
+
+                        90% {
+                            width: var(--target-width);
+                            opacity: 1;
+                        }
+
+                        100% {
+                            width: var(--target-width);
+                            opacity: 0;
+                        }
+                    }
+
+                    @keyframes fade-in-up-loop {
+                        0% {
+                            opacity: 0;
+                            transform: translateY(10px);
+                        }
+
+                        20% {
+                            opacity: 1;
+                            transform: translateY(0);
+                        }
+
+                        90% {
+                            opacity: 1;
+                            transform: translateY(0);
+                        }
+
+                        100% {
+                            opacity: 0;
+                            transform: translateY(0);
+                        }
+                    }
+
+                    @keyframes scale-in-loop {
+                        0% {
+                            transform: scale(0.8);
+                            opacity: 0;
+                        }
+
+                        20% {
+                            transform: scale(1);
+                            opacity: 1;
+                        }
+
+                        90% {
+                            transform: scale(1);
+                            opacity: 1;
+                        }
+
+                        100% {
+                            transform: scale(1);
+                            opacity: 0;
+                        }
+                    }
+
+                    @keyframes spin-slow {
+                        from {
+                            transform: rotate(0deg);
+                        }
+
+                        to {
+                            transform: rotate(360deg);
+                        }
+                    }
+
+                    @keyframes spin-slow-reverse {
+                        from {
+                            transform: rotate(0deg);
+                        }
+
+                        to {
+                            transform: rotate(-360deg);
+                        }
+                    }
+
+                    /* Animation Classes */
+                    .animate-draw {
+                        stroke-dasharray: 1000;
+                        stroke-dashoffset: 1000;
+                        animation: draw-path-loop 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+                        animation-play-state: paused;
+                    }
+
+                    .animate-width {
+                        width: 0;
+                        animation: width-grow-loop 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+                        animation-play-state: paused;
+                    }
+
+                    .animate-fade-up {
+                        opacity: 0;
+                        animation: fade-in-up-loop 6s ease-out infinite;
+                        animation-play-state: paused;
+                    }
+
+                    .animate-scale {
+                        opacity: 0;
+                        animation: scale-in-loop 6s cubic-bezier(0.175, 0.885, 0.32, 1.275) infinite;
+                        animation-play-state: paused;
+                    }
+
+                    /* Utility to start animations */
+                    .in-view .animate-draw,
+                    .in-view .animate-width,
+                    .in-view .animate-fade-up,
+                    .in-view .animate-scale {
+                        animation-play-state: running;
+                    }
+                </style>
+
+                <!-- ROI Prediction -->
+                <div class="relative h-[400px] rounded-[2rem] bg-[#0A0A0C] border border-white/10 p-8 overflow-hidden flex flex-col justify-between group hover:border-white/[0.15] transition-colors scroll-item scroll-fade-up delay-100"
+                    style="animation-play-state: running;">
+                    <!-- Background -->
+                    <div
+                        class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#1a1a2e] via-[#0A0A0C] to-[#0A0A0C]">
+                    </div>
+                    <div class="pointer-events-none absolute inset-0 opacity-20"
+                        style="background-image: radial-gradient(white 1px, transparent 1px); background-size: 40px 40px;">
+                    </div>
+
+                    <!-- Header -->
+                    <div class="relative z-10">
+                        <h3 class="text-4xl font-light text-white tracking-tight font-oswald">
+                            ROI Prediction
+                        </h3>
+                        <p class="mt-2 text-lg font-light leading-relaxed text-gray-400">
+                            Predict recurring bills and upcoming expenses accurately.
+                        </p>
+                    </div>
+
+                    <!-- Visual -->
+                    <div class="relative z-10 h-32 w-full">
+                        <svg class="w-full h-full overflow-visible" viewBox="0 0 100 50" preserveAspectRatio="none">
+                            <path d="M0 45 L100 45" stroke="rgba(255,255,255,0.06)" stroke-width="1"
+                                stroke-dasharray="4 4"></path>
+                            <path d="M0 25 L100 25" stroke="rgba(255,255,255,0.06)" stroke-width="1"
+                                stroke-dasharray="4 4"></path>
+
+                            <defs>
+                                <linearGradient id="gradient-area" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:0.2"></stop>
+                                    <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:0"></stop>
+                                </linearGradient>
+                            </defs>
+
+                            <path d="M0 40 C 20 40, 30 35, 50 20 C 70 5, 80 10, 100 0 V 50 H 0 Z"
+                                fill="url(#gradient-area)" class="animate-fade-up" style="animation-delay: 0.1s"></path>
+                            <path d="M0 40 C 20 40, 30 35, 50 20 C 70 5, 80 10, 100 0" fill="none" stroke="#3b82f6"
+                                stroke-width="2" class="animate-draw"></path>
+
+                            <foreignObject x="60" y="-10" width="40" height="25" class="animate-scale"
+                                style="animation-delay: 0.8s">
+                                <div xmlns="http://www.w3.org/1999/xhtml"
+                                    class="px-2 py-1 rounded bg-blue-500 text-white text-[10px] text-center shadow-[0_0_10px_rgba(59,130,246,0.5)] transform scale-75 origin-center font-sans font-semibold">
+                                    <span data-counter-target="24" data-counter-prefix="+">
+                                        +0
+                                    </span>
+                                    %
+                                </div>
+                            </foreignObject>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- CASHFLOW (MIDDLE) — LONG CARD -->
+                <div class="relative rounded-[2rem] bg-[#0A0A0C] border border-white/10 p-8 overflow-hidden flex flex-col h-[400px] md:h-[400px] lg:h-[824px] lg:row-span-2 group hover:border-white/[0.15] transition-colors scroll-item scroll-fade-up delay-200"
+                    style="animation-play-state: running;">
+                    <!-- Background -->
+                    <div
+                        class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#1a1a2e] via-[#0A0A0C] to-[#0A0A0C]">
+                    </div>
+                    <div class="pointer-events-none absolute inset-0 opacity-20"
+                        style="background-image: radial-gradient(white 1px, transparent 1px); background-size: 40px 40px; mask-image: radial-gradient(circle, black 40%, transparent 100%); -webkit-mask-image: radial-gradient(circle, black 40%, transparent 100%);">
+                    </div>
+
+                    <!-- Header -->
+                    <div class="relative z-10">
+                        <h3 class="text-4xl font-light text-white tracking-tight font-oswald">
+                            Cashflow
+                        </h3>
+                        <p class="mt-2 text-lg font-light leading-relaxed text-gray-400 max-w-[26rem]">
+                            Income vs outcome trend across the last 6 months, helping you
+                            spot spikes and risk early.
+                        </p>
+                    </div>
+
+                    <!-- Radar (centered, takes the remaining height) -->
+                    <div class="relative z-10 flex-1 flex items-center justify-center pt-6">
+                        <svg viewBox="0 0 300 300"
+                            class="w-[320px] h-[320px] md:w-[360px] md:h-[360px] lg:w-[380px] lg:h-[380px] overflow-visible"
+                            preserveAspectRatio="xMidYMid meet">
+                            <defs>
+                                <filter id="glow-purple" x="-50%" y="-50%" width="200%" height="200%">
+                                    <feGaussianBlur stdDeviation="3" result="coloredBlur"></feGaussianBlur>
+                                    <feMerge>
+                                        <feMergeNode in="coloredBlur"></feMergeNode>
+                                        <feMergeNode in="SourceGraphic"></feMergeNode>
+                                    </feMerge>
+                                </filter>
+
+                                <filter id="glow-cyan" x="-50%" y="-50%" width="200%" height="200%">
+                                    <feGaussianBlur stdDeviation="3" result="coloredBlur"></feGaussianBlur>
+                                    <feMerge>
+                                        <feMergeNode in="coloredBlur"></feMergeNode>
+                                        <feMergeNode in="SourceGraphic"></feMergeNode>
+                                    </feMerge>
+                                </filter>
+
+                                <linearGradient id="grad-purple" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#d946ef"></stop>
+                                    <stop offset="100%" stop-color="#a855f7"></stop>
+                                </linearGradient>
+
+                                <linearGradient id="grad-cyan" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#22d3ee"></stop>
+                                    <stop offset="100%" stop-color="#06b6d4"></stop>
+                                </linearGradient>
+                            </defs>
+
+                            <g fill="none" stroke="#ffffff" stroke-opacity="0.10" stroke-width="1"
+                                stroke-dasharray="3 3">
+                                <circle cx="150" cy="150" r="22" class="animate-scale" style="animation-delay: 0.1s">
+                                </circle>
+                                <circle cx="150" cy="150" r="44" class="animate-scale" style="animation-delay: 0.2s">
+                                </circle>
+                                <circle cx="150" cy="150" r="66" class="animate-scale" style="animation-delay: 0.3s">
+                                </circle>
+                                <circle cx="150" cy="150" r="88" class="animate-scale" style="animation-delay: 0.4s">
+                                </circle>
+                                <circle cx="150" cy="150" r="110" class="animate-scale" style="animation-delay: 0.5s">
+                                </circle>
+                            </g>
+
+                            <g stroke="#ffffff" stroke-opacity="0.15" stroke-width="1" class="animate-fade-up"
+                                style="animation-delay: 0.3s">
+                                <line x1="150" y1="150" x2="150" y2="40"></line>
+                                <line x1="150" y1="150" x2="245" y2="95"></line>
+                                <line x1="150" y1="150" x2="245" y2="205"></line>
+                                <line x1="150" y1="150" x2="150" y2="260"></line>
+                                <line x1="150" y1="150" x2="55" y2="205"></line>
+                                <line x1="150" y1="150" x2="55" y2="95"></line>
+                            </g>
+
+                            <g class="fill-white font-sans text-[11px] font-medium animate-fade-up" text-anchor="middle"
+                                dominant-baseline="middle" style="animation-delay: 0.4s">
+                                <text x="150" y="25">Jan</text>
+                                <text x="268" y="85">Feb</text>
+                                <text x="268" y="215">Mar</text>
+                                <text x="150" y="278">Apr</text>
+                                <text x="32" y="215">May</text>
+                                <text x="32" y="85">Jun</text>
+                            </g>
+
+                            <path d="M150 62 L197 122 L188 172 L150 249 L102 177 L74 106 Z" fill="none"
+                                stroke="url(#grad-purple)" stroke-width="2" filter="url(#glow-purple)"
+                                stroke-linejoin="round" stroke-linecap="round" class="animate-draw"
+                                style="animation-delay: 0.3s"></path>
+
+                            <path d="M150 95 L240 102 L230 196 L150 254 L80 190 L107 125 Z" fill="none"
+                                stroke="url(#grad-cyan)" stroke-width="2" filter="url(#glow-cyan)"
+                                stroke-linejoin="round" stroke-linecap="round" class="animate-draw"
+                                style="animation-delay: 0.6s"></path>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Engagement Forecasting -->
+                <div class="relative h-[400px] rounded-[2rem] bg-[#0A0A0C] border border-white/10 p-8 overflow-hidden flex flex-col group hover:border-white/[0.15] transition-colors scroll-item scroll-fade-up delay-300"
+                    style="animation-play-state: running;">
+                    <!-- Background -->
+                    <div
+                        class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#1a1a2e] via-[#0A0A0C] to-[#0A0A0C]">
+                    </div>
+                    <div class="pointer-events-none absolute inset-0 opacity-20"
+                        style="background-image: radial-gradient(white 1px, transparent 1px); background-size: 40px 40px; mask-image: radial-gradient(circle, black 40%, transparent 100%); -webkit-mask-image: radial-gradient(circle, black 40%, transparent 100%);">
+                    </div>
+
+                    <div class="relative z-10">
+                        <h3 class="text-4xl font-light text-white tracking-tight font-oswald">
+                            Engagement Forecasting
+                        </h3>
+                        <p class="mt-2 text-lg font-light leading-relaxed text-gray-400">
+                            Predict engagement rates for upcoming campaigns.
+                        </p>
+                    </div>
+
+                    <div class="relative z-10 flex-1 flex items-center justify-center">
+                        <!-- Rotating Elements -->
+                        <div class="absolute w-32 h-32 rounded-3xl bg-white/[0.03] border border-white/[0.05] animate-[spin-slow_20s_linear_infinite]"
+                            style="animation-duration: 25s"></div>
+                        <div class="absolute w-24 h-24 rounded-2xl bg-white/[0.05] border border-white/[0.05] animate-[spin-slow-reverse_15s_linear_infinite]"
+                            style="animation-duration: 15s"></div>
+
+                        <!-- Central Card -->
+                        <div
+                            class="w-32 h-32 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-400 flex items-center justify-center shadow-[0_12px_30px_-10px_rgba(59,130,246,0.4)] animate-scale relative z-10">
+                            <span class="text-4xl text-white font-oswald font-light tracking-tight flex items-baseline">
+                                <span data-counter-target="45" data-counter-suffix="k">
+                                    0k
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Conversion Probability -->
+                <div class="relative h-[400px] rounded-[2rem] bg-[#0A0A0C] border border-white/10 p-8 overflow-hidden flex flex-col justify-end group hover:border-white/[0.15] transition-colors scroll-item scroll-fade-up delay-500"
+                    style="animation-play-state: running;">
+                    <!-- Background -->
+                    <div
+                        class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#1a1a2e] via-[#0A0A0C] to-[#0A0A0C]">
+                    </div>
+                    <div class="pointer-events-none absolute inset-0 opacity-20"
+                        style="background-image: radial-gradient(white 1px, transparent 1px); background-size: 40px 40px; mask-image: radial-gradient(circle, black 40%, transparent 100%); -webkit-mask-image: radial-gradient(circle, black 40%, transparent 100%);">
+                    </div>
+
+                    <div class="absolute inset-0 flex items-center justify-center -translate-y-10 z-10">
+                        <div class="relative animate-fade-up">
+                            <span
+                                class="text-[8rem] text-white/10 select-none font-oswald font-light tracking-tight flex">
+                                <span data-counter-target="20" data-counter-suffix="%">
+                                    0%
+                                </span>
+                            </span>
+                            <div class="absolute top-1/2 left-0 h-[4px] bg-gradient-to-r from-blue-600 to-cyan-400 shadow-[0_0_18px_rgba(59,130,246,0.6)] animate-width"
+                                style="--target-width: 100%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="relative z-10">
+                        <h3 class="text-4xl font-light text-white tracking-tight font-oswald">
+                            Conversion Probability
+                        </h3>
+                        <p class="mt-2 text-lg font-light leading-relaxed text-gray-400">
+                            Estimate the likelihood of conversions based on data.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Channel Performance -->
+                <div
+                    class="relative h-[400px] rounded-[2rem] bg-[#0A0A0C] border border-white/10 p-8 overflow-hidden flex flex-col justify-end group hover:border-white/[0.15] transition-colors">
+                    <!-- Background -->
+                    <div
+                        class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#1a1a2e] via-[#0A0A0C] to-[#0A0A0C]">
+                    </div>
+                    <div class="pointer-events-none absolute inset-0 opacity-20"
+                        style="background-image: radial-gradient(white 1px, transparent 1px); background-size: 40px 40px; mask-image: radial-gradient(circle, black 40%, transparent 100%); -webkit-mask-image: radial-gradient(circle, black 40%, transparent 100%);">
+                    </div>
+
+                    <div class="relative z-10 mb-10 flex flex-col gap-6">
+                        <div class="flex items-center justify-between">
+                            <h4 class="text-xl font-semibold text-white tracking-tight font-sans">
+                                Top Assets
+                            </h4>
+                            <button
+                                class="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 pl-4 pr-3 py-1.5 text-xs font-medium text-gray-300 transition-colors hover:bg-white/10 hover:text-white font-sans">
+                                All Projects
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="opacity-70">
+                                    <path d="m6 9 6 6 6-6"></path>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div class="flex flex-col gap-5">
+                            <div class="flex items-center gap-4">
+                                <span class="w-[110px] shrink-0 text-sm text-gray-300 font-medium truncate font-sans">
+                                    AAPL
+                                </span>
+                                <div class="h-3 flex-1 rounded-full bg-white/5 overflow-hidden">
+                                    <div class="h-full rounded-full bg-[#d946ef] animate-width"
+                                        style="--target-width: 80%; animation-delay: 0.1s"></div>
+                                </div>
+                                <span
+                                    class="w-12 shrink-0 text-right text-sm text-white font-medium font-sans animate-fade-up"
+                                    style="animation-delay: 0.1s">
+                                    $800
+                                </span>
+                            </div>
+
+                            <div class="flex items-center gap-4">
+                                <span class="w-[110px] shrink-0 text-sm text-gray-300 font-medium truncate font-sans">
+                                    TSLA
+                                </span>
+                                <div class="h-3 flex-1 rounded-full bg-white/5 overflow-hidden">
+                                    <div class="h-full rounded-full bg-[#22d3ee] animate-width"
+                                        style="--target-width: 90%; animation-delay: 0.2s"></div>
+                                </div>
+                                <span
+                                    class="w-12 shrink-0 text-right text-sm text-white font-medium font-sans animate-fade-up"
+                                    style="animation-delay: 0.2s">
+                                    $85K
+                                </span>
+                            </div>
+
+                            <div class="flex items-center gap-4">
+                                <span class="w-[110px] shrink-0 text-sm text-gray-300 font-medium truncate font-sans">
+                                    BTC
+                                </span>
+                                <div class="h-3 flex-1 rounded-full bg-white/5 overflow-hidden">
+                                    <div class="h-full rounded-full bg-[#f87171] animate-width"
+                                        style="--target-width: 85%; animation-delay: 0.3s"></div>
+                                </div>
+                                <span
+                                    class="w-12 shrink-0 text-right text-sm text-white font-medium font-sans animate-fade-up"
+                                    style="animation-delay: 0.3s">
+                                    $42K
+                                </span>
+                            </div>
+
+                            <div class="flex items-center gap-4">
+                                <span class="w-[110px] shrink-0 text-sm text-gray-300 font-medium truncate font-sans">
+                                    NVDA
+                                </span>
+                                <div class="h-3 flex-1 rounded-full bg-white/5 overflow-hidden">
+                                    <div class="h-full rounded-full bg-[#6366f1] animate-width"
+                                        style="--target-width: 60%; animation-delay: 0.4s"></div>
+                                </div>
+                                <span
+                                    class="w-12 shrink-0 text-right text-sm text-white font-medium font-sans animate-fade-up"
+                                    style="animation-delay: 0.4s">
+                                    120
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="relative z-10">
+                        <h3 class="text-4xl font-light text-white tracking-tight font-oswald">
+                            Channel Performance
+                        </h3>
+                        <p class="mt-2 text-lg font-light leading-relaxed text-gray-400">
+                            Analyze and predict channel-specific effectiveness.
+                        </p>
+                    </div>
+                </div>
+
+                <script>
+                    document.addEventListener("DOMContentLoaded", () => {
+                        const container = document.getElementById('dashboard-grid');
+                        const counters = document.querySelectorAll('[data-counter-target]');
+                        const LOOP_DURATION = 6000; // Matches CSS animation duration
+                        let counterInterval;
+
+                        const runCounterAnimation = () => {
+                            counters.forEach(counter => {
+                                const target = +counter.getAttribute('data-counter-target');
+                                const prefix = counter.getAttribute('data-counter-prefix') || '';
+                                const suffix = counter.getAttribute('data-counter-suffix') || '';
+
+                                let count = 0;
+                                const duration = 1500; // Counter duration
+                                const increment = target / (duration / 20);
+
+                                counter.innerText = prefix + '0' + suffix;
+
+                                const timer = setInterval(() => {
+                                    count += increment;
+                                    if (count >= target) {
+                                        count = target;
+                                        clearInterval(timer);
+                                    }
+                                    counter.innerText = prefix + Math.ceil(count) + suffix;
+                                }, 20);
+                            });
+                        };
+
+                        const observer = new IntersectionObserver((entries) => {
+                            entries.forEach(entry => {
+                                if (entry.isIntersecting) {
+                                    container.classList.add('in-view');
+
+                                    // Run initially
+                                    runCounterAnimation();
+
+                                    // Start Loop
+                                    if (!counterInterval) {
+                                        counterInterval = setInterval(() => {
+                                            if (container.classList.contains('in-view')) {
+                                                runCounterAnimation();
+                                            }
+                                        }, LOOP_DURATION);
+                                    }
+                                } else {
+                                    container.classList.remove('in-view');
+                                    // We can optionally clear interval here if we want to stop background processing
+                                }
+                            });
+                        }, { threshold: 0.2 });
+
+                        observer.observe(container);
+                    });
+                </script>
+            </div>
+        </div>
+        <div
+            class="flex flex-col bg-[#0A0A0C] border-[#ffffff]/10 border rounded-3xl mt-24 mb-24 pt-8 pr-8 pb-16 pl-8 gap-x-16 gap-y-16">
+            <!-- Hero Section -->
+            <div
+                class="flex flex-col overflow-hidden lg:flex-row lg:gap-24 lg:pt-0 lg:pb-0 mt-12 mb-0 pt-10 pr-10 pb-10 pl-10 relative gap-x-16 gap-y-16 items-center justify-between">
+                <!-- Background Gradient Effect -->
+
+                <!-- Phone Mockup (Left) -->
+                <div class="z-10 shrink-0 lg:mx-0 w-full max-w-[340px] mr-auto ml-auto relative">
+                    <!-- Phone Frame -->
+                    <div
+                        class="border-[8px] overflow-hidden h-[700px] max-w-[400px] border-[#1a1a1a] ring-white/10 ring-1 rounded-[3rem] mr-auto ml-auto relative shadow-2xl bg-[#050505]">
+                        <!-- Status Bar -->
+                        <div class="absolute top-0 w-full h-12 px-6 flex justify-between items-center z-20 pt-2">
+                            <span class="text-[13px] font-semibold text-white tracking-wide font-sans">
+                                9:41
+                            </span>
+                            <div class="flex gap-1.5 items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="12" viewBox="0 0 16 12"
+                                    fill="currentColor" class="text-white">
+                                    <path
+                                        d="M14.6 2.4C14.2 2 13.5 2 13.1 2.4L8 7.5 2.9 2.4C2.5 2 1.8 2 1.4 2.4C1 2.8 1 3.5 1.4 3.9L7.3 9.8C7.7 10.2 8.3 10.2 8.7 9.8L14.6 3.9C15 3.5 15 2.8 14.6 2.4Z"
+                                        class=""></path>
+                                    <path
+                                        d="M12.4 0.2C12 0.6 12 1.3 12.4 1.7L8 6.1 3.6 1.7C4 1.3 4 0.6 3.6 0.2C3.2 -0.2 2.5 -0.2 2.1 0.2L7.3 5.4C7.7 5.8 8.3 5.8 8.7 5.4L13.9 0.2C13.5 -0.2 12.8 -0.2 12.4 0.2Z">
+                                    </path>
+                                    <path
+                                        d="M8 8.2C8.4 8.2 8.7 8.5 8.7 8.9C8.7 9.3 8.4 9.6 8 9.6C7.6 9.6 7.3 9.3 7.3 8.9C7.3 8.5 7.6 8.2 8 8.2Z">
+                                    </path>
+                                </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="12" viewBox="0 0 18 12"
+                                    fill="currentColor" class="text-white">
+                                    <path
+                                        d="M15 2H3C1.3 2 0 3.3 0 5V7C0 8.7 1.3 10 3 10H15C16.7 10 18 8.7 18 7V5C18 3.3 16.7 2 15 2ZM3 3H15C16.1 3 17 3.9 17 5V7C17 8.1 16.1 9 15 9H3C1.9 9 1 8.1 1 7V5C1 3.9 1.9 3 3 3Z">
+                                    </path>
+                                    <path
+                                        d="M11.5 4H6.5C5.7 4 5 4.7 5 5.5V6.5C5 7.3 5.7 8 6.5 8H11.5C12.3 8 13 7.3 13 6.5V5.5C13 4.7 12.3 4 11.5 4Z">
+                                    </path>
+                                </svg>
+                            </div>
+                        </div>
+
+                        <!-- Dynamic Notch -->
+                        <div
+                            class="absolute top-2 left-1/2 -translate-x-1/2 w-28 h-7 bg-black rounded-full z-20 pointer-events-none">
+                        </div>
+
+                        <!-- App Content -->
+                        <div class="flex flex-col bg-[#050505] w-full h-full pt-14 relative overflow-hidden font-sans">
+                            <!-- Header -->
+                            <div class="px-6 pb-4 flex justify-between items-center shrink-0 z-10">
+                                <div class="">
+                                    <h1 class="text-2xl font-normal text-white tracking-tight font-oswald">
+                                        Portfolio
+                                    </h1>
+                                    <p class="text-xs text-gray-400 mt-0.5">
+                                        Welcome back, Alex
+                                    </p>
+                                </div>
+                                <button
+                                    class="w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors text-white ring-1 ring-white/10 scroll-item scroll-fade-up delay-300"
+                                    style="animation-play-state: running;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path>
+                                        <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path>
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <!-- Main Scroll Area -->
+                            <div class="flex-1 overflow-y-auto p-4 space-y-4 pb-24 no-scrollbar z-0">
+                                <!-- Balance Card -->
+                                <div
+                                    class="border-white/[0.08] overflow-hidden bg-[#121215] border rounded-3xl p-6 relative group">
+                                    <div
+                                        class="absolute top-0 right-0 w-full h-full bg-gradient-to-br from-indigo-500/10 via-transparent to-transparent pointer-events-none transition-opacity duration-500 group-hover:opacity-100 opacity-50">
+                                    </div>
+
+                                    <div class="flex justify-between items-start mb-6 relative z-10">
+                                        <div class="">
+                                            <p class="text-xs text-gray-400 font-medium mb-1">
+                                                Total Balance
+                                            </p>
+                                            <h2 class="text-3xl font-light text-white tracking-tight font-oswald">
+                                                $24,592.00
+                                            </h2>
+                                        </div>
+                                        <div
+                                            class="flex items-center gap-1.5 px-2 py-1 rounded-full bg-green-500/10 border border-green-500/20">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                                                stroke-linecap="round" stroke-linejoin="round" class="text-green-400">
+                                                <path d="m18 15-6-6-6 6"></path>
+                                            </svg>
+                                            <span class="text-[10px] font-semibold text-green-400">
+                                                +12.5%
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Chart Visual -->
+                                    <div class="flex gap-3 h-32 relative z-10 items-end justify-between px-1">
+                                        <!-- Bars -->
+                                        <div
+                                            class="w-1/6 h-[40%] bg-white/5 rounded-t-md hover:bg-indigo-500/50 transition-colors">
+                                        </div>
+                                        <div
+                                            class="w-1/6 h-[60%] bg-white/5 rounded-t-md hover:bg-indigo-500/50 transition-colors">
+                                        </div>
+                                        <div
+                                            class="w-1/6 h-[50%] bg-white/5 rounded-t-md hover:bg-indigo-500/50 transition-colors">
+                                        </div>
+                                        <div
+                                            class="w-1/6 h-[75%] bg-white/5 rounded-t-md hover:bg-indigo-500/50 transition-colors">
+                                        </div>
+                                        <div
+                                            class="w-1/6 h-[100%] bg-indigo-500 rounded-t-md shadow-[0_0_15px_rgba(99,102,241,0.5)]">
+                                        </div>
+                                        <div
+                                            class="w-1/6 h-[65%] bg-white/5 rounded-t-md hover:bg-indigo-500/50 transition-colors">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Quick Actions -->
+                                <div class="grid grid-cols-4 gap-2">
+                                    <button
+                                        class="flex flex-col items-center gap-2 p-3 bg-[#121215] rounded-2xl border border-white/5 hover:bg-[#1A1A1E] transition-colors">
+                                        <div
+                                            class="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-400">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M5 12h14"></path>
+                                                <path d="m12 5 7 7-7 7"></path>
+                                            </svg>
+                                        </div>
+                                        <span class="text-[10px] font-medium text-gray-400">
+                                            Send
+                                        </span>
+                                    </button>
+                                    <button
+                                        class="flex flex-col items-center gap-2 p-3 bg-[#121215] rounded-2xl border border-white/5 hover:bg-[#1A1A1E] transition-colors">
+                                        <div
+                                            class="w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center text-green-400">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M5 12h14"></path>
+                                                <path d="m12 19-7-7 7-7"></path>
+                                            </svg>
+                                        </div>
+                                        <span class="text-[10px] font-medium text-gray-400">
+                                            Receive
+                                        </span>
+                                    </button>
+                                    <button
+                                        class="flex flex-col items-center gap-2 p-3 bg-[#121215] rounded-2xl border border-white/5 hover:bg-[#1A1A1E] transition-colors">
+                                        <div
+                                            class="w-10 h-10 rounded-full bg-purple-500/10 flex items-center justify-center text-purple-400">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round">
+                                                <rect width="20" height="14" x="2" y="5" rx="2"></rect>
+                                                <line x1="2" x2="22" y1="10" y2="10"></line>
+                                            </svg>
+                                        </div>
+                                        <span class="text-[10px] font-medium text-gray-400">
+                                            Buy
+                                        </span>
+                                    </button>
+                                    <button
+                                        class="flex flex-col items-center gap-2 p-3 bg-[#121215] rounded-2xl border border-white/5 hover:bg-[#1A1A1E] transition-colors">
+                                        <div
+                                            class="w-10 h-10 rounded-full bg-orange-500/10 flex items-center justify-center text-orange-400">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round" class="">
+                                                <circle cx="12" cy="12" r="10"></circle>
+                                                <line x1="12" x2="12" y1="8" y2="16"></line>
+                                                <line x1="8" x2="16" y1="12" y2="12"></line>
+                                            </svg>
+                                        </div>
+                                        <span class="text-[10px] font-medium text-gray-400">
+                                            Top up
+                                        </span>
+                                    </button>
+                                </div>
+
+                                <!-- Assets List -->
+                                <div class="bg-[#121215] rounded-3xl p-5 border border-white/[0.08] relative">
+                                    <div class="flex justify-between items-center mb-5">
+                                        <h2 class="text-base font-semibold text-white tracking-tight">
+                                            Your Assets
+                                        </h2>
+                                        <button class="text-xs font-medium text-blue-400 hover:text-blue-300">
+                                            View all
+                                        </button>
+                                    </div>
+                                    <div class="space-y-4">
+                                        <!-- Asset 1 -->
+                                        <div class="flex items-center justify-between group cursor-pointer">
+                                            <div class="flex items-center gap-3">
+                                                <div
+                                                    class="w-9 h-9 rounded-full bg-[#1E1E22] flex items-center justify-center ring-1 ring-white/10 group-hover:ring-orange-500/50 transition-all">
+                                                    <div
+                                                        class="w-5 h-5 rounded-full bg-orange-500 flex items-center justify-center text-[8px] text-white font-semibold">
+                                                        ₿
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <h3 class="text-sm font-medium text-white">
+                                                        Bitcoin
+                                                    </h3>
+                                                    <p class="text-[10px] text-gray-500">BTC</p>
+                                                </div>
+                                            </div>
+                                            <div class="text-right">
+                                                <p class="text-sm font-medium text-white">
+                                                    $43,290.50
+                                                </p>
+                                                <p class="text-[10px] text-green-400">+2.5%</p>
+                                            </div>
+                                        </div>
+                                        <!-- Asset 2 -->
+                                        <div class="flex items-center justify-between group cursor-pointer">
+                                            <div class="flex items-center gap-3">
+                                                <div
+                                                    class="w-9 h-9 rounded-full bg-[#1E1E22] flex items-center justify-center ring-1 ring-white/10 group-hover:ring-blue-500/50 transition-all">
+                                                    <div
+                                                        class="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center text-[8px] text-white font-semibold">
+                                                        Ξ
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <h3 class="text-sm font-medium text-white">
+                                                        Ethereum
+                                                    </h3>
+                                                    <p class="text-[10px] text-gray-500">ETH</p>
+                                                </div>
+                                            </div>
+                                            <div class="text-right">
+                                                <p class="text-sm font-medium text-white">
+                                                    $2,850.10
+                                                </p>
+                                                <p class="text-[10px] text-red-400">-0.8%</p>
+                                            </div>
+                                        </div>
+                                        <!-- Asset 3 -->
+                                        <div class="flex items-center justify-between group cursor-pointer">
+                                            <div class="flex items-center gap-3">
+                                                <div
+                                                    class="w-9 h-9 rounded-full bg-[#1E1E22] flex items-center justify-center ring-1 ring-white/10 group-hover:ring-purple-500/50 transition-all">
+                                                    <div
+                                                        class="w-5 h-5 rounded-full bg-purple-500 flex items-center justify-center text-[8px] text-white font-semibold">
+                                                        S
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <h3 class="text-sm font-medium text-white">
+                                                        Solana
+                                                    </h3>
+                                                    <p class="text-[10px] text-gray-500">SOL</p>
+                                                </div>
+                                            </div>
+                                            <div class="text-right">
+                                                <p class="text-sm font-medium text-white">
+                                                    $108.40
+                                                </p>
+                                                <p class="text-[10px] text-green-400">+5.2%</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Navigation -->
+                            <div class="w-full z-20 pt-0 px-6 pb-6 absolute bottom-0">
+                                <div
+                                    class="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/95 to-transparent pointer-events-none">
+                                </div>
+                                <div class="relative flex justify-between items-end">
+                                    <button class="flex flex-col items-center gap-1.5 -mb-2 text-white">
+                                        <div
+                                            class="w-12 h-12 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center shadow-[0_0_20px_rgba(37,99,235,0.4)] border border-white/10 ring-4 ring-[#050505] transform -translate-y-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                                            </svg>
+                                        </div>
+                                        <span class="text-[10px] font-semibold tracking-wide">
+                                            Home
+                                        </span>
+                                    </button>
+
+                                    <button
+                                        class="flex flex-col items-center gap-1.5 pb-1 text-gray-500 hover:text-white transition-colors">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path
+                                                d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1">
+                                            </path>
+                                            <path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"></path>
+                                        </svg>
+                                        <span class="text-[10px] font-medium">Wallet</span>
+                                    </button>
+
+                                    <button
+                                        class="flex flex-col items-center gap-1.5 pb-1 text-gray-500 hover:text-white transition-colors">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <line x1="12" x2="12" y1="20" y2="10"></line>
+                                            <line x1="18" x2="18" y1="20" y2="4"></line>
+                                            <line x1="6" x2="6" y1="20" y2="16"></line>
+                                        </svg>
+                                        <span class="text-[10px] font-medium">Activity</span>
+                                    </button>
+
+                                    <button
+                                        class="flex flex-col items-center gap-1.5 pb-1 text-gray-500 hover:text-white transition-colors">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round" class="">
+                                            <path
+                                                d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.09a2 2 0 0 1-1-1.74v-.47a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.35a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z">
+                                            </path>
+                                            <circle cx="12" cy="12" r="3"></circle>
+                                        </svg>
+                                        <span class="text-[10px] font-medium">Settings</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Text Content (Right) -->
+                <div class="flex flex-col md:flex-row md:items-end w-full gap-x-8 gap-y-8 justify-between">
+                    <div class="flex flex-col gap-6 max-w-3xl">
+                        <div class="flex gap-3 gap-x-3 gap-y-3 items-center scroll-item scroll-fade-up"
+                            style="animation-play-state: running;">
+                            <span
+                                class="flex items-center justify-center text-[11px] font-medium text-blue-400 font-mono bg-blue-500/10 w-7 h-7 border-blue-500/20 border rounded-lg shadow-[0_0_10px_rgba(59,130,246,0.2)]">
+                                02
+                            </span>
+                            <span class="uppercase text-sm font-medium text-gray-500 tracking-widest font-sans"
+                                style="">
+                                Mobile App
+                            </span>
+                        </div>
+                        <h2 class="md:text-5xl lg:text-6xl leading-[1.1] text-4xl text-white font-oswald font-light tracking-tight scroll-item scroll-fade-up delay-100"
+                            style="animation-play-state: running;">
+                            Built for speed.
+                            <span class="text-gray-600 font-oswald font-light tracking-tight" style="">
+                                Designed for trust.
+                            </span>
+                        </h2>
+                        <p class="leading-relaxed text-lg font-light text-gray-400 text-left mt-2 scroll-item scroll-fade-up delay-200"
+                            style="animation-play-state: running;">
+                            Manage your wealth on the go. Real-time syncing, instant
+                            transfers, and institutional-grade security in your pocket.
+                        </p>
+                    </div>
+                    <button
+                        class="group flex items-center gap-2 pl-6 pr-5 py-3 bg-white text-black rounded-full text-sm font-medium hover:bg-gray-200 transition-all duration-200 font-sans whitespace-nowrap">
+                        <span class="font-sans" style="">Explore Features</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-arrow-right w-4 h-4 transition-transform group-hover:translate-x-1">
+                            <path d="M5 12h14"></path>
+                            <path d="m12 5 7 7-7 7"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Features Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 border-0 gap-x-4 gap-y-4">
+                <!-- Feature 1 -->
+                <div class="md:p-12 transition-colors group overflow-hidden z-0 bg-[#0A0A0C] border-[#ffffff]/10 border rounded-3xl pt-8 pr-8 pb-8 pl-8 relative scroll-item scroll-fade-up"
+                    style="animation-play-state: running;">
+                    <!-- Background Gradient -->
+                    <div
+                        class="pointer-events-none z-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#1a1a2e] via-[#0A0A0C] to-[#0A0A0C] absolute top-0 right-0 bottom-0 left-0">
+                    </div>
+                    <!-- Stars Effect -->
+                    <div class="z-0 opacity-20 rounded-3xl absolute top-0 right-0 bottom-0 left-0"
+                        style="background-image: radial-gradient(white 1px, transparent 1px); background-size: 40px 40px">
+                    </div>
+                    <!-- Hover Overlay -->
+                    <div
+                        class="absolute inset-0 bg-white/[0.02] opacity-0 group-hover:opacity-100 transition-opacity z-10 pointer-events-none">
+                    </div>
+
+                    <div class="flex gap-6 items-start relative z-20">
+                        <div
+                            class="w-12 h-12 rounded-xl bg-[#1A1A1A] border border-white/10 flex items-center justify-center shrink-0 group-hover:border-white/20 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                stroke-linejoin="round" class="text-gray-300 group-hover:text-white">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <path d="m21 21-4.3-4.3"></path>
+                            </svg>
+                        </div>
+                        <div class="">
+                            <h3 class="text-2xl font-medium text-white tracking-tight mb-2">
+                                Instant Sync
+                            </h3>
+                            <p class="text-[15px] leading-relaxed font-light text-gray-400">
+                                Link your accounts in seconds for a unified view of your net
+                                worth.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="md:p-12 transition-colors group overflow-hidden z-0 bg-[#0A0A0C] border-[#ffffff]/10 border rounded-3xl pt-8 pr-8 pb-8 pl-8 relative scroll-item scroll-fade-up delay-100"
+                    style="animation-play-state: running;">
+                    <!-- Background Gradient -->
+                    <div
+                        class="pointer-events-none bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#1a1a2e] via-[#0A0A0C] to-[#0A0A0C] absolute inset-0 z-0">
+                    </div>
+                    <!-- Stars Effect -->
+                    <div class="absolute inset-0 opacity-20 z-0"
+                        style="background-image: radial-gradient(white 1px, transparent 1px); background-size: 40px 40px; mask-image: radial-gradient(circle, black 40%, transparent 100%); -webkit-mask-image: radial-gradient(circle, black 40%, transparent 100%);">
+                    </div>
+                    <!-- Hover Overlay -->
+                    <div
+                        class="absolute inset-0 bg-white/[0.02] opacity-0 group-hover:opacity-100 transition-opacity z-10 pointer-events-none">
+                    </div>
+
+                    <div class="flex gap-6 items-start relative z-20">
+                        <div
+                            class="w-12 h-12 rounded-xl bg-[#1A1A1A] border border-white/10 flex items-center justify-center shrink-0 group-hover:border-white/20 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                stroke-linejoin="round" class="text-gray-300 group-hover:text-white">
+                                <circle cx="12" cy="12" r="10" class=""></circle>
+                                <line x1="2" x2="22" y1="12" y2="12"></line>
+                                <path
+                                    d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
+                                </path>
+                            </svg>
+                        </div>
+                        <div class="">
+                            <h3 class="text-2xl font-medium text-white tracking-tight mb-2">
+                                Global Markets
+                            </h3>
+                            <p class="text-[15px] text-gray-400 leading-relaxed font-light font-sans">
+                                Access real-time data from 50+ global exchanges and track
+                                your international assets.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="md:p-12 transition-colors group overflow-hidden z-0 bg-[#0A0A0C] border-[#ffffff]/10 border rounded-3xl pt-8 pr-8 pb-8 pl-8 relative scroll-item scroll-fade-up delay-200"
+                    style="animation-play-state: running;">
+                    <!-- Background Gradient -->
+                    <div
+                        class="pointer-events-none bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#1a1a2e] via-[#0A0A0C] to-[#0A0A0C] absolute inset-0 z-0">
+                    </div>
+                    <!-- Stars Effect -->
+                    <div class="z-0 opacity-20 absolute top-0 right-0 bottom-0 left-0"
+                        style="background-image: radial-gradient(white 1px, transparent 1px); background-size: 40px 40px">
+                    </div>
+                    <!-- Hover Overlay -->
+                    <div
+                        class="absolute inset-0 bg-white/[0.02] opacity-0 group-hover:opacity-100 transition-opacity z-10 pointer-events-none">
+                    </div>
+
+                    <div class="flex gap-6 items-start relative z-20">
+                        <div
+                            class="w-12 h-12 rounded-xl bg-[#1A1A1A] border border-white/10 flex items-center justify-center shrink-0 group-hover:border-white/20 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                stroke-linejoin="round" class="text-gray-300 group-hover:text-white">
+                                <polygon points="3 11 22 2 13 21 11 13 3 11"></polygon>
+                            </svg>
+                        </div>
+                        <div class="">
+                            <h3 class="text-2xl font-medium text-white tracking-tight mb-2">
+                                Smart Budgeting
+                            </h3>
+                            <p class="text-[15px] text-gray-400 leading-relaxed font-light font-sans">
+                                Set custom spending limits and get notified when you're
+                                close to your budget.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="md:p-12 transition-colors group overflow-hidden z-0 bg-[#0A0A0C] border-[#ffffff]/10 border rounded-3xl pt-8 pr-8 pb-8 pl-8 relative scroll-item scroll-fade-up delay-300"
+                    style="animation-play-state: running;">
+                    <!-- Background Gradient -->
+                    <div
+                        class="pointer-events-none bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#1a1a2e] via-[#0A0A0C] to-[#0A0A0C] absolute inset-0 z-0">
+                    </div>
+                    <!-- Stars Effect -->
+                    <div class="absolute inset-0 opacity-20 z-0"
+                        style="background-image: radial-gradient(white 1px, transparent 1px); background-size: 40px 40px; mask-image: radial-gradient(circle, black 40%, transparent 100%); -webkit-mask-image: radial-gradient(circle, black 40%, transparent 100%);">
+                    </div>
+                    <!-- Hover Overlay -->
+                    <div
+                        class="absolute inset-0 bg-white/[0.02] opacity-0 group-hover:opacity-100 transition-opacity z-10 pointer-events-none">
+                    </div>
+
+                    <div class="flex gap-6 items-start relative z-20">
+                        <div
+                            class="w-12 h-12 rounded-xl bg-[#1A1A1A] border border-white/10 flex items-center justify-center shrink-0 group-hover:border-white/20 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                stroke-linejoin="round" class="text-gray-300 group-hover:text-white">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"></path>
+                                <path d="m9 12 2 2 4-4"></path>
+                            </svg>
+                        </div>
+                        <div class="">
+                            <h3 class="text-2xl font-medium text-white tracking-tight mb-2">
+                                Bank-Grade Security
+                            </h3>
+                            <p class="text-[15px] text-gray-400 leading-relaxed font-light font-sans">
+                                We use 256-bit encryption and never store your banking
+                                credentials.
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </header>
+        <div class="flex flex-col bg-[#0A0A0C] border-[#ffffff]/10 border rounded-3xl mt-24 mb-24 pt-8 pr-8 pb-16 pl-8 gap-x-16 gap-y-16"
+            style="">
+            <!-- Header Section -->
+            <div class="flex flex-col md:flex-row md:items-end gap-8 w-full gap-x-8 gap-y-8 justify-between">
+                <div class="flex flex-col gap-6 max-w-3xl">
+                    <div class="flex gap-3 gap-x-3 gap-y-3 items-center scroll-item scroll-fade-up"
+                        style="animation-play-state: running;">
+                        <span
+                            class="flex items-center justify-center text-[11px] font-medium text-blue-400 font-mono bg-blue-500/10 w-7 h-7 border-blue-500/20 border rounded-lg shadow-[0_0_10px_rgba(59,130,246,0.2)]">
+                            03
+                        </span>
+                        <span class="uppercase text-sm font-medium text-gray-500 tracking-widest font-sans">
+                            Community
+                        </span>
+                    </div>
+                    <h2 class="md:text-5xl lg:text-6xl leading-[1.1] text-4xl text-white font-oswald font-light tracking-tight scroll-item scroll-fade-up delay-100"
+                        style="animation-play-state: running;">
+                        Loved by builders.
+                        <span class="text-gray-600 font-oswald font-light tracking-tight">
+                            Trusted by teams.
+                        </span>
+                    </h2>
+                    <p class="text-lg text-gray-400 font-light max-w-xl leading-relaxed font-sans scroll-item scroll-fade-up delay-200"
+                        style="animation-play-state: running;">
+                        Join thousands of developers and financial experts who are
+                        building the future of finance with our platform.
+                    </p>
+                </div>
+                <button
+                    class="group flex items-center gap-2 pl-6 pr-5 py-3 bg-white text-black rounded-full text-sm font-medium hover:bg-gray-200 transition-all duration-200 font-sans whitespace-nowrap">
+                    <span class="font-sans">Read Stories</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-arrow-right w-4 h-4 transition-transform group-hover:translate-x-1">
+                        <path d="M5 12h14"></path>
+                        <path d="m12 5 7 7-7 7"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Testimonials Carousel -->
+            <div class="overflow-hidden flex flex-col md:p-16 lg:flex-row lg:gap-20 lg:pt-4 lg:pb-4 lg:pl-4 lg:pr-8 bg-[#0A0A0C] w-full max-w-6xl border-white/10 border rounded-3xl mr-auto ml-auto pt-8 pr-8 pb-8 pl-8 relative shadow-2xl gap-x-12 gap-y-12 items-center scroll-item scroll-blur-in delay-300"
+                style="animation-play-state: running;">
+                <!-- Pricing Card Background -->
+                <div
+                    class="pointer-events-none bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#1a1a2e] via-[#0A0A0C] to-[#0A0A0C] absolute top-0 right-0 bottom-0 left-0 z-0">
+                </div>
+                <div class="z-0 opacity-20 absolute top-0 right-0 bottom-0 left-0"
+                    style="background-image: radial-gradient(white 1px, transparent 1px); background-size: 40px 40px">
+                </div>
+
+                <!-- Image Section -->
+                <div
+                    class="lg:w-[55%] flex min-h-[420px] md:min-h-[520px] w-full relative items-center justify-center z-10">
+                    <div
+                        class="z-10 md:w-[420px] md:h-[420px] lg:w-[480px] lg:h-[480px] group cursor-pointer overflow-hidden bg-white/5 w-80 h-80 border-0 rounded-[2.5rem] pt-1 pr-1 pb-1 pl-1 relative shadow-2xl">
+                        <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/59c85ed7-9ae4-40eb-88bf-fa793ae1de22_1600w.webp"
+                            alt="User Profile"
+                            class="transform transition-transform duration-700 group-hover:scale-105 w-full h-full object-cover rounded-[2.2rem]"
+                            id="testimonial-img">
+                    </div>
+                </div>
+
+                <!-- Content Section -->
+                <div class="lg:w-1/2 flex flex-col z-10 w-full relative">
+                    <div class="mb-6 text-indigo-500">
+                        <svg width="50" height="50" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M14.017 21L14.017 18C14.017 16.8954 14.9124 16 16.017 16H19.017C19.5693 16 20.017 15.5523 20.017 15V9C20.017 8.44772 19.5693 8 19.017 8H15.017C14.4647 8 14.017 8.44772 14.017 9V11C14.017 11.5523 13.5693 12 13.017 12H12.017V5H22.017V15C22.017 18.3137 19.3307 21 16.017 21H14.017ZM5.01697 21L5.01697 18C5.01697 16.8954 5.9124 16 7.01697 16H10.017C10.5693 16 11.017 15.5523 11.017 15V9C11.017 8.44772 10.5693 8 10.017 8H6.01697C5.46468 8 5.01697 8.44772 5.01697 9V11C5.01697 11.5523 4.56925 12 4.01697 12H3.01697V5H13.017V15C13.017 18.3137 10.3307 21 7.01697 21H5.01697Z">
+                            </path>
+                        </svg>
+                    </div>
+
+                    <blockquote
+                        class="leading-tight transition-opacity duration-300 md:text-5xl text-2xl font-light text-white font-oswald mb-8"
+                        id="testimonial-quote">
+                        "Seeing revenue trends, churn, and growth this clearly has made
+                        decision-making so much easier. I finally feel in control. "
+                    </blockquote>
+
+                    <div class="flex flex-row items-center justify-between gap-4 border-t border-white/10 pt-8">
+                        <div class="">
+                            <h4 class="leading-none text-xl font-semibold text-white" id="testimonial-name">
+                                Michelle Lim
+                            </h4>
+                            <p id="testimonial-role" class="text-sm md:text-base text-gray-500 mt-2 font-light">
+                                Software Engineer, Startech foundation
+                            </p>
+                        </div>
+
+                        <div class="flex items-center gap-3">
+                            <button onclick="window.prevTestimonial()"
+                                class="w-10 h-10 md:w-12 md:h-12 rounded-full border border-white/10 bg-white/5 flex items-center justify-center text-white hover:bg-indigo-600 transition-all duration-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="m15 18-6-6 6-6"></path>
+                                </svg>
+                            </button>
+                            <button onclick="window.nextTestimonial()"
+                                class="w-10 h-10 md:w-12 md:h-12 rounded-full border border-white/10 bg-white/5 flex items-center justify-center text-white hover:bg-indigo-600 transition-all duration-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="m9 18 6-6-6-6"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                    (function () {
+                        const testimonials = [
+                            {
+                                quote: "Just wrapped another client project! Snagged the lifetime deal too. Massive shoutout to the creators—this app is incredible!",
+                                name: "Denial Gorg",
+                                role: "Software Engineer, Startech foundation",
+                                img: "https://images.unsplash.com/photo-1522529599102-193c0d76b5b6?q=80&w=1000&auto=format&fit=crop"
+                            },
+                            {
+                                quote: "The integration was seamless. We reduced our deployment time by 40% in the first week. The support team is also top-notch.",
+                                name: "Sarah Chen",
+                                role: "Product Manager, FinTech Global",
+                                img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1000&auto=format&fit=crop"
+                            },
+                            {
+                                quote: "I've used many financial dashboards, but Finex stands out for its speed and design. It's built for serious professionals.",
+                                name: "Alex Rivera",
+                                role: "CTO, NextGen Systems",
+                                img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1000&auto=format&fit=crop"
+                            }
+                        ];
+
+                        let currentIndex = 0;
+                        const imgEl = document.getElementById('testimonial-img');
+                        const quoteEl = document.getElementById('testimonial-quote');
+                        const nameEl = document.getElementById('testimonial-name');
+                        const roleEl = document.getElementById('testimonial-role');
+
+                        function update(index) {
+                            const t = testimonials[index];
+                            if (imgEl && quoteEl && nameEl && roleEl) {
+                                imgEl.style.opacity = '0';
+                                quoteEl.style.opacity = '0';
+
+                                setTimeout(() => {
+                                    imgEl.src = t.img;
+                                    quoteEl.innerText = '"' + t.quote + '"';
+                                    nameEl.innerText = t.name;
+                                    roleEl.innerText = t.role;
+
+                                    imgEl.style.opacity = '1';
+                                    quoteEl.style.opacity = '1';
+                                }, 300);
+                            }
+                        }
+
+                        window.nextTestimonial = function () {
+                            currentIndex = (currentIndex + 1) % testimonials.length;
+                            update(currentIndex);
+                        };
+
+                        window.prevTestimonial = function () {
+                            currentIndex = (currentIndex - 1 + testimonials.length) % testimonials.length;
+                            update(currentIndex);
+                        };
+                    })();
+                </script>
+            </div>
+
+            <script class="">
+                (function () {
+                    const testimonials = [
+                        {
+                            quote: "Just wrapped another client project! Snagged the lifetime deal too. Massive shoutout to the creators—this app is incredible!",
+                            name: "Denial Gorg",
+                            role: "Software Engineer, Startech foundation",
+                            img: "https://images.unsplash.com/photo-1522529599102-193c0d76b5b6?q=80&w=1000&auto=format&fit=crop"
+                        },
+                        {
+                            quote: "The integration was seamless. We reduced our deployment time by 40% in the first week. The support team is also top-notch.",
+                            name: "Sarah Chen",
+                            role: "Product Manager, FinTech Global",
+                            img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1000&auto=format&fit=crop"
+                        },
+                        {
+                            quote: "I've used many financial dashboards, but Finex stands out for its speed and design. It's built for serious professionals.",
+                            name: "Alex Rivera",
+                            role: "CTO, NextGen Systems",
+                            img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1000&auto=format&fit=crop"
+                        }
+                    ];
+
+                    let currentIndex = 0;
+                    const imgEl = document.getElementById('testimonial-img');
+                    const quoteEl = document.getElementById('testimonial-quote');
+                    const nameEl = document.getElementById('testimonial-name');
+                    const roleEl = document.getElementById('testimonial-role');
+
+                    function update(index) {
+                        const t = testimonials[index];
+                        if (imgEl && quoteEl && nameEl && roleEl) {
+                            imgEl.style.opacity = '0';
+                            quoteEl.style.opacity = '0';
+
+                            setTimeout(() => {
+                                imgEl.src = t.img;
+                                quoteEl.innerText = '"' + t.quote + '"';
+                                nameEl.innerText = t.name;
+                                roleEl.innerText = t.role;
+
+                                imgEl.style.opacity = '1';
+                                quoteEl.style.opacity = '1';
+                            }, 300);
+                        }
+                    }
+
+                    window.nextTestimonial = function () {
+                        currentIndex = (currentIndex + 1) % testimonials.length;
+                        update(currentIndex);
+                    };
+
+                    window.prevTestimonial = function () {
+                        currentIndex = (currentIndex - 1 + testimonials.length) % testimonials.length;
+                        update(currentIndex);
+                    };
+                })();
+            </script>
+        </div>
+
+        <div
+            class="flex flex-col bg-[#0A0A0C] border-[#ffffff]/10 border rounded-3xl mt-24 mb-24 pt-8 pr-8 pb-16 pl-8 gap-x-16 gap-y-16">
+            <!-- Header Section -->
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-8 w-full">
+                <div class="flex flex-col gap-6 max-w-3xl">
+                    <div class="flex gap-3 items-center scroll-item scroll-fade-up"
+                        style="animation-play-state: running;">
+                        <span
+                            class="flex items-center justify-center text-[11px] font-medium text-blue-400 font-mono bg-blue-500/10 w-7 h-7 border-blue-500/20 border rounded-lg shadow-[0_0_10px_rgba(59,130,246,0.2)]">
+                            04
+                        </span>
+                        <span class="uppercase text-sm font-medium text-gray-500 tracking-widest font-sans">
+                            PRICING
+                        </span>
+                    </div>
+                    <h2 class="md:text-5xl lg:text-6xl leading-[1.1] text-4xl text-white font-oswald font-light tracking-tight scroll-item scroll-fade-up delay-100"
+                        style="animation-play-state: running;">
+                        Simple pricing for
+                        <span class="text-gray-600 font-oswald font-light tracking-tight">
+                            everyone.
+                        </span>
+                    </h2>
+                    <p class="text-lg text-gray-400 font-light max-w-xl leading-relaxed font-sans scroll-item scroll-fade-up delay-200"
+                        style="animation-play-state: running;">
+                        Leverage AI-driven insights to forecast trends, optimize
+                        spending, and maximize returns across all your financial
+                        channels with precision.
+                    </p>
+                </div>
+
+                <div class="z-10 flex flex-col items-center md:items-end relative">
+                    <div
+                        class="flex bg-[#111111] border-white/10 border rounded-full p-1.5 backdrop-blur-sm items-center">
+                        <button
+                            class="transition-transform hover:scale-[1.02] text-sm font-semibold text-black bg-[#ffffff] rounded-full px-8 py-2.5 shadow-[0_0_15px_rgba(14,165,233,0.3)]">
+                            Monthly
+                        </button>
+                        <button
+                            class="px-8 py-2.5 rounded-full text-gray-400 hover:text-white font-medium text-sm transition-colors font-sans">
+                            Yearly
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features Grid -->
+            <section
+                class="flex flex-col overflow-hidden pt-0 pr-0 pb-0 pl-0 relative gap-x-12 gap-y-12 items-center justify-center">
+                <!-- Background Glow Effects -->
+                <div class="pointer-events-none absolute top-0 right-0 bottom-0 left-0 gap-x-12 gap-y-12 scroll-item scroll-blur-in delay-300"
+                    style="visibility: hidden; animation-play-state: running;">
+                    <div class="absolute left-1/2 top-0 bottom-0 w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-purple-500/30 to-transparent"
+                        style=""></div>
+                    <div
+                        class="w-px bg-gradient-to-b from-transparent via-purple-500/10 to-transparent opacity-50 absolute top-0 bottom-0 left-1/4 gap-x-12 gap-y-12">
+                    </div>
+                    <div class="absolute right-1/4 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-purple-500/10 to-transparent opacity-50"
+                        style=""></div>
+                    <div
+                        class="absolute top-0 inset-x-0 h-64 bg-gradient-to-b from-purple-900/10 to-transparent opacity-30">
+                    </div>
+                </div>
+
+                <!-- Header Section -->
+
+                <!-- Pricing Card -->
+                <div
+                    class="overflow-hidden z-10 group bg-[#0A0A0C] w-full max-w-6xl border-white/10 border rounded-[3rem] relative shadow-2xl gap-x-12 gap-y-12">
+                    <!-- Card Background -->
+                    <div
+                        class="pointer-events-none bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#1a1a2e] via-[#0A0A0C] to-[#0A0A0C] absolute top-0 right-0 bottom-0 left-0 gap-x-12 gap-y-12">
+                    </div>
+                    <!-- Stars Effect -->
+                    <div class="absolute inset-0 opacity-20"
+                        style="background-image: radial-gradient(white 1px, transparent 1px); background-size: 40px 40px; mask-image: radial-gradient(circle, black 40%, transparent 100%);">
+                    </div>
+
+                    <div
+                        class="grid grid-cols-1 md:grid-cols-2 md:p-16 min-h-[450px] pt-10 pr-10 pb-10 pl-10 relative gap-x-12 gap-y-12">
+                        <!-- Left Column -->
+                        <div class="flex flex-col gap-8 h-full gap-x-12 gap-y-12 items-start justify-between">
+                            <!-- Icon & Title -->
+                            <div class="flex items-center gap-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                    stroke-linejoin="round" class="text-sky-400">
+                                    <path
+                                        d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z">
+                                    </path>
+                                    <path
+                                        d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z">
+                                    </path>
+                                    <path d="M9 12H4s.55-3.03 2-4c1.62-1.1 4-1 4-1s.25 2.25 0 4z"></path>
+                                    <path d="M15 13v5s3.03-.55 4-2c1.1-1.62 1-4 1-4s-2.25-.25-4 0z"></path>
+                                </svg>
+                                <span class="text-3xl font-light text-white tracking-tight font-oswald">
+                                    Pro Plan
+                                </span>
+                            </div>
+
+                            <!-- Price -->
+                            <div class="mt-auto gap-x-12 gap-y-12">
+                                <div class="flex items-baseline gap-3 mb-2">
+                                    <span class="text-9xl font-light text-white tracking-tight font-oswald">
+                                        $19
+                                    </span>
+                                    <span class="text-3xl font-light text-white tracking-tight font-oswald opacity-90">
+                                        / mo
+                                    </span>
+                                </div>
+                                <p class="text-gray-400 text-lg font-light font-sans" style="">
+                                    Best for startups and growing teams
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Right Column -->
+                        <div class="flex flex-col justify-between h-full gap-10">
+                            <!-- Features List -->
+                            <ul class="space-y-6 pt-2">
+                                <li class="flex items-center gap-4 text-white text-xl font-light font-sans" style="">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-white shrink-0"></span>
+                                    Unlimited Account Sync
+                                </li>
+                                <li class="flex items-center gap-4 text-white text-xl font-light font-sans" style="">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-white shrink-0"></span>
+                                    AI-Powered Forecasting
+                                </li>
+                                <li class="flex items-center gap-4 text-white text-xl font-light font-sans" style="">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-white shrink-0"></span>
+                                    Advanced Export (CSV/PDF)
+                                </li>
+                                <li class="flex items-center gap-4 text-white text-xl font-light font-sans" style="">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-white shrink-0"></span>
+                                    Priority Support
+                                </li>
+                            </ul>
+
+                            <!-- CTA Button -->
+                            <div class="flex justify-start md:justify-end mt-auto pt-4">
+                                <button
+                                    class="sm:w-auto hover:bg-blue-500/10 hover:border-blue-400 hover:shadow-[0_0_35px_rgba(59,130,246,0.6),inset_0_0_20px_rgba(59,130,246,0.4)] hover:scale-[1.02] transition-all duration-300 flex group text-base font-medium text-white bg-black/60 w-full border-blue-500 border rounded-full pt-3.5 pr-8 pb-3.5 pl-8 shadow-[0_0_20px_rgba(59,130,246,0.5),inset_0_0_10px_rgba(59,130,246,0.2)] gap-x-2 gap-y-2 items-center justify-center">
+                                    Start For Free
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </section>
 
     <!-- Three Pillars Section -->
     <section id="features" class="features section-padding">
