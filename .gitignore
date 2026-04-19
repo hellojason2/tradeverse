@@ -18,3 +18,13 @@ npm-debug.log*
 # Temporary files
 *.tmp
 *.temp
+
+# Dependencies & build artifacts
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# Worktrees (linked checkouts — code lives in branches, not root)
+/app/
+/features/*/
