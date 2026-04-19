@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tradeverse 2.0</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --black: #171717;
+  --white: #ffffff;
+  --gray-600: #4d4d4d;
+  --gray-500: #666666;
+  --gray-400: #808080;
+  --gray-100: #ebebeb;
+  --gray-50: #fafafa;
+  --blue: #0a72ef;
+  --pink: #de1d8d;
+  --red: #ff5b4f;
+  --green: #009e4f;
+  --shadow-ring: rgba(0,0,0,0.08) 0px 0px 0px 1px;
+  --shadow-card: rgba(0,0,0,0.04) 0px 2px 2px 0px, rgb(250,250,250) 0px 0px 0px 1px;
+}
+html, body { height: 100%; font-family: 'Geist', system-ui, -apple-system, sans-serif; background: var(--white); color: var(--black); -webkit-font-smoothing: antialiased; }
+
+/* ── Layout ── */
+.app { display: flex; height: 100vh; }
+.sidebar { width: 64px; background: var(--white); border-right: 1px solid var(--gray-100); display: flex; flex-direction: column; align-items: center; padding: 16px 0; flex-shrink: 0; }
+.main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+/* ── Sidebar ── */
+.sidebar-logo { width: 36px; height: 36px; background: var(--black); border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 32px; }
+.sidebar-logo span { color: var(--white); font-weight: 600; font-size: 11px; letter-spacing: -0.3px; }
+.sidebar-nav { display: flex; flex-direction: column; gap: 2px; flex: 1; }
+.sidebar-btn { width: 40px; height: 40px; border: none; background: none; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--gray-400); transition: all 0.15s; position: relative; }
+.sidebar-btn:hover { color: var(--gray-600); background: var(--gray-50); }
+.sidebar-btn.active { color: var(--black); background: var(--gray-50); }
+.sidebar-btn.active::before { content: ''; position: absolute; left: -12px; width: 3px; height: 20px; background: var(--black); border-radius: 0 3px 3px 0; }
+.sidebar-btn svg { width: 20px; height: 20px; stroke-width: 1.8; }
+.sidebar-bottom { margin-top: auto; }
+
+/* ── Header ── */
+.header { height: 52px; border-bottom: 1px solid var(--gray-100); display: flex; align-items: center; justify-content: space-between; padding: 0 24px; flex-shrink: 0; background: var(--white); }
+.header-left { display: flex; align-items: center; gap: 12px; }
+.header-brand { font-size: 14px; font-weight: 600; letter-spacing: -0.28px; }
+.header-badge { font-size: 11px; font-weight: 600; color: #6d28d9; background: #f3f0ff; padding: 2px 8px; border-radius: 9999px; text-transform: uppercase; letter-spacing: 0.5px; }
+.header-search { display: flex; align-items: center; gap: 8px; background: var(--gray-50); border: 1px solid var(--gray-100); border-radius: 6px; padding: 6px 12px; width: 280px; }
+.header-search input { border: none; background: none; outline: none; font-family: inherit; font-size: 13px; color: var(--black); width: 100%; }
+.header-search input::placeholder { color: var(--gray-400); }
+.header-search svg { width: 14px; height: 14px; color: var(--gray-400); flex-shrink: 0; }
+.header-right { display: flex; align-items: center; gap: 12px; }
+.header-icon-btn { width: 32px; height: 32px; border: none; background: none; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--gray-500); transition: all 0.15s; }
+.header-icon-btn:hover { background: var(--gray-50); color: var(--black); }
+.header-icon-btn svg { width: 18px; height: 18px; }
+.header-divider { width: 1px; height: 24px; background: var(--gray-100); }
+.header-avatar { width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, var(--blue), var(--pink)); display: flex; align-items: center; justify-content: center; cursor: pointer; }
+.header-avatar span { font-size: 10px; font-weight: 600; color: var(--white); }
+
+/* ── Page Container ── */
+.page { flex: 1; overflow-y: auto; padding: 24px; display: none; }
+.page.active { display: block; }
+
+/* ── Page Tabs ── */
+.page-tabs { display: flex; gap: 4px; margin-bottom: 20px; }
+.page-tab { padding: 6px 14px; border-radius: 6px; font-size: 13px; font-weight: 500; border: none; cursor: pointer; background: none; color: var(--gray-500); transition: all 0.15s; }
+.page-tab:hover { color: var(--gray-600); }
+.page-tab.active { background: var(--black); color: var(--white); }
+
+/* ════════════════════════════════════════════
+   IMAGE 1 — DASHBOARD
+   ════════════════════════════════════════════ */
+.dashboard-grid { display: grid; grid-template-columns: 1fr 360px; gap: 20px; }
+
+/* Portfolio Card */
+.portfolio-card { background: var(--white); border-radius: 8px; box-shadow: var(--shadow-card); padding: 24px; }
+.portfolio-label { font-size: 12px; font-weight: 500; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+.portfolio-value { font-size: 32px; font-weight: 600; letter-spacing: -1.28px; line-height: 1.2; margin-bottom: 2px; }
+.portfolio-change { font-size: 14px; font-weight: 500; display: flex; align-items: center; gap: 8px; }
+.portfolio-change.positive { color: var(--green); }
+.portfolio-change .sub { color: var(--gray-400); font-weight: 400; }
+.chart-controls { display: flex; gap: 2px; margin-top: 16px; }
+.chart-ctrl { padding: 4px 10px; border: none; background: none; border-radius: 6px; font-size: 12px; font-weight: 500; cursor: pointer; color: var(--gray-400); font-family: inherit; }
+.chart-ctrl:hover { color: var(--gray-600); }
+.chart-ctrl.active { background: var(--black); color: var(--white); }
+.chart-area { width: 100%; height: 200px; margin-top: 16px; }
+
+/* Stats Row */
+.stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 16px; }
+.stat-card { background: var(--white); border-radius: 8px; box-shadow: var(--shadow-card); padding: 16px; }
+.stat-label { font-size: 11px; font-weight: 500; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+.stat-value { font-size: 18px; font-weight: 600; letter-spacing: -0.5px; }
+.stat-sub { font-size: 12px; color: var(--gray-400); margin-top: 2px; }
+.stat-sub.positive { color: var(--green); }
+
+/* Watchlist */
+.watchlist-card { background: var(--white); border-radius: 8px; box-shadow: var(--shadow-card); overflow: hidden; }
+.watchlist-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 1px solid var(--gray-100); }
+.watchlist-header h3 { font-size: 14px; font-weight: 600; }
+.watchlist-header a { font-size: 12px; font-weight: 500; color: var(--gray-400); text-decoration: none; }
+.watchlist-header a:hover { color: var(--black); }
+.watchlist-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 20px; border-bottom: 1px solid var(--gray-50); cursor: pointer; transition: background 0.1s; }
+.watchlist-row:hover { background: var(--gray-50); }
+.watchlist-row:last-child { border-bottom: none; }
+.wl-left { display: flex; align-items: center; gap: 10px; }
+.wl-icon { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; }
+.wl-symbol { font-size: 13px; font-weight: 600; }
+.wl-name { font-size: 11px; color: var(--gray-400); }
+.wl-right { text-align: right; }
+.wl-price { font-size: 13px; font-weight: 500; font-variant-numeric: tabular-nums; }
+.wl-change { font-size: 11px; font-weight: 500; font-variant-numeric: tabular-nums; }
+.wl-change.up { color: var(--green); }
+.wl-change.down { color: var(--red); }
+
+/* Quick Trade */
+.trade-card { background: var(--white); border-radius: 8px; box-shadow: var(--shadow-card); padding: 20px; margin-top: 16px; }
+.trade-toggle { display: flex; background: var(--gray-50); border-radius: 6px; padding: 2px; margin-bottom: 16px; }
+.trade-toggle button { flex: 1; padding: 8px; border: none; border-radius: 4px; font-family: inherit; font-size: 13px; font-weight: 500; cursor: pointer; background: none; color: var(--gray-400); }
+.trade-toggle button.active { background: var(--white); color: var(--black); box-shadow: var(--shadow-ring); }
+.trade-field { margin-bottom: 12px; }
+.trade-field label { display: block; font-size: 11px; font-weight: 500; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+.trade-input { display: flex; align-items: center; justify-content: space-between; background: var(--gray-50); border: 1px solid var(--gray-100); border-radius: 6px; padding: 10px 12px; }
+.trade-input span { font-size: 14px; color: var(--gray-400); }
+.trade-input .pair { display: flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 500; color: var(--gray-600); }
+.trade-types { display: flex; gap: 4px; margin-bottom: 16px; }
+.trade-type { flex: 1; padding: 6px; border: 1px solid var(--gray-100); border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 500; cursor: pointer; background: var(--white); color: var(--gray-500); }
+.trade-type.active { border-color: var(--gray-600); color: var(--black); }
+.trade-submit { width: 100%; padding: 10px; border: none; border-radius: 6px; font-family: inherit; font-size: 14px; font-weight: 500; cursor: pointer; background: var(--black); color: var(--white); }
+.trade-submit:hover { opacity: 0.85; }
+
+/* ════════════════════════════════════════════
+   IMAGE 2 — MARKETS GRID
+   ════════════════════════════════════════════ */
+.markets-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.markets-header h2 { font-size: 18px; font-weight: 600; letter-spacing: -0.5px; }
+.markets-header p { font-size: 12px; color: var(--gray-400); margin-top: 2px; }
+.markets-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.market-card { background: var(--white); border-radius: 8px; box-shadow: var(--shadow-card); padding: 20px; cursor: pointer; transition: box-shadow 0.2s; }
+.market-card:hover { box-shadow: rgba(0,0,0,0.04) 0px 8px 8px -8px, rgba(0,0,0,0.08) 0px 0px 0px 1px; }
+.mc-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
+.mc-left { display: flex; align-items: center; gap: 10px; }
+.mc-icon { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; }
+.mc-symbol { font-size: 14px; font-weight: 600; }
+.mc-name { font-size: 11px; color: var(--gray-400); }
+.mc-badge { font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 4px; }
+.mc-badge.up { color: var(--green); background: rgba(0,158,79,0.08); }
+.mc-badge.down { color: var(--red); background: rgba(255,91,79,0.08); }
+.mc-bottom { display: flex; justify-content: space-between; align-items: flex-end; }
+.mc-price { font-size: 20px; font-weight: 600; letter-spacing: -0.6px; font-variant-numeric: tabular-nums; }
+.mc-meta { display: flex; gap: 12px; margin-top: 4px; }
+.mc-meta span { font-size: 10px; color: var(--gray-400); }
+.mc-meta strong { color: var(--gray-600); font-weight: 500; }
+.mc-spark { width: 80px; height: 32px; }
+
+/* ════════════════════════════════════════════
+   IMAGE 3 — PORTFOLIO
+   ════════════════════════════════════════════ */
+.portfolio-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
+.ps-card { background: var(--white); border-radius: 8px; box-shadow: var(--shadow-card); padding: 16px; }
+.ps-label { font-size: 11px; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 500; margin-bottom: 4px; }
+.ps-value { font-size: 20px; font-weight: 600; letter-spacing: -0.6px; }
+.ps-sub { font-size: 12px; margin-top: 2px; }
+.ps-sub.up { color: var(--green); }
+.ps-sub.neutral { color: var(--gray-400); }
+.portfolio-content { display: grid; grid-template-columns: 300px 1fr; gap: 16px; }
+.allocation-card { background: var(--white); border-radius: 8px; box-shadow: var(--shadow-card); padding: 20px; }
+.allocation-card h3 { font-size: 14px; font-weight: 600; margin-bottom: 16px; }
+.donut-wrap { display: flex; justify-content: center; padding: 16px 0; }
+.holdings-card { background: var(--white); border-radius: 8px; box-shadow: var(--shadow-card); overflow: hidden; }
+.holdings-header { display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; border-bottom: 1px solid var(--gray-100); }
+.holdings-header h3 { font-size: 14px; font-weight: 600; }
+.holdings-header a { font-size: 12px; color: var(--gray-400); text-decoration: none; font-weight: 500; }
+.holdings-table { width: 100%; border-collapse: collapse; }
+.holdings-table th { text-align: left; font-size: 10px; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 500; padding: 8px 20px; border-bottom: 1px solid var(--gray-100); }
+.holdings-table th:last-child, .holdings-table th:nth-child(2), .holdings-table th:nth-child(3), .holdings-table th:nth-child(4) { text-align: right; }
+.holdings-table td { padding: 12px 20px; border-bottom: 1px solid var(--gray-50); font-size: 13px; }
+.holdings-table td:last-child, .holdings-table td:nth-child(2), .holdings-table td:nth-child(3), .holdings-table td:nth-child(4) { text-align: right; }
+.holdings-table tr:hover { background: var(--gray-50); }
+.holdings-table tr { cursor: pointer; }
+.ht-asset { display: flex; align-items: center; gap: 10px; }
+.ht-icon { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; }
+.ht-sym { font-weight: 600; }
+.ht-name { font-size: 11px; color: var(--gray-400); }
+.ht-bar-wrap { display: flex; align-items: center; gap: 8px; justify-content: flex-end; }
+.ht-bar { width: 60px; height: 4px; background: var(--gray-100); border-radius: 2px; overflow: hidden; }
+.ht-bar-fill { height: 100%; border-radius: 2px; }
+.ht-alloc { font-size: 12px; color: var(--gray-500); font-variant-numeric: tabular-nums; }
+.ht-change { font-weight: 500; font-variant-numeric: tabular-nums; }
+.ht-change.up { color: var(--green); }
+.ht-change.down { color: var(--red); }
+</style>
+</head>
+<body>
+<div class="app">
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <div class="sidebar-logo"><span>TV</span></div>
+    <div class="sidebar-nav">
+      <button class="sidebar-btn active" onclick="showPage('dashboard')" title="Dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      </button>
+      <button class="sidebar-btn" onclick="showPage('markets')" title="Markets">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 16V12"/><path d="M11 16V8"/><path d="M15 16V4"/><path d="M19 16V10"/></svg>
+      </button>
+      <button class="sidebar-btn" onclick="showPage('portfolio')" title="Portfolio">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg>
+      </button>
+      <button class="sidebar-btn" title="Trade">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/></svg>
+      </button>
+      <button class="sidebar-btn" title="History">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </button>
+    </div>
+    <div class="sidebar-bottom">
+      <button class="sidebar-btn" title="Settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <div class="main">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-left">
+        <span class="header-brand">Tradeverse</span>
+        <span class="header-badge">Pro</span>
+      </div>
+      <div class="header-search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" placeholder="Search markets, pairs..." />
+        <kbd style="font-family:'Geist Mono',monospace;font-size:10px;color:var(--gray-400);background:var(--white);padding:2px 6px;border-radius:4px;border:1px solid var(--gray-100)">⌘K</kbd>
+      </div>
+      <div class="header-right">
+        <button class="header-icon-btn" style="position:relative">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+          <div style="position:absolute;top:6px;right:6px;width:6px;height:6px;background:#6d28d9;border-radius:50%"></div>
+        </button>
+        <div class="header-divider"></div>
+        <div class="header-avatar"><span>TL</span></div>
+      </div>
+    </header>
+
+    <!-- ═══ DASHBOARD PAGE (Image 1) ═══ -->
+    <div class="page active" id="page-dashboard">
+      <div class="page-tabs">
+        <button class="page-tab active">Overview</button>
+        <button class="page-tab">Analytics</button>
+        <button class="page-tab">Signals</button>
+      </div>
+      <div class="dashboard-grid">
+        <div>
+          <!-- Portfolio Chart -->
+          <div class="portfolio-card">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px">
+              <div>
+                <div class="portfolio-label">Portfolio Value</div>
+                <div class="portfolio-value">$1,284,750.00</div>
+                <div class="portfolio-change positive">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m18 15-6-6-6 6"/></svg>
+                  +2.34%
+                  <span class="sub">+$29,340.00 today</span>
+                </div>
+              </div>
+              <div class="chart-controls">
+                <button class="chart-ctrl">1H</button>
+                <button class="chart-ctrl active">1D</button>
+                <button class="chart-ctrl">1W</button>
+                <button class="chart-ctrl">1M</button>
+                <button class="chart-ctrl">1Y</button>
+                <button class="chart-ctrl">ALL</button>
+              </div>
+            </div>
+            <div class="chart-area">
+              <svg id="mainChart" width="100%" height="200" viewBox="0 0 800 200" preserveAspectRatio="none"></svg>
+            </div>
+          </div>
+          <!-- Stats -->
+          <div class="stats-row">
+            <div class="stat-card">
+              <div class="stat-label">24h Volume</div>
+              <div class="stat-value">$142.8M</div>
+              <div class="stat-sub positive">+12.4% vs yesterday</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Open Orders</div>
+              <div class="stat-value">7</div>
+              <div class="stat-sub">3 limit · 4 stop</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Active Pairs</div>
+              <div class="stat-value">24</div>
+              <div class="stat-sub">Across 5 exchanges</div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <!-- Watchlist -->
+          <div class="watchlist-card">
+            <div class="watchlist-header"><h3>Watchlist</h3><a href="#">View All →</a></div>
+            <div id="watchlistBody"></div>
+          </div>
+          <!-- Quick Trade -->
+          <div class="trade-card">
+            <div class="trade-toggle"><button class="active" style="color:var(--green)">Buy</button><button>Sell</button></div>
+            <div class="trade-field">
+              <label>Amount</label>
+              <div class="trade-input"><span>0.00</span><div class="pair"><div style="width:16px;height:16px;border-radius:50%;background:#f7931a20;color:#f7931a;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:700">₿</div>BTC</div></div>
+            </div>
+            <div class="trade-field">
+              <label>Price</label>
+              <div class="trade-input"><span style="font-variant-numeric:tabular-nums">$0.00</span><div class="pair">USD</div></div>
+            </div>
+            <div class="trade-types">
+              <button class="trade-type active">Market</button>
+              <button class="trade-type">Limit</button>
+              <button class="trade-type">Stop</button>
+            </div>
+            <button class="trade-submit">Buy BTC</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ MARKETS PAGE (Image 2) ═══ -->
+    <div class="page" id="page-markets">
+      <div class="markets-header">
+        <div>
+          <h2>Markets</h2>
+          <p>Top cryptocurrencies by market cap</p>
+        </div>
+        <div class="page-tabs" style="margin-bottom:0">
+          <button class="page-tab active">All</button>
+          <button class="page-tab">Spot</button>
+          <button class="page-tab">Futures</button>
+          <button class="page-tab">New</button>
+        </div>
+      </div>
+      <div class="markets-grid" id="marketsGrid"></div>
+    </div>
+
+    <!-- ═══ PORTFOLIO PAGE (Image 3) ═══ -->
+    <div class="page" id="page-portfolio">
+      <div class="page-tabs">
+        <button class="page-tab active">Overview</button>
+        <button class="page-tab">Positions</button>
+        <button class="page-tab">History</button>
+      </div>
+      <div class="portfolio-stats">
+        <div class="ps-card"><div class="ps-label">Total P/L</div><div class="ps-value" style="color:var(--green)">+$284,230</div><div class="ps-sub up">+28.4%</div></div>
+        <div class="ps-card"><div class="ps-label">24h Change</div><div class="ps-value" style="color:var(--green)">+$29,340</div><div class="ps-sub up">+2.34%</div></div>
+        <div class="ps-card"><div class="ps-label">Open Positions</div><div class="ps-value">12</div><div class="ps-sub neutral">Active</div></div>
+        <div class="ps-card"><div class="ps-label">Win Rate</div><div class="ps-value">68%</div><div class="ps-sub neutral">Last 30d</div></div>
+      </div>
+      <div class="portfolio-content">
+        <div class="allocation-card">
+          <h3>Allocation</h3>
+          <div class="donut-wrap"><svg id="donutChart" width="180" height="180" viewBox="0 0 180 180"></svg></div>
+        </div>
+        <div class="holdings-card">
+          <div class="holdings-header"><h3>Holdings</h3><a href="#">Manage</a></div>
+          <table class="holdings-table">
+            <thead><tr><th>Asset</th><th style="text-align:right">Holdings</th><th style="text-align:right">Value</th><th style="text-align:right">Alloc</th><th style="text-align:right">24h</th></tr></thead>
+            <tbody id="holdingsBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Navigation ──
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  document.querySelectorAll('.sidebar-btn').forEach((b, i) => {
+    b.classList.toggle('active', ['dashboard','markets','portfolio','trade','history'][i] === name);
+  });
+}
+
+// ── Data ──
+const watchlist = [
+  { sym: 'BTC', name: 'Bitcoin', price: 67842.50, chg: 2.14, color: '#f7931a' },
+  { sym: 'ETH', name: 'Ethereum', price: 3521.80, chg: 1.87, color: '#627eea' },
+  { sym: 'SOL', name: 'Solana', price: 178.42, chg: -0.93, color: '#14f195' },
+  { sym: 'BNB', name: 'BNB', price: 612.30, chg: 0.45, color: '#f3ba2f' },
+  { sym: 'XRP', name: 'Ripple', price: 0.5342, chg: -1.22, color: '#00aae4' },
+  { sym: 'ADA', name: 'Cardano', price: 0.4821, chg: 3.67, color: '#0033ad' },
+  { sym: 'AVAX', name: 'Avalanche', price: 38.91, chg: 5.12, color: '#e84142' },
+  { sym: 'DOT', name: 'Polkadot', price: 7.24, chg: -0.34, color: '#e6007a' },
+];
+
+const markets = [
+  { sym: 'BTC', name: 'Bitcoin', price: 67842.50, chg: 2.14, vol: '32.4B', mcap: '1.33T', color: '#f7931a' },
+  { sym: 'ETH', name: 'Ethereum', price: 3521.80, chg: 1.87, vol: '18.7B', mcap: '422.8B', color: '#627eea' },
+  { sym: 'SOL', name: 'Solana', price: 178.42, chg: -0.93, vol: '4.2B', mcap: '79.1B', color: '#14f195' },
+  { sym: 'BNB', name: 'BNB', price: 612.30, chg: 0.45, vol: '2.1B', mcap: '91.2B', color: '#f3ba2f' },
+  { sym: 'XRP', name: 'Ripple', price: 0.5342, chg: -1.22, vol: '1.8B', mcap: '29.1B', color: '#00aae4' },
+  { sym: 'ADA', name: 'Cardano', price: 0.4821, chg: 3.67, vol: '890M', mcap: '17.0B', color: '#0033ad' },
+  { sym: 'AVAX', name: 'Avalanche', price: 38.91, chg: 5.12, vol: '1.2B', mcap: '14.8B', color: '#e84142' },
+  { sym: 'DOT', name: 'Polkadot', price: 7.24, chg: -0.34, vol: '420M', mcap: '9.8B', color: '#e6007a' },
+  { sym: 'LINK', name: 'Chainlink', price: 14.87, chg: 4.21, vol: '780M', mcap: '8.7B', color: '#2a5ada' },
+];
+
+const holdings = [
+  { sym: 'BTC', name: 'Bitcoin', amt: '8.42', val: 571235.10, alloc: 44.5, chg: 2.14, color: '#f7931a' },
+  { sym: 'ETH', name: 'Ethereum', amt: '95.70', val: 336936.06, alloc: 26.2, chg: 1.87, color: '#627eea' },
+  { sym: 'SOL', name: 'Solana', amt: '580', val: 103483.60, alloc: 8.1, chg: -0.93, color: '#14f195' },
+  { sym: 'BNB', name: 'BNB', amt: '85', val: 52045.50, alloc: 4.0, chg: 0.45, color: '#f3ba2f' },
+  { sym: 'ADA', name: 'Cardano', amt: '125,000', val: 60262.50, alloc: 4.7, chg: 3.67, color: '#0033ad' },
+  { sym: 'Others', name: 'Other Assets', amt: '—', val: 159787.24, alloc: 12.5, chg: 1.20, color: '#808080' },
+];
+
+const fmt = n => '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+// ── Render Watchlist ──
+document.getElementById('watchlistBody').innerHTML = watchlist.map(w => `
+  <div class="watchlist-row">
+    <div class="wl-left">
+      <div class="wl-icon" style="background:${w.color}18;color:${w.color}">${w.sym.slice(0,2)}</div>
+      <div><div class="wl-symbol">${w.sym}</div><div class="wl-name">${w.name}</div></div>
+    </div>
+    <div class="wl-right">
+      <div class="wl-price">${fmt(w.price)}</div>
+      <div class="wl-change ${w.chg>=0?'up':'down'}">${w.chg>=0?'+':''}${w.chg}%</div>
+    </div>
+  </div>
+`).join('');
+
+// ── Render Markets ──
+document.getElementById('marketsGrid').innerHTML = markets.map(m => `
+  <div class="market-card">
+    <div class="mc-top">
+      <div class="mc-left">
+        <div class="mc-icon" style="background:${m.color}18;color:${m.color}">${m.sym.slice(0,2)}</div>
+        <div><div class="mc-symbol">${m.sym}</div><div class="mc-name">${m.name}</div></div>
+      </div>
+      <div class="mc-badge ${m.chg>=0?'up':'down'}">${m.chg>=0?'+':''}${m.chg}%</div>
+    </div>
+    <div class="mc-bottom">
+      <div>
+        <div class="mc-price">${fmt(m.price)}</div>
+        <div class="mc-meta"><span>Vol: <strong>${m.vol}</strong></span><span>MCap: <strong>${m.mcap}</strong></span></div>
+      </div>
+      <svg class="mc-spark" viewBox="0 0 80 32" id="spark-${m.sym}"></svg>
+    </div>
+  </div>
+`).join('');
+
+// ── Render Holdings ──
+document.getElementById('holdingsBody').innerHTML = holdings.map(h => `
+  <tr>
+    <td><div class="ht-asset"><div class="ht-icon" style="background:${h.color}18;color:${h.color}">${h.sym.slice(0,2)}</div><div><div class="ht-sym">${h.sym}</div><div class="ht-name">${h.name}</div></div></div></td>
+    <td style="font-variant-numeric:tabular-nums;color:var(--gray-500)">${h.amt}</td>
+    <td style="font-weight:500;font-variant-numeric:tabular-nums">${fmt(h.val)}</td>
+    <td><div class="ht-bar-wrap"><div class="ht-bar"><div class="ht-bar-fill" style="width:${h.alloc}%;background:${h.color}"></div></div><span class="ht-alloc">${h.alloc}%</span></div></td>
+    <td class="ht-change ${h.chg>=0?'up':'down'}">${h.chg>=0?'+':''}${h.chg}%</td>
+  </tr>
+`).join('');
+
+// ── Main Chart ──
+(function() {
+  const svg = document.getElementById('mainChart');
+  const W = 800, H = 200, N = 80;
+  let vals = [], v = 1200;
+  for (let i = 0; i < N; i++) { v += Math.sin(i*0.25)*25 + (Math.random()-0.42)*15; v = Math.max(900, Math.min(1400, v)); vals.push(v); }
+  const mn = Math.min(...vals), mx = Math.max(...vals), rng = mx - mn || 1;
+  const pts = vals.map((v, i) => ({ x: (i/(N-1))*W, y: H - ((v-mn)/rng)*H*0.85 - H*0.05 }));
+  const line = pts.map((p,i) => `${i?'L':'M'}${p.x} ${p.y}`).join(' ');
+  const area = line + ` L${W} ${H} L0 ${H} Z`;
+  svg.innerHTML = `
+    <defs><linearGradient id="cg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0a72ef" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#0a72ef" stop-opacity="0"/>
+    </linearGradient></defs>
+    ${[0.25,0.5,0.75].map(r => `<line x1="0" y1="${H*r}" x2="${W}" y2="${H*r}" stroke="#ebebeb" stroke-width="1"/>`).join('')}
+    <path d="${area}" fill="url(#cg)"/>
+    <path d="${line}" fill="none" stroke="#0a72ef" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="${pts[pts.length-1].x}" cy="${pts[pts.length-1].y}" r="4" fill="#0a72ef"/>
+    <circle cx="${pts[pts.length-1].x}" cy="${pts[pts.length-1].y}" r="8" fill="#0a72ef" opacity="0.15"/>
+  `;
+})();
+
+// ── Sparklines ──
+markets.forEach(m => {
+  const svg = document.getElementById('spark-' + m.sym);
+  if (!svg) return;
+  const W = 80, H = 32, N = 20;
+  let vals = [], v = 16;
+  const tf = m.chg >= 0 ? 0.25 : -0.25;
+  for (let i = 0; i < N; i++) { v += tf + (Math.random()-0.5)*1.5; v = Math.max(6, Math.min(26, v)); vals.push(v); }
+  const path = vals.map((v, i) => `${i?'L':'M'}${(i/(N-1))*W} ${v}`).join(' ');
+  const col = m.chg >= 0 ? '#009e4f' : '#ff5b4f';
+  svg.innerHTML = `<path d="${path}" fill="none" stroke="${col}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>`;
+});
+
+// ── Donut Chart ──
+(function() {
+  const svg = document.getElementById('donutChart');
+  const R = 62, C = 2*Math.PI*R;
+  let offset = 0;
+  const segments = holdings.map(h => {
+    const len = (h.alloc/100)*C;
+    const gap = 4;
+    const el = `<circle cx="90" cy="90" r="${R}" fill="none" stroke="${h.color}" stroke-width="14"
+      stroke-dasharray="${len-gap} ${C-len+gap}" stroke-dashoffset="${-offset}"
+      stroke-linecap="round" transform="rotate(-90 90 90)"/>`;
+    offset += len;
+    return el;
+  }).join('');
+  svg.innerHTML = segments +
+    `<text x="90" y="85" text-anchor="middle" font-family="Geist,sans-serif" font-size="18" font-weight="600" fill="#171717">$1.28M</text>
+     <text x="90" y="102" text-anchor="middle" font-family="Geist,sans-serif" font-size="10" fill="#808080">Total Value</text>`;
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tradeverse 2.0</title>
+<style>
+:root {
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #111111;
+  --bg-tertiary: #1a1a1a;
+  --bg-elevated: #222222;
+  --text-primary: #ffffff;
+  --text-secondary: #a0a0a0;
+  --text-muted: #666666;
+  --accent-blue: #3b82f6;
+  --accent-cyan: #06b6d4;
+  --accent-green: #10b981;
+  --accent-red: #ef4444;
+  --accent-purple: #8b5cf6;
+  --border-color: #2a2a2a;
+  --sidebar-width: 260px;
+  --sidebar-collapsed: 70px;
+  --header-height: 60px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+.bg-effects {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;
+}
+.orb {
+  position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.15;
+  animation: float 20s ease-in-out infinite;
+}
+.orb-1 { width: 600px; height: 600px; background: var(--accent-blue); top: -200px; right: -100px; animation-delay: 0s; }
+.orb-2 { width: 400px; height: 400px; background: var(--accent-cyan); bottom: -100px; left: -100px; animation-delay: -7s; }
+.orb-3 { width: 300px; height: 300px; background: var(--accent-purple); top: 50%; left: 50%; animation-delay: -14s; }
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -30px) scale(1.1); }
+  66% { transform: translate(-20px, 20px) scale(0.9); }
+}
+.grid-overlay {
+  position: fixed; inset: 0; pointer-events: none; z-index: 1;
+  background-image: 
+    linear-gradient(rgba(59, 130, 246, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59, 130, 246, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+.sidebar {
+  position: fixed; left: 0; top: 0; bottom: 0;
+  width: var(--sidebar-width); background: var(--bg-secondary);
+  border-right: 1px solid var(--border-color); z-index: 100;
+  transition: var(--transition); overflow: hidden;
+}
+.sidebar.collapsed { width: var(--sidebar-collapsed); }
+.sidebar-header {
+  height: var(--header-height); display: flex; align-items: center;
+  padding: 0 20px; border-bottom: 1px solid var(--border-color);
+}
+.logo {
+  display: flex; align-items: center; gap: 12px; font-size: 20px;
+  font-weight: 700; color: var(--text-primary); white-space: nowrap;
+}
+.logo-icon {
+  width: 36px; height: 36px; background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+  border-radius: var(--radius-sm); display: flex; align-items: center;
+  justify-content: center; font-size: 18px; flex-shrink: 0;
+}
+.sidebar.collapsed .logo-text { opacity: 0; width: 0; }
+.toggle-btn {
+  position: absolute; right: -12px; top: 18px; width: 24px; height: 24px;
+  background: var(--bg-elevated); border: 1px solid var(--border-color);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; z-index: 101; font-size: 12px; color: var(--text-secondary);
+  transition: var(--transition);
+}
+.toggle-btn:hover { background: var(--accent-blue); color: white; }
+.sidebar-nav { padding: 16px 12px; }
+.nav-section { margin-bottom: 24px; }
+.nav-section-title {
+  font-size: 10px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--text-muted); padding: 0 12px;
+  margin-bottom: 8px; white-space: nowrap;
+}
+.sidebar.collapsed .nav-section-title { opacity: 0; }
+.nav-item {
+  display: flex; align-items: center; gap: 12px; padding: 10px 12px;
+  border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition);
+  color: var(--text-secondary); text-decoration: none; margin-bottom: 2px;
+  white-space: nowrap;
+}
+.nav-item:hover { background: var(--bg-elevated); color: var(--text-primary); }
+.nav-item.active { background: rgba(59, 130, 246, 0.15); color: var(--accent-blue); }
+.nav-item i { width: 20px; text-align: center; font-size: 16px; flex-shrink: 0; }
+.sidebar.collapsed .nav-item span { opacity: 0; width: 0; }
+.main-content {
+  margin-left: var(--sidebar-width); min-height: 100vh;
+  position: relative; z-index: 10; transition: var(--transition);
+}
+.main-content.expanded { margin-left: var(--sidebar-collapsed); }
+.top-header {
+  height: var(--header-height); background: rgba(17, 17, 17, 0.8);
+  backdrop-filter: blur(20px); border-bottom: 1px solid var(--border-color);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px; position: sticky; top: 0; z-index: 50;
+}
+.header-search {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--bg-tertiary); padding: 8px 16px;
+  border-radius: var(--radius-md); width: 300px;
+  border: 1px solid var(--border-color);
+}
+.header-search input {
+  background: none; border: none; color: var(--text-primary);
+  outline: none; width: 100%; font-size: 14px;
+}
+.header-search input::placeholder { color: var(--text-muted); }
+.header-actions {
+  display: flex; align-items: center; gap: 16px;
+}
+.header-btn {
+  width: 36px; height: 36px; border-radius: var(--radius-sm);
+  background: var(--bg-tertiary); border: 1px solid var(--border-color);
+  color: var(--text-secondary); display: flex; align-items: center;
+  justify-content: center; cursor: pointer; transition: var(--transition);
+  position: relative;
+}
+.header-btn:hover { background: var(--bg-elevated); color: var(--text-primary); }
+.notification-badge {
+  position: absolute; top: -2px; right: -2px; width: 16px; height: 16px;
+  background: var(--accent-red); border-radius: 50%; font-size: 10px;
+  display: flex; align-items: center; justify-content: center; color: white;
+}
+.user-profile {
+  display: flex; align-items: center; gap: 10px; cursor: pointer;
+  padding: 4px 12px; border-radius: var(--radius-md); transition: var(--transition);
+}
+.user-profile:hover { background: var(--bg-tertiary); }
+.user-avatar {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 600; font-size: 14px;
+}
+.page-content { padding: 24px; max-width: 1400px; margin: 0 auto; }
+.page-header { margin-bottom: 32px; }
+.page-title {
+  font-size: 32px; font-weight: 700; margin-bottom: 8px;
+  background: linear-gradient(135deg, var(--text-primary), var(--accent-blue));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.page-subtitle { color: var(--text-secondary); font-size: 16px; }
+.card {
+  background: var(--bg-secondary); border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg); padding: 24px; transition: var(--transition);
+}
+.card:hover { border-color: rgba(59, 130, 246, 0.3); transform: translateY(-2px); }
+.card-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 20px;
+}
+.card-title { font-size: 18px; font-weight: 600; }
+.card-subtitle { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+.stat-card {
+  background: var(--bg-secondary); border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg); padding: 24px; position: relative; overflow: hidden;
+}
+.stat-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan));
+}
+.stat-label { font-size: 13px; color: var(--text-muted); margin-bottom: 8px; }
+.stat-value {
+  font-size: 32px; font-weight: 700; margin-bottom: 8px;
+  background: linear-gradient(135deg, var(--text-primary), var(--accent-blue));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.stat-change {
+  font-size: 13px; display: flex; align-items: center; gap: 4px;
+}
+.stat-change.positive { color: var(--accent-green); }
+.stat-change.negative { color: var(--accent-red); }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 10px 20px; border-radius: var(--radius-sm); font-size: 14px;
+  font-weight: 500; cursor: pointer; transition: var(--transition); border: none;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+  color: white;
+}
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3); }
+.btn-secondary {
+  background: var(--bg-tertiary); color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+.btn-secondary:hover { background: var(--bg-elevated); }
+.btn-ghost { background: transparent; color: var(--text-secondary); }
+.btn-ghost:hover { color: var(--text-primary); background: var(--bg-tertiary); }
+.table-container { overflow-x: auto; }
+table {
+  width: 100%; border-collapse: collapse; font-size: 14px;
+}
+th {
+  text-align: left; padding: 12px 16px; font-size: 11px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted);
+  border-bottom: 1px solid var(--border-color); white-space: nowrap;
+}
+td {
+  padding: 14px 16px; border-bottom: 1px solid var(--border-color);
+  color: var(--text-secondary);
+}
+tr:hover td { background: rgba(255, 255, 255, 0.02); color: var(--text-primary); }
+.badge {
+  display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px;
+  border-radius: 9999px; font-size: 12px; font-weight: 500;
+}
+.badge-success { background: rgba(16, 185, 129, 0.15); color: var(--accent-green); }
+.badge-warning { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
+.badge-danger { background: rgba(239, 68, 68, 0.15); color: var(--accent-red); }
+.badge-info { background: rgba(59, 130, 246, 0.15); color: var(--accent-blue); }
+.progress-bar {
+  height: 6px; background: var(--bg-tertiary); border-radius: 3px; overflow: hidden;
+}
+.progress-fill {
+  height: 100%; background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan));
+  border-radius: 3px; transition: width 0.5s ease;
+}
+.form-group { margin-bottom: 20px; }
+.form-label {
+  display: block; font-size: 13px; font-weight: 500; margin-bottom: 8px;
+  color: var(--text-secondary);
+}
+.form-input {
+  width: 100%; padding: 12px 16px; background: var(--bg-tertiary);
+  border: 1px solid var(--border-color); border-radius: var(--radius-sm);
+  color: var(--text-primary); font-size: 14px; transition: var(--transition);
+}
+.form-input:focus {
+  outline: none; border-color: var(--accent-blue);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+.form-input::placeholder { color: var(--text-muted); }
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px); z-index: 1000; display: none;
+  align-items: center; justify-content: center; padding: 24px;
+}
+.modal-overlay.active { display: flex; }
+.modal {
+  background: var(--bg-secondary); border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg); width: 100%; max-width: 500px;
+  max-height: 90vh; overflow-y: auto; animation: modalIn 0.3s ease;
+}
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.95) translateY(10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+.modal-header {
+  padding: 24px 24px 0; display: flex; align-items: center; justify-content: space-between;
+}
+.modal-title { font-size: 20px; font-weight: 600; }
+.modal-close {
+  width: 32px; height: 32px; border-radius: var(--radius-sm);
+  background: var(--bg-tertiary); border: 1px solid var(--border-color);
+  color: var(--text-secondary); display: flex; align-items: center;
+  justify-content: center; cursor: pointer;
+}
+.modal-body { padding: 24px; }
+.modal-footer {
+  padding: 0 24px 24px; display: flex; gap: 12px; justify-content: flex-end;
+}
+.toast-container {
+  position: fixed; bottom: 24px; right: 24px; z-index: 2000;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.toast {
+  background: var(--bg-secondary); border: 1px solid var(--border-color);
+  border-radius: var(--radius-md); padding: 16px 20px;
+  display: flex; align-items: center; gap: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  animation: toastIn 0.3s ease; min-width: 300px;
+}
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.toast-success { border-left: 3px solid var(--accent-green); }
+.toast-error { border-left: 3px solid var(--accent-red); }
+.tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border-color); margin-bottom: 24px; }
+.tab {
+  padding: 12px 20px; font-size: 14px; font-weight: 500; color: var(--text-muted);
+  cursor: pointer; border-bottom: 2px solid transparent; transition: var(--transition);
+  background: none; border: none; border-bottom: 2px solid transparent;
+}
+.tab:hover { color: var(--text-primary); }
+.tab.active { color: var(--accent-blue); border-bottom-color: var(--accent-blue); }
+.chart-placeholder {
+  height: 300px; background: var(--bg-tertiary); border-radius: var(--radius-md);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-muted); font-size: 14px; border: 1px dashed var(--border-color);
+}
+.activity-item {
+  display: flex; gap: 12px; padding: 16px 0; border-bottom: 1px solid var(--border-color);
+}
+.activity-item:last-child { border-bottom: none; }
+.activity-icon {
+  width: 36px; height: 36px; border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.activity-content { flex: 1; }
+.activity-title { font-size: 14px; font-weight: 500; margin-bottom: 4px; }
+.activity-time { font-size: 12px; color: var(--text-muted); }
+.chat-widget {
+  position: fixed; bottom: 24px; right: 24px; z-index: 100;
+}
+.chat-button {
+  width: 56px; height: 56px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+  border: none; color: white; font-size: 24px; cursor: pointer;
+  box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
+  transition: var(--transition); display: flex; align-items: center; justify-content: center;
+}
+.chat-button:hover { transform: scale(1.1); }
+.chat-panel {
+  position: absolute; bottom: 70px; right: 0; width: 350px; height: 500px;
+  background: var(--bg-secondary); border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg); display: none; flex-direction: column;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5); overflow: hidden;
+}
+.chat-panel.active { display: flex; }
+.chat-header {
+  padding: 16px 20px; border-bottom: 1px solid var(--border-color);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.chat-messages { flex: 1; overflow-y: auto; padding: 16px; }
+.chat-message { margin-bottom: 12px; max-width: 80%; }
+.chat-message.sent { margin-left: auto; }
+.chat-bubble {
+  padding: 10px 14px; border-radius: var(--radius-md); font-size: 13px; line-height: 1.5;
+}
+.chat-message.received .chat-bubble { background: var(--bg-tertiary); color: var(--text-secondary); }
+.chat-message.sent .chat-bubble { background: var(--accent-blue); color: white; }
+.chat-input {
+  padding: 12px 16px; border-top: 1px solid var(--border-color);
+  display: flex; gap: 8px;
+}
+.chat-input input {
+  flex: 1; background: var(--bg-tertiary); border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm); padding: 8px 12px; color: var(--text-primary);
+  outline: none; font-size: 13px;
+}
+.landing-page { min-height: 100vh; display: flex; flex-direction: column; }
+.landing-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(10, 10, 10, 0.8); backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-color); padding: 0 48px;
+  height: 70px; display: flex; align-items: center; justify-content: space-between;
+}
+.landing-hero {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  text-align: center; padding: 120px 48px 80px; position: relative;
+}
+.hero-title {
+  font-size: 64px; font-weight: 800; line-height: 1.1; margin-bottom: 24px;
+  background: linear-gradient(135deg, #fff 0%, var(--accent-blue) 50%, var(--accent-cyan) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.hero-subtitle {
+  font-size: 20px; color: var(--text-secondary); max-width: 600px;
+  margin: 0 auto 40px; line-height: 1.6;
+}
+.hero-cta { display: flex; gap: 16px; justify-content: center; }
+.hero-btn {
+  padding: 14px 32px; border-radius: var(--radius-sm); font-size: 16px;
+  font-weight: 600; cursor: pointer; transition: var(--transition); border: none;
+}
+.hero-btn-primary {
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+  color: white;
+}
+.hero-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(59, 130, 246, 0.4); }
+.hero-btn-secondary {
+  background: transparent; color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+.hero-btn-secondary:hover { background: var(--bg-tertiary); }
+.landing-features { padding: 80px 48px; }
+.section-title {
+  font-size: 36px; font-weight: 700; text-align: center; margin-bottom: 16px;
+}
+.section-subtitle {
+  font-size: 18px; color: var(--text-secondary); text-align: center;
+  max-width: 600px; margin: 0 auto 60px;
+}
+.feature-card {
+  background: var(--bg-secondary); border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg); padding: 32px; text-align: center; transition: var(--transition);
+}
+.feature-card:hover { transform: translateY(-4px); border-color: rgba(59, 130, 246, 0.3); }
+.feature-icon {
+  width: 60px; height: 60px; border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 20px; font-size: 24px;
+}
+.feature-title { font-size: 20px; font-weight: 600; margin-bottom: 12px; }
+.feature-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+.landing-footer {
+  background: var(--bg-secondary); border-top: 1px solid var(--border-color);
+  padding: 48px; text-align: center; color: var(--text-muted);
+}
+.trail-progress {
+  background: var(--bg-secondary); border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg); padding: 24px; margin-bottom: 24px;
+}
+.trail-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.trail-title { font-size: 16px; font-weight: 600; }
+.trail-badge {
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+  padding: 4px 12px; border-radius: 9999px; font-size: 12px; font-weight: 600;
+}
+.trail-steps { display: flex; gap: 8px; margin-bottom: 16px; }
+.trail-step {
+  flex: 1; height: 4px; background: var(--bg-tertiary); border-radius: 2px;
+  position: relative; transition: var(--transition);
+}
+.trail-step.completed { background: var(--accent-green); }
+.trail-step.active { background: var(--accent-blue); }
+.trail-step-label {
+  position: absolute; top: 12px; left: 50%; transform: translateX(-50%);
+  font-size: 11px; color: var(--text-muted); white-space: nowrap;
+}
+.leaderboard-item {
+  display: flex; align-items: center; gap: 16px; padding: 16px;
+  background: var(--bg-tertiary); border-radius: var(--radius-md);
+  margin-bottom: 8px; transition: var(--transition);
+}
+.leaderboard-item:hover { background: var(--bg-elevated); }
+.leaderboard-rank {
+  width: 32px; height: 32px; border-radius: 50%; display: flex;
+  align-items: center; justify-content: center; font-weight: 700; font-size: 14px;
+}
+.leaderboard-rank.gold { background: linear-gradient(135deg, #ffd700, #ffaa00); color: #000; }
+.leaderboard-rank.silver { background: linear-gradient(135deg, #c0c0c0, #a0a0a0); color: #000; }
+.leaderboard-rank.bronze { background: linear-gradient(135deg, #cd7f32, #b87333); color: #fff; }
+.leaderboard-avatar {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+  display: flex; align-items: center; justify-content: center; font-weight: 600;
+}
+.leaderboard-info { flex: 1; }
+.leaderboard-name { font-weight: 500; margin-bottom: 2px; }
+.leaderboard-meta { font-size: 12px; color: var(--text-muted); }
+.leaderboard-pnl { font-weight: 600; font-size: 16px; }
+.leaderboard-pnl.positive { color: var(--accent-green); }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in { animation: fadeIn 0.5s ease forwards; }
+@media (max-width: 1024px) {
+  .grid-4 { grid-template-columns: repeat(2, 1fr); }
+  .sidebar { transform: translateX(-100%); }
+  .sidebar.open { transform: translateX(0); }
+  .main-content { margin-left: 0; }
+  .main-content.expanded { margin-left: 0; }
+}
+@media (max-width: 768px) {
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  .hero-title { font-size: 40px; }
+  .landing-nav { padding: 0 24px; }
+  .landing-hero { padding: 100px 24px 60px; }
+  .landing-features { padding: 60px 24px; }
+  .page-content { padding: 16px; }
+  .header-search { display: none; }
+}
+.hidden { display: none !important; }
+.flex { display: flex; }
+.items-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.gap-2 { gap: 8px; }
+.gap-4 { gap: 16px; }
+.mt-4 { margin-top: 16px; }
+.mb-4 { margin-bottom: 16px; }
+.text-center { text-align: center; }
+.text-sm { font-size: 14px; }
+.text-xs { font-size: 12px; }
+.font-medium { font-weight: 500; }
+.text-muted { color: var(--text-muted); }
+</style>
+</head>
+<body>
+<!-- Background Effects -->
+<div class="bg-effects">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+</div>
+<div class="grid-overlay"></div>
+
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">
+      <div class="logo-icon">TV</div>
+      <span class="logo-text">Tradeverse</span>
+    </div>
+  </div>
+  <div class="toggle-btn" onclick="toggleSidebar()"><<</div>
+  
+  <nav class="sidebar-nav">
+    <div class="nav-section">
+      <div class="nav-section-title">Main</div>
+      <a href="#" class="nav-item active" onclick="showPage('dashboard')">
+        <span>Dashboard</span>
+      </a>
+      <a href="#" class="nav-item" onclick="showPage('admin')">
+        <span>Admin</span>
+      </a>
+      <a href="#" class="nav-item" onclick="showPage('customer')">
+        <span>Customer Portal</span>
+      </a>
+    </div>
+    
+    <div class="nav-section">
+      <div class="nav-section-title">Modules</div>
+      <a href="#" class="nav-item" onclick="showPage('signals')">
+        <span>Signals</span>
+      </a>
+      <a href="#" class="nav-item" onclick="showPage('copytrading')">
+        <span>Copy Trading</span>
+      </a>
+      <a href="#" class="nav-item" onclick="showPage('leaderboard')">
+        <span>Leaderboard</span>
+      </a>
+      <a href="#" class="nav-item" onclick="showPage('market')">
+        <span>Market Analysis</span>
+      </a>
+      <a href="#" class="nav-item" onclick="showPage('risk')">
+        <span>Risk Manager</span>
+      </a>
+      <a href="#" class="nav-item" onclick="showPage('portfolio')">
+        <span>Portfolio</span>
+      </a>
+      <a href="#" class="nav-item" onclick="showPage('education')">
+        <span>Education</span>
+      </a>
+      <a href="#" class="nav-item" onclick="showPage('community')">
+        <span>Community</span>
+      </a>
+      <a href="#" class="nav-item" onclick="showPage('automated')">
+        <span>Automated Trading</span>
+      </a>
+      <a href="#" class="nav-item" onclick="showPage('compliance')">
+        <span>Compliance</span>
+      </a>
+    </div>
+    
+    <div class="nav-section">
+      <div class="nav-section-title">System</div>
+      <a href="#" class="nav-item" onclick="showPage('settings')">
+        <span>Settings</span>
+      </a>
+      <a href="#" class="nav-item" onclick="showPage('help')">
+        <span>Help Center</span>
+      </a>
+    </div>
+  </nav>
+</aside>
+
+<!-- Main Content -->
+<div class="main-content" id="mainContent">
+  <!-- Header -->
+  <header class="top-header">
+    <div class="header-search">
+      <input type="text" placeholder="Search...">
+    </div>
+    <div class="header-actions">
+      <button class="header-btn" onclick="showNotifications()">
+        <span class="notification-badge">3</span>
+      </button>
+      <div class="user-profile" onclick="showProfile()">
+        <div class="user-avatar">JD</div>
+        <div>
+          <div class="text-sm font-medium">John Doe</div>
+          <div class="text-xs text-muted">Admin</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Page: Dashboard -->
+  <div class="page-content" id="page-dashboard">
+    <div class="page-header animate-fade-in">
+      <h1 class="page-title">Dashboard</h1>
+      <p class="page-subtitle">Welcome back! Here is what is happening with your trading platform.</p>
+    </div>
+
+    <!-- Trail Progress -->
+    <div class="trail-progress animate-fade-in">
+      <div class="trail-header">
+        <div class="trail-title">Trail Mode Progress</div>
+        <div class="trail-badge">7 Days Left</div>
+      </div>
+      <div class="trail-steps">
+        <div class="trail-step completed"><div class="trail-step-label">Sign Up</div></div>
+        <div class="trail-step completed"><div class="trail-step-label">Profile</div></div>
+        <div class="trail-step active"><div class="trail-step-label">Connect</div></div>
+        <div class="trail-step"><div class="trail-step-label">First Trade</div></div>
+        <div class="trail-step"><div class="trail-step-label">Complete</div></div>
+      </div>
+      <div class="flex items-center justify-between text-sm">
+        <span class="text-muted">Complete your setup to unlock all features</span>
+        <button class="btn btn-primary" onclick="showToast('Connecting to broker...', 'success')">Connect Broker</button>
+      </div>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="grid-4 mb-4">
+      <div class="stat-card animate-fade-in">
+        <div class="stat-label">Total Users</div>
+        <div class="stat-value">12,847</div>
+        <div class="stat-change positive">+12.5% from last month</div>
+      </div>
+      <div class="stat-card animate-fade-in">
+        <div class="stat-label">Active Traders</div>
+        <div class="stat-value">3,291</div>
+        <div class="stat-change positive">+8.2% from last month</div>
+      </div>
+      <div class="stat-card animate-fade-in">
+        <div class="stat-label">Total Volume</div>
+        <div class="stat-value">$48.2M</div>
+        <div class="stat-change positive">+23.1% from last month</div>
+      </div>
+      <div class="stat-card animate-fade-in">
+        <div class="stat-label">Platform Revenue</div>
+        <div class="stat-value">$124K</div>
+        <div class="stat-change positive">+15.7% from last month</div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <!-- Chart -->
+      <div class="card animate-fade-in">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Trading Volume</div>
+            <div class="card-subtitle">Daily volume over the last 30 days</div>
+          </div>
+          <select class="form-input" style="width: auto; padding: 6px 12px; font-size: 13px;">
+            <option>Last 30 Days</option>
+            <option>Last 7 Days</option>
+            <option>Last 90 Days</option>
+          </select>
+        </div>
+        <div class="chart-placeholder">Trading Volume Chart</div>
+      </div>
+
+      <!-- Recent Activity -->
+      <div class="card animate-fade-in">
+        <div class="card-header">
+          <div class="card-title">Recent Activity</div>
+          <button class="btn btn-ghost">View All</button>
+        </div>
+        <div class="activity-item">
+          <div class="activity-icon" style="background: rgba(59, 130, 246, 0.15); color: var(--accent-blue);">+</div>
+          <div class="activity-content">
+            <div class="activity-title">New user registered</div>
+            <div class="activity-time">2 minutes ago</div>
+          </div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-icon" style="background: rgba(16, 185, 129, 0.15); color: var(--accent-green);">$</div>
+          <div class="activity-content">
+            <div class="activity-title">Trade executed: BTC/USD</div>
+            <div class="activity-time">15 minutes ago</div>
+          </div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-icon" style="background: rgba(139, 92, 246, 0.15); color: var(--accent-purple);">@</div>
+          <div class="activity-content">
+            <div class="activity-title">New signal published</div>
+            <div class="activity-time">1 hour ago</div>
+          </div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-icon" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b;">!</div>
+          <div class="activity-content">
+            <div class="activity-title">Risk alert triggered</div>
+            <div class="activity-time">2 hours ago</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Page: Admin -->
+  <div class="page-content hidden" id="page-admin">
+    <div class="page-header">
+      <h1 class="page-title">Admin Panel</h1>
+      <p class="page-subtitle">Manage your platform settings and users.</p>
+    </div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-title">User Management</div>
+        <p class="text-muted">Manage users, roles, and permissions.</p>
+        <button class="btn btn-primary mt-4">Manage Users</button>
+      </div>
+      <div class="card">
+        <div class="card-title">Platform Settings</div>
+        <p class="text-muted">Configure platform-wide settings.</p>
+        <button class="btn btn-primary mt-4">Configure</button>
+      </div>
+      <div class="card">
+        <div class="card-title">Analytics</div>
+        <p class="text-muted">View detailed platform analytics.</p>
+        <button class="btn btn-primary mt-4">View Analytics</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Page: Customer Portal -->
+  <div class="page-content hidden" id="page-customer">
+    <div class="page-header">
+      <h1 class="page-title">Customer Portal</h1>
+      <p class="page-subtitle">Access your trading dashboard and account.</p>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">My Account</div>
+        <p class="text-muted">View and manage your account details.</p>
+        <button class="btn btn-primary mt-4">View Account</button>
+      </div>
+      <div class="card">
+        <div class="card-title">Trading History</div>
+        <p class="text-muted">Review your past trades and performance.</p>
+        <button class="btn btn-primary mt-4">View History</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Page: Signals -->
+  <div class="page-content hidden" id="page-signals">
+    <div class="page-header">
+      <h1 class="page-title">Trading Signals</h1>
+      <p class="page-subtitle">View and manage trading signals.</p>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Active Signals</div>
+        <button class="btn btn-primary">Create Signal</button>
+      </div>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Asset</th>
+              <th>Direction</th>
+              <th>Entry Price</th>
+              <th>Stop Loss</th>
+              <th>Take Profit</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>BTC/USD</td>
+              <td><span class="badge badge-success">LONG</span></td>
+              <td>$42,500</td>
+              <td>$41,000</td>
+              <td>$45,000</td>
+              <td><span class="badge badge-info">Active</span></td>
+            </tr>
+            <tr>
+              <td>ETH/USD</td>
+              <td><span class="badge badge-danger">SHORT</span></td>
+              <td>$2,800</td>
+              <td>$2,900</td>
+              <td>$2,600</td>
+              <td><span class="badge badge-info">Active</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Page: Copy Trading -->
+  <div class="page-content hidden" id="page-copytrading">
+    <div class="page-header">
+      <h1 class="page-title">Copy Trading</h1>
+      <p class="page-subtitle">Follow and copy top traders automatically.</p>
+    </div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-title">Top Traders</div>
+        <p class="text-muted">Discover the best performing traders.</p>
+        <button class="btn btn-primary mt-4">Browse Traders</button>
+      </div>
+      <div class="card">
+        <div class="card-title">My Copiers</div>
+        <p class="text-muted">View traders who copy you.</p>
+        <button class="btn btn-primary mt-4">View Copiers</button>
+      </div>
+      <div class="card">
+        <div class="card-title">Copy Settings</div>
+        <p class="text-muted">Configure your copy trading preferences.</p>
+        <button class="btn btn-primary mt-4">Configure</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Page: Leaderboard -->
+  <div class="page-content hidden" id="page-leaderboard">
+    <div class="page-header">
+      <h1 class="page-title">Leaderboard</h1>
+      <p class="page-subtitle">Top performing traders this month.</p>
+    </div>
+    <div class="card">
+      <div class="leaderboard-item">
+        <div class="leaderboard-rank gold">1</div>
+        <div class="leaderboard-avatar">TS</div>
+        <div class="leaderboard-info">
+          <div class="leaderboard-name">TraderSam</div>
+          <div class="leaderboard-meta">Win Rate: 78% | Trades: 156</div>
+        </div>
+        <div class="leaderboard-pnl positive">+$45,230</div>
+      </div>
+      <div class="leaderboard-item">
+        <div class="leaderboard-rank silver">2</div>
+        <div class="leaderboard-avatar">CW</div>
+        <div class="leaderboard-info">
+          <div class="leaderboard-name">CryptoWhale</div>
+          <div class="leaderboard-meta">Win Rate: 72% | Trades: 203</div>
+        </div>
+        <div class="leaderboard-pnl positive">+$38,910</div>
+      </div>
+      <div class="leaderboard-item">
+        <div class="leaderboard-rank bronze">3</div>
+        <div class="leaderboard-avatar">FX</div>
+        <div class="leaderboard-info">
+          <div class="leaderboard-name">ForexMaster</div>
+          <div class="leaderboard-meta">Win Rate: 69% | Trades: 178</div>
+        </div>
+        <div class="leaderboard-pnl positive">+$32,450</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Page: Market Analysis -->
+  <div class="page-content hidden" id="page-market">
+    <div class="page-header">
+      <h1 class="page-title">Market Analysis</h1>
+      <p class="page-subtitle">Technical analysis and market insights.</p>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">Technical Indicators</div>
+        <div class="chart-placeholder">Indicator Chart</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Market Sentiment</div>
+        <div class="chart-placeholder">Sentiment Analysis</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Page: Risk Manager -->
+  <div class="page-content hidden" id="page-risk">
+    <div class="page-header">
+      <h1 class="page-title">Risk Manager</h1>
+      <p class="page-subtitle">Monitor and manage trading risks.</p>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">Risk Metrics</div>
+        <div class="form-group">
+          <label class="form-label">Max Drawdown</label>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 65%"></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Daily Loss Limit</label>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 40%"></div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Risk Alerts</div>
+        <p class="text-muted">Configure risk thresholds and alerts.</p>
+        <button class="btn btn-primary mt-4">Configure Alerts</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Page: Portfolio -->
+  <div class="page-content hidden" id="page-portfolio">
+    <div class="page-header">
+      <h1 class="page-title">Portfolio</h1>
+      <p class="page-subtitle">Track your portfolio performance.</p>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">Portfolio Value</div>
+        <div class="stat-value">$125,430</div>
+        <div class="stat-change positive">+5.2% today</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Asset Allocation</div>
+        <div class="chart-placeholder">Allocation Chart</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Page: Education -->
+  <div class="page-content hidden" id="page-education">
+    <div class="page-header">
+      <h1 class="page-title">Education Center</h1>
+      <p class="page-subtitle">Learn trading strategies and techniques.</p>
+    </div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-title">Beginner Course</div>
+        <p class="text-muted">Learn the basics of trading.</p>
+        <button class="btn btn-primary mt-4">Start Learning</button>
+      </div>
+      <div class="card">
+        <div class="card-title">Advanced Strategies</div>
+        <p class="text-muted">Master advanced trading techniques.</p>
+        <button class="btn btn-primary mt-4">Start Learning</button>
+      </div>
+      <div class="card">
+        <div class="card-title">Risk Management</div>
+        <p class="text-muted">Learn to manage trading risks.</p>
+        <button class="btn btn-primary mt-4">Start Learning</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Page: Community -->
+  <div class="page-content hidden" id="page-community">
+    <div class="page-header">
+      <h1 class="page-title">Community</h1>
+      <p class="page-subtitle">Connect with other traders.</p>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">Discussion Forums</div>
+        <p class="text-muted">Join trading discussions.</p>
+        <button class="btn btn-primary mt-4">Join Forum</button>
+      </div>
+      <div class="card">
+        <div class="card-title">Live Chat</div>
+        <p class="text-muted">Chat with other traders in real-time.</p>
+        <button class="btn btn-primary mt-4">Open Chat</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Page: Automated Trading -->
+  <div class="page-content hidden" id="page-automated">
+    <div class="page-header">
+      <h1 class="page-title">Automated Trading</h1>
+      <p class="page-subtitle">Set up and manage trading bots.</p>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">Active Bots</div>
+        <p class="text-muted">View and manage your trading bots.</p>
+        <button class="btn btn-primary mt-4">View Bots</button>
+      </div>
+      <div class="card">
+        <div class="card-title">Create Bot</div>
+        <p class="text-muted">Build a new trading bot.</p>
+        <button class="btn btn-primary mt-4">Create Bot</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Page: Compliance -->
+  <div class="page-content hidden" id="page-compliance">
+    <div class="page-header">
+      <h1 class="page-title">Compliance</h1>
+      <p class="page-subtitle">Regulatory compliance and reporting.</p>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">Compliance Reports</div>
+        <p class="text-muted">Generate compliance reports.</p>
+        <button class="btn btn-primary mt-4">Generate Report</button>
+      </div>
+      <div class="card">
+        <div class="card-title">Audit Logs</div>
+        <p class="text-muted">View platform audit logs.</p>
+        <button class="btn btn-primary mt-4">View Logs</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Page: Settings -->
+  <div class="page-content hidden" id="page-settings">
+    <div class="page-header">
+      <h1 class="page-title">Settings</h1>
+      <p class="page-subtitle">Manage your account settings.</p>
+    </div>
+    <div class="card">
+      <div class="tabs">
+        <button class="tab active">Profile</button>
+        <button class="tab">Security</button>
+        <button class="tab">Notifications</button>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Display Name</label>
+        <input type="text" class="form-input" value="John Doe">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input type="email" class="form-input" value="john@example.com">
+      </div>
+      <button class="btn btn-primary">Save Changes</button>
+    </div>
+  </div>
+
+  <!-- Page: Help -->
+  <div class="page-content hidden" id="page-help">
+    <div class="page-header">
+      <h1 class="page-title">Help Center</h1>
+      <p class="page-subtitle">Find answers to common questions.</p>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">FAQs</div>
+        <p class="text-muted">Browse frequently asked questions.</p>
+        <button class="btn btn-primary mt-4">View FAQs</button>
+      </div>
+      <div class="card">
+        <div class="card-title">Contact Support</div>
+        <p class="text-muted">Get help from our support team.</p>
+        <button class="btn btn-primary mt-4">Contact Us</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Chat Widget -->
+<div class="chat-widget">
+  <div class="chat-panel" id="chatPanel">
+    <div class="chat-header">
+      <div class="font-medium">Support Chat</div>
+      <button class="btn btn-ghost" onclick="toggleChat()">Close</button>
+    </div>
+    <div class="chat-messages" id="chatMessages">
+      <div class="chat-message received">
+        <div class="chat-bubble">Hello! How can I help you today?</div>
+      </div>
+    </div>
+    <div class="chat-input">
+      <input type="text" id="chatInput" placeholder="Type a message..." onkeypress="handleChatKey(event)">
+      <button class="btn btn-primary" onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+  <button class="chat-button" onclick="toggleChat()"><<</button>
+</div>
+
+<!-- Toast Container -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- Login Modal -->
+<div class="modal-overlay" id="loginModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Sign In</div>
+      <button class="modal-close" onclick="closeModal('loginModal')">X</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input type="email" class="form-input" placeholder="Enter your email">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input type="password" class="form-input" placeholder="Enter your password">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('loginModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="handleLogin()">Sign In</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// Sidebar Toggle
+function toggleSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const mainContent = document.getElementById('mainContent');
+  sidebar.classList.toggle('collapsed');
+  mainContent.classList.toggle('expanded');
+}
+
+// Page Navigation
+function showPage(pageName) {
+  // Hide all pages
+  const pages = document.querySelectorAll('.page-content');
+  pages.forEach(page => page.classList.add('hidden'));
+  
+  // Show selected page
+  const selectedPage = document.getElementById('page-' + pageName);
+  if (selectedPage) {
+    selectedPage.classList.remove('hidden');
+  }
+  
+  // Update active nav item
+  const navItems = document.querySelectorAll('.nav-item');
+  navItems.forEach(item => item.classList.remove('active'));
+  event.target.closest('.nav-item').classList.add('active');
+}
+
+// Chat Toggle
+function toggleChat() {
+  const chatPanel = document.getElementById('chatPanel');
+  chatPanel.classList.toggle('active');
+}
+
+// Send Chat Message
+function sendMessage() {
+  const input = document.getElementById('chatInput');
+  const messages = document.getElementById('chatMessages');
+  const text = input.value.trim();
+  
+  if (text) {
+    // Add user message
+    const userMsg = document.createElement('div');
+    userMsg.className = 'chat-message sent';
+    userMsg.innerHTML = '<div class="chat-bubble">' + text + '</div>';
+    messages.appendChild(userMsg);
+    
+    // Clear input
+    input.value = '';
+    
+    // Scroll to bottom
+    messages.scrollTop = messages.scrollHeight;
+    
+    // Simulate response
+    setTimeout(() => {
+      const botMsg = document.createElement('div');
+      botMsg.className = 'chat-message received';
+      botMsg.innerHTML = '<div class="chat-bubble">Thanks for your message! Our team will get back to you soon.</div>';
+      messages.appendChild(botMsg);
+      messages.scrollTop = messages.scrollHeight;
+    }, 1000);
+  }
+}
+
+function handleChatKey(event) {
+  if (event.key === 'Enter') {
+    sendMessage();
+  }
+}
+
+// Toast Notifications
+function showToast(message, type = 'success') {
+  const container = document.getElementById('toastContainer');
+  const toast = document.createElement('div');
+  toast.className = 'toast toast-' + type;
+  toast.innerHTML = '<span>' + message + '</span>';
+  container.appendChild(toast);
+  
+  setTimeout(() => {
+    toast.remove();
+  }, 3000);
+}
+
+// Modal Functions
+function showModal(modalId) {
+  document.getElementById(modalId).classList.add('active');
+}
+
+function closeModal(modalId) {
+  document.getElementById(modalId).classList.remove('active');
+}
+
+function handleLogin() {
+  closeModal('loginModal');
+  showToast('Successfully signed in!', 'success');
+}
+
+function showNotifications() {
+  showToast('You have 3 new notifications', 'info');
+}
+
+function showProfile() {
+  showModal('loginModal');
+}
+
+// Close modal on overlay click
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) {
+      overlay.classList.remove('active');
+    }
+  });
+});
+</script>
+
+</body>
+</html>
