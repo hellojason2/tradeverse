@@ -161,6 +161,61 @@
       ]
     }
   },
-  "hotPaths": [],
+  "hotPaths": [
+    {
+      "path": "package.json",
+      "accessCount": 4,
+      "lastAccessed": 1776597809525,
+      "type": "file"
+    },
+    {
+      "path": "CLAUDE.md",
+      "accessCount": 3,
+      "lastAccessed": 1776597724334,
+      "type": "file"
+    },
+    {
+      "path": "AGENTS.md",
+      "accessCount": 2,
+      "lastAccessed": 1776597697636,
+      "type": "file"
+    },
+    {
+      "path": "WORKSPACE.md",
+      "accessCount": 2,
+      "lastAccessed": 1776597698033,
+      "type": "file"
+    },
+    {
+      "path": "README.md",
+      "accessCount": 2,
+      "lastAccessed": 1776597698616,
+      "type": "file"
+    },
+    {
+      "path": ".claude/rules/frontend.md",
+      "accessCount": 2,
+      "lastAccessed": 1776597757412,
+      "type": "file"
+    },
+    {
+      "path": ".claude/skills/pr-review/SKILL.md",
+      "accessCount": 1,
+      "lastAccessed": 1776597732448,
+      "type": "file"
+    },
+    {
+      "path": ".claude/skills/debug-fix/SKILL.md",
+      "accessCount": 1,
+      "lastAccessed": 1776597733278,
+      "type": "file"
+    },
+    {
+      "path": ".claude/skills/responsive-check/SKILL.md",
+      "accessCount": 1,
+      "lastAccessed": 1776597784512,
+      "type": "file"
+    }
+  ],
   "userDirectives": []
 }

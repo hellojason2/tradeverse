@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Tradeverse 2.0</title>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #ffffff;
+      --bg-secondary: #fafafa;
+      --bg-tertiary: #f5f5f5;
+      --bg-card: #ffffff;
+      --border-color: #e5e5e5;
+      --border-hover: #d4d4d4;
+      --text-primary: #171717;
+      --text-secondary: #525252;
+      --text-tertiary: #a3a3a3;
+      --accent-primary: #0a72ef;
+      --accent-hover: #0056cc;
+      --accent-secondary: #0a72ef15;
+      --accent-gradient: linear-gradient(135deg, #0a72ef 0%, #0a5ce0 100%);
+      --success: #10b981;
+      --success-bg: #10b98115;
+      --warning: #f59e0b;
+      --warning-bg: #f59e0b15;
+      --danger: #ef4444;
+      --danger-bg: #ef444415;
+      --sidebar-width: 260px;
+      --sidebar-collapsed: 72px;
+      --topbar-height: 64px;
+      --radius-sm: 6px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --radius-xl: 16px;
+      --radius-full: 9999px;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+      --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+      --shadow-xl: 0 16px 48px rgba(0,0,0,0.16);
+      --transition-fast: 150ms ease;
+      --transition-base: 200ms ease;
+      --transition-slow: 300ms ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    /* Layout */
+    .layout {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      position fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: var(--sidebar-width);
+      background: var(--bg-primary);
+      border-right: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      transition: width var(--transition-base);
+      z-index: 100;
+    }
+
+    .sidebar.collapsed { width: var(--sidebar-collapsed); }
+
+    .sidebar-header {
+      padding: 20px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-height: var(--topbar-height);
+    }
+
+    .logo {
+      width: 32px;
+      height: 32px;
+      background: var(--accent-gradient);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .logo svg { width: 18px; height: 18px; color: white; }
+
+    .logo-text {
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: -0.02em;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .collapsed .logo-text { opacity: 0; width: 0; }
+
+    .sidebar-nav { flex: 1; padding: 12px 12px; overflow-y: auto; }
+
+    .nav-section { margin-bottom: 24px; }
+
+    .nav-section-title {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-tertiary);
+      padding: 8px 12px;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .collapsed .nav-section-title { opacity: 0; }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: var(--radius-md);
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      text-decoration: none;
+      margin-bottom: 2px;
+      position: relative;
+    }
+
+    .nav-item:hover {
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+    }
+
+    .nav-item.active {
+      background: var(--accent-secondary);
+      color: var(--accent-primary);
+      font-weight: 500;
+    }
+
+    .nav-item svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+    .nav-item span { white-space: nowrap; overflow: hidden; }
+
+    .collapsed .nav-item span { opacity: 0; width: 0; }
+
+    .nav-badge {
+      margin-left: auto;
+      background: var(--danger);
+      color: white;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+    }
+
+    .collapsed .nav-badge { display: none; }
+
+    .sidebar-toggle {
+      padding: 12px 20px;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .toggle-btn {
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-primary);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all var(--transition-fast);
+    }
+
+    .toggle-btn:hover { background: var(--bg-tertiary); }
+
+    .toggle-btn svg { width: 16px; height: 16px; color: var(--text-secondary); }
+
+    .sidebar.collapsed .sidebar-toggle { justify-content: center; }
+
+    /* Main Content */
+    .main {
+      flex: 1;
+      margin-left: var(--sidebar-width);
+      transition: margin-left var(--transition-base);
+    }
+
+    .sidebar.collapsed ~ .main { margin-left: var(--sidebar-collapsed); }
+
+    /* Topbar */
+    .topbar {
+      height: var(--topbar-height);
+      background: var(--bg-primary);
+      border-bottom: 1px solid var(--border-color);
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .topbar-left { display: flex; align-items: center; gap: 16px; }
+
+    .page-title {
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 8px 12px;
+      width: 280px;
+      transition: all var(--transition-fast);
+    }
+
+    .search-box:focus-within {
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 0 3px var(--accent-secondary);
+    }
+
+    .search-box svg { width: 16px; height: 16px; color: var(--text-tertiary); flex-shrink: 0; }
+
+    .search-box input {
+      border: none;
+      background: none;
+      outline: none;
+      font-size: 14px;
+      width: 100%;
+      color: var(--text-primary);
+    }
+
+    .search-box input::placeholder { color: var(--text-tertiary); }
+
+    .topbar-right { display: flex; align-items: center; gap: 12px; }
+
+    .icon-btn {
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-primary);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      transition: all var(--transition-fast);
+    }
+
+    .icon-btn:hover { background: var(--bg-tertiary); }
+
+    .icon-btn svg { width: 18px; height: 18px; color: var(--text-secondary); }
+
+    .icon-btn .badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      width: 18px;
+      height: 18px;
+      background: var(--danger);
+      color: white;
+      font-size: 10px;
+      font-weight: 600;
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .user-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-full);
+      background: var(--accent-gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    /* Content Area */
+    .content {
+      padding: 24px;
+    }
+
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      transition: all var(--transition-fast);
+    }
+
+    .stat-card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+
+    .stat-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+
+    .stat-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .stat-icon svg { width: 20px; height: 20px; }
+
+    .stat-icon.blue { background: var(--accent-secondary); color: var(--accent-primary); }
+    .stat-icon.green { background: var(--success-bg); color: var(--success); }
+    .stat-icon.orange { background: var(--warning-bg); color: var(--warning); }
+    .stat-icon.red { background: var(--danger-bg); color: var(--danger); }
+
+    .stat-trend {
+      font-size: 12px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .stat-trend.up { color: var(--success); }
+    .stat-trend.down { color: var(--danger); }
+
+    .stat-trend svg { width: 14px; height: 14px; }
+
+    .stat-value {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 4px;
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: var(--text-tertiary);
+    }
+
+    /* Chart Cards */
+    .charts-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .chart-card {
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+    }
+
+    .chart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .chart-title { font-size: 16px; font-weight: 600; }
+
+    .chart-actions { display: flex; gap: 8px; }
+
+    .chart-btn {
+      padding: 6px 12px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-primary);
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .chart-btn:hover { background: var(--bg-tertiary); }
+    .chart-btn.active {
+      background: var(--accent-primary);
+      color: white;
+      border-color: var(--accent-primary);
+    }
+
+    .chart-container { height: 280px; position: relative; }
+
+    .chart-container canvas { width: 100% height: 100%; }
+
+    /* Donut Chart */
+    .donut-chart-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100%;
+      justify-content: center;
+    }
+
+    .donut-chart {
+      width: 180px;
+      height: 180px;
+      position: relative;
+    }
+
+    .donut-chart canvas { width: 100%; height: 100%; }
+
+    .donut-center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
+
+    .donut-center-value { font-size: 24px; font-weight: 700; }
+    .donut-center-label { font-size: 12px; color: var(--text-tertiary); }
+
+    .legend { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; justify-content: center; }
+
+    .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-secondary); }
+
+    .legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+    /* Tables */
+    .tables-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .table-card {
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+
+    .table-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .table-title { font-size: 16px; font-weight: 600; }
+
+    .view-all {
+      font-size: 13px;
+      color: var(--accent-primary);
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .view-all:hover { text-decoration: underline; }
+
+    table { width: 100%; border-collapse: collapse; }
+
+    th {
+      text-align: left;
+      padding: 12px 20px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-tertiary);
+      background: var(--bg-tertiary);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    td {
+      padding: 14px 20px;
+      font-size: 14px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    tr:last-child td { border-bottom: none; }
+
+    .user-cell {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .user-cell-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 13px;
+      color: white;
+      flex-shrink: 0;
+    }
+
+    .user-cell-info { display: flex; flex-direction: column; }
+
+    .user-cell-name { font-weight: 500; }
+
+    .user-cell-email { font-size: 12px; color: var(--text-tertiary); }
+
+    .status-badge {
+      display: inline-flex;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .status-badge.completed { background: var(--success-bg); color: var(--success); }
+    .status-badge.pending { background: var(--warning-bg); color: var(--warning); }
+    .status-badge.failed { background: var(--danger-bg); color: var(--danger); }
+    .status-badge.info { background: var(--accent-secondary); color: var(--accent-primary); }
+
+    .action-btn {
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-primary);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all var(--transition-fast);
+    }
+
+    .action-btn:hover { background: var(--bg-tertiary); }
+    .action-btn svg { width: 16px; height: 16px; color: var(--text-secondary); }
+
+    /* Analytics specific */
+    .analytics-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .analytics-card {
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+    }
+
+    .analytics-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .analytics-card-title {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .analytics-card-value {
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    .analytics-card-trend {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+    }
+
+    .analytics-mini-chart { height: 60px; margin-top: 16px; }
+
+    /* Form Styles */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .form-group { margin-bottom: 20px; }
+
+    .form-group.full-width { grid-column: span 2; }
+
+    .form-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      font-family: inherit;
+      transition: all var(--transition-fast);
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 0 3px var(--accent-secondary);
+    }
+
+    select.form-input { cursor: pointer; }
+
+    textarea.form-input { resize: vertical; min-height: 100px; }
+
+    .btn {
+      padding: 10px 20px;
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: var(--accent-gradient);
+      color: white;
+      border: none;
+    }
+
+    .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+
+    .btn-secondary {
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+    }
+
+    .btn-secondary:hover { background: var(--bg-tertiary); }
+
+    /* Toggle Switch */
+    .toggle-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .toggle-container:last-child { border-bottom: none; }
+
+    .toggle-info { display: flex; flex-direction: column; gap: 4px; }
+
+    .toggle-title { font-size: 14px; font-weight: 500; }
+
+    .toggle-desc { font-size: 13px; color: var(--text-tertiary); }
+
+    .toggle {
+      width: 44px;
+      height: 24px;
+      background: var(--border-color);
+      border-radius: var(--radius-full);
+      position: relative;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .toggle::after {
+      content: '';
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      background: white;
+      border-radius: 50%;
+      top: 3px;
+      left: 3px;
+      transition: all var(--transition-fast);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .toggle.active { background: var(--accent-primary); }
+    .toggle.active::after { left: 23px; }
+
+    @media (max-width: 1200px) {
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .charts-grid { grid-template-columns: 1fr; }
+      .tables-grid { grid-template-columns: 1fr; }
+      .analytics-grid { grid-template-columns: 1fr; }
+      .form-grid { grid-template-columns: 1fr; }
+      .form-group.full-width { grid-column: span 1; }
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        position: fixed;
+        transform: translateX(-100%);
+      }
+      .sidebar.open { transform: translateX(0); }
+      .main { margin-left: 0; }
+      .stats-grid { grid-template-columns: 1fr; }
+      .topbar { padding: 0 16px; }
+      .content { padding: 16px; }
+      .search-box { display: none; }
+    }
+  </style>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="logo">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3a3 3 0 00-6 0v7M6 17v-7a3 3 0 016 0v7M3 10V3a3 3 0 016 0v7M16 10V3a3 3 0 015 0v7M6 6h12M6 18h12M10 3a3 3 0 015 0M8 21a3 3 0 016 0M3 3h18v18H3z"/></svg>
+      </div>
+      <span class="logo-text">Admin Panel</span>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <div class="nav-section-title">Main</div>
+        <a class="nav-item active" data-page="dashboard">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          <span>Dashboard</span>
+        </a>
+        <a class="nav-item" data-page="analytics">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18 17V9l-5-5-4 4-5-5v12"/></svg>
+          <span>Analytics</span>
+          <span class="nav-badge">3</span>
+        </a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-title">Management</div>
+        <a class="nav-item" data-page="users">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-8 0v-2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 01-6-3M16 3a4 4 0 01-6 3v2"/></svg>
+          <span>Users</span>
+        </a>
+        <a class="nav-item" data-page="transactions">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+          <span>Transactions</span>
+        </a>
+        <a class="nav-item" data-page="kyc">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11Z"/></svg>
+          <span>KYC Review</span>
+          <span class="nav-badge">5</span>
+        </a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-title">Settings</div>
+        <a class="nav-item" data-page="settings">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+          <span>Settings</span>
+        </a>
+        <a class="nav-item" data-page="security">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V7l-8-5-8-5v5l8 4 8 11z"/><path d="M9 12l2 2 4-4"/></svg>
+          <span>Security</span>
+        </a>
+      </div>
+    </nav>
+    <div class="sidebar-toggle">
+      <button class="toggle-btn" id="sidebarToggle">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div class="topbar-left">
+        <h1 class="page-title">Dashboard Overview</h1>
+        <div class="search-box">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input type="text" placeholder="Search users, transactions...">
+        </div>
+      </div>
+      <div class="topbar-right">
+        <button class="icon-btn"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 11-3 11h.5M6 8A6 6 0 0118 8v-.5M6 16v-1a6 6 0 016-6 6H6a6 6 0 016 6v1M9 2h6v6a4 4 0 01-4 4h-4a4 4 0 01-4-4V3a2 2 0 012-2h6a2 2 0 012 2v1"/></svg></button>
+        <button class="icon-btn">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 8a6 6 0 01.12 12M18 8a6 6 0 01-.12 12M6 8H3M21 8h-3M6 16H3m15 0a3 3 0 01-6 0M9 20a3 3 0 01-6 0M15 16H3"/></svg>
+          <span class="badge">3</span>
+        </button>
+        <div class="user-avatar">AD</div>
+      </div>
+    </header>
+
+    <div class="content">
+      <!-- Dashboard Page -->
+      <div class="page active" id="page-dashboard">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-header">
+              <div class="stat-icon blue"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-8 0v-2M9 11l-4 4-1-6 7 7 3-4M14 10V5a2 2 0 00-4 0v6"/></svg></div>
+              <span class="stat-trend up"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M7 17l5-5 5-5M7 7l5 5 5-5"/></svg>+12.5%</span>
+            </div>
+            <div class="stat-value">24,521</div>
+            <div class="stat-label">Total Users</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-header">
+              <div class="stat-icon green"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+              <span class="stat-trend up"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M7 17l5-5 5-5M7 7l5 5 5-5"/></svg>+8.3%</span>
+            </div>
+            <div class="stat-value">$1.24M</div>
+            <div class="stat-label">Trading Volume</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-header">
+              <div class="stat-icon orange"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3 6 12H2"/></svg></div>
+              <span class="stat-trend down"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M7 7l5 5 5-5M7 17l5-5 5-5"/></svg>-3.2%</span>
+            </div>
+            <div class="stat-value">1,847</div>
+            <div class="stat-label">Active Signals</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-header">
+              <div class="stat-icon red"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V7l-8-5-8-5v5l8 4 8 11z"/><path d="M9 12l2 2 4-4"/></svg></div>
+              <span class="stat-trend up"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M7 17l5-5 5-5M7 7l5 5 5-5"/></svg>+5.7%</span>
+            </div>
+            <div class="stat-value">342</div>
+            <div class="stat-label">Open Tickets</div>
+          </div>
+        </div>
+
+        <div class="charts-grid">
+          <div class="chart-card">
+            <div class="chart-header">
+              <div class="chart-title">Trading Volume Overview</div>
+              <div class="chart-actions">
+                <button class="chart-btn active">24h</button>
+                <button class="chart-btn">7d</button>
+                <button class="chart-btn">30d</button>
+              </div>
+            </div>
+            <div class="chart-container">
+              <canvas id="mainChart"></canvas>
+            </div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-header">
+              <div class="chart-title">User Distribution</div>
+            </div>
+            <div class="donut-chart-container">
+              <div class="donut-chart">
+              <canvas id="donutChart"></canvas>
+              <div class="donut-center">
+                <div class="donut-center-value">24.5k</div>
+                <div class="donut-center-label">Users</div>
+              </div>
+            </div>
+            <div class="legend">
+              <div class="legend-item"><span class="legend-dot" style="background:#0a72ef"></span> Traders 45%</div>
+              <div class="legend-item"><span class="legend-dot" style="background:#10b981"></span> Copy Traders 30%</div>
+              <div class="legend-item"><span class="legend-dot" style="background:#f59e0b"></span> Signals 15%</div>
+              <div class="legend-item"><span class="legend-dot" style="background:#ef4444"></span> Admins 10%</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tables-grid">
+          <div class="table-card">
+            <div class="table-header">
+              <div class="table-title">Recent Users</div>
+              <a class="view-all">View All</a>
+            </div>
+            <table>
+              <thead><tr><th>User</th><th>Status</th><th>Type</th><th>Action</th></tr></thead>
+              <tbody>
+                <tr><td><div class="user-cell"><div class="user-cell-avatar" style="background:#0a72ef">MK</div><div class="user-cell-info"><div class="user-cell-name">Maria Kowalski</div><div class="user-cell-email">maria.k@ex.com</div></div></div></td><td><span class="status-badge completed">Active</span></td><td>Trader</td><td><button class="action-btn"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button></td></tr>
+                <tr><td><div class="user-cell"><div class="user-cell-avatar" style="background:#10b981">JL</div><div class="user-cell-info"><div class="user-cell-name">James Liu</div><div class="user-cell-email">j.liu@trade.io</div></div></div></td><td><span class="status-badge pending">Pending</span></td><td>Copy Trader</td><td><button class="action-btn"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button></td></tr>
+                <tr><td><div class="user-cell"><div class="user-cell-avatar" style="background:#f59e0b">SN</div><div class="user-cell-info"><div class="user-cell-name">Sara Ng</div><div class="user-cell-email">sng@fin.xyz</div></div></div></td><td><span class="status-badge completed">Active</span></td><td>Signal Provider</td><td><button class="action-btn"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button></td></tr>
+                <tr><td><div class="user-cell"><div class="user-cell-avatar" style="background:#ef4444">AK</div><div class="user-cell-info"><div class="user-cell-name">Alex Kim</div><div class="user-cell-email">akim@tradeco.io</div></div></div></td><td><span class="status-badge info">New</span></td><td>Trader</td><td><button class="action-btn"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="table-card">
+            <div class="table-header">
+              <div class="table-title">Recent Transactions</div>
+              <a class="view-all">View All</a>
+            </div>
+            <table>
+              <thead><tr><th>ID</th><th>Amount</th><th>Status</th><th>Action</th></tr></thead>
+              <tbody>
+                <tr><td>#TXN-8847</td><td><strong>2.45 ETH</strong></td><td><span class="status-badge completed">Completed</span></td><td><button class="action-btn"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button></td></tr>
+                <tr><td>#TXN-8846</td><td><strong>$1,250.00</strong></td><td><span class="status-badge pending">Pending</span></td><td><button class="action-btn"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button></td></tr>
+                <tr><td>#TXN-8845</td><td><strong>0.82 BTC</strong></td><td><span class="status-badge completed">Completed</span></td><td><button class="action-btn"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button></td></tr>
+                <tr><td>#TXN-8844</td><td><strong>$890.00</strong></td><td><span class="status-badge failed">Failed</span></td><td><button class="action-btn"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Analytics Page -->
+      <div class="page" id="page-analytics">
+        <div class="analytics-grid">
+          <div class="analytics-card">
+            <div class="analytics-card-header"><div class="analytics-card-title">Total Revenue</div></div>
+            <div class="analytics-card-value">$847,290</div>
+            <div class="analytics-card-trend up">+14.2% from last month</div>
+            <div class="analytics-mini-chart"><canvas id="revenueChart"></canvas></div>
+          </div>
+          <div class="analytics-card">
+            <div class="analytics-card-header"><div class="analytics-card-title">Active Sessions</div></div>
+            <div class="analytics-card-value">3,842</div>
+            <div class="analytics-card-trend up">+5.4% from last hour</div>
+            <div class="analytics-mini-chart"><canvas id="sessionsChart"></canvas></div>
+          </div>
+          <div class="analytics-card">
+            <div class="analytics-card-header"><div class="analytics-card-title">Conversion Rate</div></div>
+            <div class="analytics-card-value">68.4%</div>
+            <div class="analytics-card-trend down">-2.1% from last week</div>
+            <div class="analytics-mini-chart"><canvas id="conversionChart"></canvas></div>
+          </div>
+          <div class="analytics-card">
+            <div class="analytics-card-header"><div class="analytics-card-title">Avg. Session Duration</div></div>
+            <div class="analytics-card-value">4m 32s</div>
+            <div class="analytics-card-trend up">+12% from yesterday</div>
+            <div class="analytics-mini-chart"><canvas id="durationChart"></canvas></div>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-header">
+            <div class="chart-title">Traffic Overview</div>
+            <div class="chart-actions">
+              <button class="chart-btn active">7 Days</button>
+              <button class="chart-btn">30 Days</button>
+              <button class="chart-btn">90 Days</button>
+            </div>
+          </div>
+          <div class="chart-container" style="height:300px">
+            <canvas id="trafficChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Users Page -->
+      <div class="page" id="page-users">
+        <div class="chart-card" style="margin-bottom:24px">
+          <div class="chart-header">
+            <div class="chart-title">User Management</div>
+            <button class="btn btn-primary">+ Add User</button>
+          </div>
+        </div>
+        <div class="table-card">
+          <table>
+            <thead><tr><th>User</th><th>Role</th><th>Status</th><th>Joined</th><th>Last Active</th><th>Actions</th></tr></thead>
+            <tbody>
+              <tr><td><div class="user-cell"><div class="user-cell-avatar" style="background:#0a72ef">MK</div><div class="user-cell-info"><div class="user-cell-name">Maria Kowalski</div><div class="user-cell-email">maria.k@trade.io</div></div></div></td><td>Admin</td><td><span class="status-badge completed">Active</span></td><td>Jan 12, 2024</td><td>2 min ago</td><td><button class="action-btn"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7M18 2l2 2 4 4M18 2v5"/></svg></button></td></tr>
+              <tr><td><div class="user-cell"><div class="user-cell-avatar" style="background:#10b981">JL</div><div class="user-cell-info"><div class="user-cell-name">James Liu</div><div class="user-cell-email">j.liu@trade.io</div></div></div></td><td>Trader</td><td><span class="status-badge pending">Pending</span></td><td>Feb 3, 2024</td><td>1 hour ago</td><td><button class="action-btn"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7M18 2l2 2 4 4M18 2v5"/></svg></button></td></tr>
+              <tr><td><div class="user-cell"><div class="user-cell-avatar" style="background:#f59e0b">SN</div><div class="user-cell-info"><div class="user-cell-name">Sara Ng</div><div class="user-cell-email">sng@tradeco.com</div></div></div></td><td>Signal Provider</td><td><span class="status-badge completed">Active</span></td><td>Dec 18, 2023</td><td>5 min ago</td><td><button class="action-btn"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7M18 2l2 2 4 4M18 2v5"/></svg></button></td></tr>
+              <tr><td><div class="user-cell"><div class="user-cell-avatar" style="background:#ef4444">AK</div><div class="user-cell-info"><div class="user-cell-name">Alex Kim</div><div class="user-cell-email">akim@fin.xyz</div></div></div></td><td>Copy Trader</td><td><span class="status-badge info">New</span></td><td>Mar 1, 2024</td><td>Just now</td><td><button class="action-btn"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7M18 2l2 2 4 4M18 2v5"/></svg></button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Transactions Page -->
+      <div class="page" id="page-transactions">
+        <div class="chart-card" style="margin-bottom:24px">
+          <div class="chart-header">
+            <div class="chart-title">Transaction History</div>
+            <button class="btn btn-secondary">Export CSV</button>
+          </div>
+        </div>
+        <div class="table-card">
+          <table>
+            <thead><tr><th>Hash</th><th>Type</th><th>Amount</th><th>Fee</th><th>Status</th><th>Timestamp</th></tr></thead>
+            <tbody>
+              <tr><td><code style="font-size:12px;color:var(--accent-primary)">0x8f4...2a3b</code></td><td>Deposit</td><td><strong>+2.5 ETH</strong></td><td>0.002 ETH</td><td><span class="status-badge completed">Completed</span></td><td>2024-03-15 14:23:01</td></tr>
+              <tr><td><code style="font-size:12px;color:var(--accent-primary)">0x3c7...9d2e</code></td><td>Withdraw</td><td><strong>-1.2 BTC</strong></td><td>0.0005 BTC</td><td><span class="status-badge pending">Pending</span></td><td>2024-03-15 13:11:42</td></tr>
+              <tr><td><code style="font-size:12px;color:var(--accent-primary)">0x1a9...5f8c</code></td><td>Trade</td><td><strong>$4,250.00</strong></td><td>$12.50</td><td><span class="status-badge completed">Completed</span></td><td>2024-03-15 12:05:33</td></tr>
+              <tr><td><code style="font-size:12px;color:var(--accent-primary)">0xb2d...7g1h</code></td><td>Transfer</td><td><strong>500 USDT</strong></td><td>1.00 USDT</td><td><span class="status-badge failed">Failed</span></td><td>2024-03-15 11:42:18</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Settings Page -->
+      <div class="page" id="page-settings">
+        <div class="form-grid">
+          <div class="analytics-card">
+            <div class="analytics-card-header"><div class="analytics-card-title">General Settings</div></div>
+            <div class="form-group"><label class="form-label">Platform Name</label><input type="text" class="form-input" value="Tradeverse 2.0"></div>
+            <div class="form-group"><label class="form-label">Support Email</label><input type="email" class="form-input" value="support@tradeverse.io"></div>
+            <div class="form-group"><label class="form-label">Default Currency</label><select class="form-input"><option>USD</option><option>EUR</option><option>GBP</option></select></div>
+            <button class="btn btn-primary">Save Changes</button>
+          </div>
+          <div class="analytics-card">
+            <div class="analytics-card-header"><div class="analytics-card-title">Notifications</div></div>
+            <div class="toggle-container"><div class="toggle-info"><div class="toggle-title">Email Notifications</div><div class="toggle-desc">Receive email alerts for important events</div></div><div class="toggle active" onclick="this.classList.toggle('active')"></div></div>
+            <div class="toggle-container"><div class="toggle-info"><div class="toggle-title">Push Notifications</div><div class="toggle-desc">Browser push notifications</div></div><div class="toggle" onclick="this.classList.toggle('active')"></div></div>
+            <div class="toggle-container"><div class="toggle-info"><div class="toggle-title">SMS Alerts</div><div class="toggle-desc">Critical security alerts only</div></div><div class="toggle" onclick="this.classList.toggle('active')"></div></div>
+            <div class="toggle-container"><div class="toggle-info"><div class="toggle-title">Weekly Reports</div><div class="toggle-desc">Summary of platform activity</div></div><div class="toggle active" onclick="this.classList.toggle('active')"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+const sidebar = document.getElementById('sidebar');
+const sidebarToggle = document.getElementById('sidebarToggle');
+const navItems = document.querySelectorAll('.nav-item[data-page]');
+const pages = document.querySelectorAll('.page');
+const pageTitle = document.querySelector('.page-title');
+
+const pageTitles = {
+  dashboard: 'Dashboard Overview',
+  analytics: 'Analytics',
+  users: 'User Management',
+  transactions: 'Transactions',
+  settings: 'Settings',
+  security: 'Security',
+  kyc: 'KYC Review'
+};
+
+navItems.forEach(item => {
+  item.addEventListener('click', () => {
+    const page = item.dataset.page;
+    navItems.forEach(n => n.classList.remove('active'));
+    item.classList.add('active');
+    pages.forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + page).classList.add('active');
+    pageTitle.textContent = pageTitles[page] || page;
+    if (window.innerWidth < 768) sidebar.classList.remove('open');
+    drawCharts();
+  });
+});
+
+sidebarToggle.addEventListener('click', () => {
+  sidebar.classList.toggle('collapsed');
+});
+
+function drawCharts() {
+  const mainCtx = document.getElementById('mainChart');
+  if (mainCtx && mainCtx.getContext) {
+    const mc = mainCtx.getContext('2d');
+    if (mc) {
+      const gradient = mc.createLinearGradient(0, 0, 0, 280);
+      gradient.addColorStop(0, 'rgba(10, 114, 239, 0.3)');
+      gradient.addColorStop(1, 'rgba(10, 114, 239, 0)');
+      mc.beginPath();
+      mc.moveTo(0, 220);
+      mc.bezierCurveTo(60, 180, 100, 200, 160, 150);
+      mc.bezierCurveTo(220, 100, 280, 140, 340, 100);
+      mc.bezierCurveTo(400, 60, 460, 80, 520, 40);
+      mc.lineTo(520, 280);
+      mc.lineTo(0, 280);
+      mc.closePath();
+      mc.fillStyle = gradient;
+      mc.fill();
+      mc.beginPath();
+      mc.moveTo(0, 220);
+      mc.bezierCurveTo(60, 180, 100, 200, 160, 150);
+      mc.bezierCurveTo(220, 100, 280, 140, 340, 100);
+      mc.bezierCurveTo(400, 60, 460, 80, 520, 40);
+      mc.strokeStyle = '#0a72ef';
+      mc.lineWidth = 2;
+      mc.stroke();
+    }
+  }
+
+  const donutCtx = document.getElementById('donutChart');
+  if (donutCtx && donutCtx.getContext) {
+    const dc = donutCtx.getContext('2d');
+    if (dc) {
+      const data = [45, 30, 15, 10];
+      const colors = ['#0a72ef', '#10b981', '#f59e0b', '#ef4444'];
+      let startAngle = -Math.PI / 2;
+      data.forEach((val, i) => {
+        const slice = (val / 100) * Math.PI * 2;
+        dc.beginPath();
+        dc.moveTo(90, 90);
+        dc.arc(90, 90, 70, startAngle, startAngle + slice);
+        dc.closePath();
+        dc.fillStyle = colors[i];
+        dc.fill();
+        startAngle += slice;
+      });
+    }
+  }
+
+  const trafficCtx = document.getElementById('trafficChart');
+  if (trafficCtx && trafficCtx.getContext) {
+    const tc = trafficCtx.getContext('2d');
+    if (tc) {
+      tc.clearRect(0, 0, trafficCtx.width, trafficCtx.height);
+      const bars = [65, 45, 78, 52, 90, 68, 55, 72, 48, 83, 71, 60];
+      const barW = 28;
+      bars.forEach((h, i) => {
+        const x = i * (barW + 16) + 20;
+        const gradient = tc.createLinearGradient(0, 300 - h * 2.5, 0, 300);
+        gradient.addColorStop(0, '#0a72ef');
+        gradient.addColorStop(1, '#0a72ef40');
+        tc.fillStyle = gradient;
+        tc.fillRect(x, 300 - h * 2.5, barW, h * 2.5);
+      });
+    }
+  }
+}
+
+document.querySelectorAll('canvas').forEach(c => {
+  c.width = c.parentElement.clientWidth;
+  c.height = c.parentElement.clientHeight;
+});
+
+drawCharts();
+window.addEventListener('resize', () => {
+  document.querySelectorAll('canvas').forEach(c => {
+    c.width = c.parentElement.clientWidth;
+    c.height = c.parentElement.clientHeight;
+  });
+  drawCharts();
+});
+</script>
+</body>
+</html>

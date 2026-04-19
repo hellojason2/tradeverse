@@ -28,3 +28,7 @@ dist-ssr/
 # Worktrees (linked checkouts — code lives in branches, not root)
 /app/
 /features/*/
+CLAUDE.local.md
+
+# Responsive audit screenshots (generated)
+.responsive-audit/
