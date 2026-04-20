@@ -1,0 +1,835 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Sonar — Compose your signature sound</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg-0: #030611;
+    --bg-1: #060a1a;
+    --bg-2: #0b1228;
+    --ink-0: #f5f7ff;
+    --ink-1: #c9d1e8;
+    --ink-2: #8892b0;
+    --ink-3: #545d78;
+    --line: rgba(255,255,255,0.08);
+    --line-2: rgba(255,255,255,0.14);
+    --blue: oklch(0.68 0.19 255);
+    --blue-2: oklch(0.78 0.17 245);
+    --blue-3: oklch(0.55 0.22 262);
+    --cyan: oklch(0.86 0.12 220);
+    --deep: oklch(0.35 0.18 268);
+  }
+
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg-0);color:var(--ink-0);font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased;}
+  body{overflow-x:hidden}
+
+  /* ───── Nav ───── */
+  .nav{
+    position:relative; z-index:10;
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 22px 48px;
+    max-width: 1440px; margin: 0 auto;
+  }
+  .logo{display:flex; align-items:center; gap:12px}
+  .logo-mark{
+    width:36px; height:36px; position:relative;
+    display:grid; place-items:center;
+    border-radius:10px;
+    background: radial-gradient(circle at 30% 30%, rgba(110,150,255,0.35), rgba(20,30,70,0.4) 70%);
+    border: 1px solid rgba(120,160,255,0.25);
+  }
+  .logo-mark svg{width:22px;height:22px}
+  .logo-text{font-family:'Instrument Serif',serif; font-size:22px; letter-spacing:0.02em; line-height:1}
+  .logo-sub{font-size:9px; letter-spacing:0.45em; color:var(--ink-2); margin-top:4px; font-weight:500}
+
+  .nav-links{display:flex; gap:8px; align-items:center}
+  .nav-link{
+    display:flex; align-items:center; gap:8px;
+    padding: 9px 14px; border-radius: 999px;
+    color:var(--ink-1); font-size:14px; font-weight:500;
+    text-decoration:none; cursor:pointer;
+    transition: all .2s ease;
+  }
+  .nav-link:hover{background:rgba(255,255,255,0.05); color:var(--ink-0)}
+  .nav-link svg{width:14px;height:14px;opacity:.7}
+
+  .nav-right{display:flex; gap:10px; align-items:center}
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding: 10px 16px; border-radius: 999px;
+    font-size:14px; font-weight:600; cursor:pointer;
+    border:1px solid transparent; background:transparent; color:var(--ink-0);
+    font-family:inherit; transition:all .18s ease;
+    text-decoration:none;
+  }
+  .btn svg{width:14px;height:14px}
+  .btn-ghost{border-color:var(--line-2); background:rgba(255,255,255,0.03)}
+  .btn-ghost:hover{background:rgba(255,255,255,0.07)}
+  .btn-primary{
+    background: linear-gradient(180deg, oklch(0.7 0.2 255), oklch(0.52 0.22 262));
+    box-shadow: 0 1px 0 rgba(255,255,255,0.3) inset, 0 8px 24px -6px oklch(0.5 0.22 262 / 0.55);
+  }
+  .btn-primary:hover{filter:brightness(1.08)}
+  .btn-lg{padding:14px 22px; font-size:15px}
+
+  /* ───── Hero ───── */
+  .hero{
+    position:relative;
+    min-height: 780px;
+    padding: 20px 48px 80px;
+    max-width: 1440px; margin: 0 auto;
+  }
+  .hero-bg{
+    position:absolute; inset:-80px -60px 0 -60px;
+    z-index:0; pointer-events:none;
+    overflow:hidden;
+  }
+  .hero-bg canvas{ position:absolute; inset:0; width:100%; height:100%; display:block }
+  .hero-beam{
+    position:absolute; top:0; bottom:0; left:50%; width:2px;
+    transform:translateX(-50%);
+    background: linear-gradient(180deg,
+      transparent 0%,
+      oklch(0.85 0.12 230 / 0.15) 8%,
+      oklch(0.92 0.1 230 / 0.9) 35%,
+      oklch(1 0.05 230 / 1) 55%,
+      oklch(0.92 0.1 230 / 0.9) 70%,
+      transparent 100%);
+    filter: blur(0.6px);
+    box-shadow: 0 0 40px 8px oklch(0.7 0.2 240 / 0.4), 0 0 120px 20px oklch(0.55 0.22 255 / 0.3);
+    mix-blend-mode: screen;
+  }
+  .hero-beam::before{
+    content:''; position:absolute; inset:0; left:-60px; right:-60px;
+    background: radial-gradient(ellipse at center, oklch(0.7 0.2 250 / 0.35), transparent 60%);
+    filter: blur(30px);
+  }
+  .hero-vignette{
+    position:absolute; inset:0; pointer-events:none;
+    background:
+      radial-gradient(ellipse at 50% 100%, oklch(0.55 0.22 260 / 0.25), transparent 55%),
+      radial-gradient(ellipse at 50% 0%, transparent 40%, var(--bg-0) 100%);
+  }
+
+  .hero-inner{
+    position:relative; z-index:2;
+    display:grid; grid-template-columns: 1.1fr 1fr; gap:48px;
+    padding-top: 40px;
+    align-items:start;
+  }
+
+  .pill{
+    display:inline-flex; align-items:center; gap:10px;
+    padding: 6px 14px 6px 6px; border-radius:999px;
+    background: rgba(255,255,255,0.04);
+    border:1px solid var(--line-2);
+    font-size:13px; color:var(--ink-1);
+    backdrop-filter: blur(10px);
+  }
+  .pill-badge{
+    display:inline-grid; place-items:center;
+    width:22px; height:22px; border-radius:999px;
+    background: linear-gradient(135deg, var(--blue), var(--deep));
+    font-size:10px; font-weight:700; letter-spacing:0.05em;
+  }
+
+  .headline{
+    font-family:'Instrument Serif', serif;
+    font-weight:400;
+    font-size: clamp(48px, 6.4vw, 92px);
+    line-height: 0.98;
+    letter-spacing:-0.02em;
+    margin: 28px 0 26px;
+    text-wrap: pretty;
+  }
+  .headline em{
+    font-style: italic;
+    background: linear-gradient(100deg, oklch(0.78 0.17 245), oklch(0.62 0.21 260) 50%, oklch(0.82 0.14 220));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .sub{
+    color: var(--ink-1);
+    font-size: 17px; line-height:1.55;
+    max-width: 520px; margin: 0 0 32px;
+  }
+  .cta-row{display:flex; gap:12px; align-items:center; margin-bottom:18px}
+  .legal{font-size:12px; color:var(--ink-3); letter-spacing:0.01em}
+  .legal .dot{opacity:.5; margin:0 8px}
+
+  /* ───── Hero player card ───── */
+  .player{
+    position:relative;
+    width:100%; max-width:520px; justify-self:end;
+    border-radius: 24px;
+    background: linear-gradient(180deg, rgba(14,20,44,0.85), rgba(8,12,28,0.85));
+    border: 1px solid rgba(120,160,255,0.18);
+    box-shadow:
+      0 30px 80px -20px rgba(0,0,0,0.6),
+      0 1px 0 rgba(255,255,255,0.06) inset,
+      0 0 60px -10px oklch(0.55 0.22 260 / 0.25);
+    padding: 22px 24px 20px;
+    backdrop-filter: blur(20px);
+  }
+  .player-top{display:flex; justify-content:space-between; align-items:center; font-size:12px; color:var(--ink-2); letter-spacing:0.06em; text-transform:uppercase}
+  .player-orb{
+    position:relative; margin: 18px auto 14px;
+    width: 260px; height: 260px; border-radius:50%;
+    background:
+      radial-gradient(circle at 50% 45%, oklch(0.28 0.08 260) 0%, oklch(0.16 0.05 260) 55%, oklch(0.08 0.03 260) 80%),
+      radial-gradient(circle at 30% 30%, oklch(0.5 0.18 260 / 0.4), transparent 60%);
+    border: 1px solid rgba(120,160,255,0.18);
+    box-shadow:
+      0 0 80px oklch(0.55 0.22 260 / 0.35),
+      inset 0 0 60px oklch(0.2 0.08 260 / 0.6),
+      inset 0 1px 0 rgba(255,255,255,0.08);
+    display:grid; place-items:center;
+    overflow:hidden;
+  }
+  .player-orb::before{
+    content:''; position:absolute; inset:0; border-radius:50%;
+    background: conic-gradient(from 160deg, transparent 0 40%, oklch(0.8 0.16 235 / 0.5) 50%, transparent 60%);
+    animation: spin 8s linear infinite;
+    filter:blur(6px); opacity:.7;
+  }
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  .orb-center{
+    position:relative; z-index:2;
+    text-align:center;
+    margin-top:-12px;
+    max-width: 200px;
+  }
+  .orb-title{font-family:'Instrument Serif',serif; font-size:26px; line-height:1; margin:0; white-space:nowrap}
+  .orb-meta{font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--ink-2); margin-top:6px; letter-spacing:0.08em}
+
+  .orb-chip{
+    position:absolute; z-index:3;
+    display:inline-flex; align-items:center; gap:8px;
+    padding: 8px 14px; border-radius:999px;
+    background: rgba(14,20,44,0.9);
+    border:1px solid rgba(120,160,255,0.25);
+    font-size:12px; font-weight:500; color:var(--ink-0);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 8px 24px -8px rgba(0,0,0,0.6);
+    white-space:nowrap;
+  }
+  .orb-chip.c1{top:6%; left:50%; transform:translateX(-50%)}
+  .orb-chip.c2{top:34%; left:4%}
+  .orb-chip.c3{top:34%; right:4%}
+  .orb-chip .dot-live{width:6px;height:6px;border-radius:50%;background:oklch(0.78 0.2 145); box-shadow:0 0 8px oklch(0.78 0.2 145)}
+  .orb-chip.c1{background: linear-gradient(180deg, oklch(0.32 0.14 260), oklch(0.2 0.1 260)); border-color:oklch(0.55 0.18 260)}
+
+  /* Waveform */
+  .wave{
+    display:flex; align-items:center; gap:3px;
+    height:44px; padding:0 4px;
+    flex:1;
+  }
+  .wave span{
+    display:block; width:3px; border-radius:2px;
+    background: linear-gradient(180deg, oklch(0.88 0.14 225), oklch(0.58 0.2 260));
+    transform-origin: center;
+  }
+
+  .player-bar{
+    display:flex; align-items:center; gap:12px;
+    margin-top:14px;
+    padding: 10px 14px;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.03);
+    border:1px solid var(--line);
+  }
+  .prompt{font-size:13px; color:var(--ink-1); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; flex:1}
+  .prompt span{color:var(--ink-3); font-family:'JetBrains Mono',monospace; font-size:11px; margin-right:6px}
+
+  .player-controls{display:flex; gap:8px; align-items:center}
+  .ctl{
+    width:34px; height:34px; border-radius:999px;
+    display:grid; place-items:center;
+    border:1px solid var(--line-2); background:rgba(255,255,255,0.03);
+    color:var(--ink-1); cursor:pointer;
+  }
+  .ctl:hover{background:rgba(255,255,255,0.08); color:var(--ink-0)}
+  .ctl.play{
+    width:40px;height:40px;
+    background: linear-gradient(180deg, oklch(0.7 0.2 255), oklch(0.52 0.22 262));
+    color:white; border-color:transparent;
+    box-shadow: 0 6px 18px -4px oklch(0.5 0.22 262 / 0.6);
+  }
+
+  .time-row{
+    display:flex; justify-content:space-between; margin-top:10px;
+    font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--ink-3);
+    letter-spacing:0.05em;
+  }
+  .scrub{
+    position:relative;
+    height:3px; border-radius:2px; background:rgba(255,255,255,0.08);
+    margin: 8px 0 4px;
+  }
+  .scrub-fill{position:absolute; left:0; top:0; bottom:0; width:32%; border-radius:2px;
+    background: linear-gradient(90deg, oklch(0.88 0.14 225), oklch(0.62 0.21 260));
+    box-shadow: 0 0 8px oklch(0.7 0.2 250 / 0.6);
+  }
+  .scrub-fill::after{
+    content:''; position:absolute; right:-5px; top:50%; transform:translateY(-50%);
+    width:10px; height:10px; border-radius:50%; background:white;
+    box-shadow: 0 0 0 3px oklch(0.6 0.2 255 / 0.5);
+  }
+
+  /* ───── Featured drops ───── */
+  .section{
+    position:relative; z-index:2;
+    padding: 40px 48px 120px;
+    max-width:1440px; margin:0 auto;
+  }
+  .section-head{display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:28px}
+  .section-title{display:flex; gap:12px; align-items:center}
+  .section-title h2{font-family:'Instrument Serif',serif; font-weight:400; font-size:32px; margin:0; letter-spacing:-0.01em}
+  .section-title svg{width:20px;height:20px; color:var(--blue-2)}
+  .section-sub{color:var(--ink-2); font-size:14px; max-width:520px; margin-top:6px}
+  .view-all{color:var(--ink-1); font-size:13px; display:inline-flex; align-items:center; gap:6px; cursor:pointer}
+  .view-all:hover{color:var(--ink-0)}
+
+  .drops-grid{
+    display:grid; grid-template-columns: repeat(4, 1fr); gap:16px;
+  }
+  .drop{
+    position:relative;
+    padding: 18px;
+    border-radius: 18px;
+    background: linear-gradient(180deg, rgba(14,20,44,0.6), rgba(8,12,28,0.4));
+    border:1px solid var(--line);
+    overflow:hidden; cursor:pointer;
+    transition: all .25s ease;
+  }
+  .drop:hover{border-color: rgba(120,160,255,0.3); transform: translateY(-2px)}
+  .drop-art{
+    aspect-ratio: 1; border-radius:12px; margin-bottom:14px;
+    position:relative; overflow:hidden;
+    background: linear-gradient(135deg, var(--c1), var(--c2));
+  }
+  .drop-art::after{
+    content:''; position:absolute; inset:0;
+    background:
+      radial-gradient(circle at 30% 30%, rgba(255,255,255,0.25), transparent 50%),
+      repeating-linear-gradient(0deg, transparent 0 3px, rgba(0,0,0,0.1) 3px 4px);
+    mix-blend-mode: overlay;
+  }
+  .drop-eq{
+    position:absolute; left:14px; right:14px; bottom:14px;
+    display:flex; align-items:flex-end; gap:3px; height:36px;
+  }
+  .drop-eq span{flex:1; background:rgba(255,255,255,0.85); border-radius:2px; animation: eqDance 1.2s ease-in-out infinite}
+  .drop-eq span:nth-child(1){animation-delay:-0.3s}
+  .drop-eq span:nth-child(2){animation-delay:-0.6s}
+  .drop-eq span:nth-child(3){animation-delay:-0.1s}
+  .drop-eq span:nth-child(4){animation-delay:-0.8s}
+  .drop-eq span:nth-child(5){animation-delay:-0.2s}
+  .drop-eq span:nth-child(6){animation-delay:-0.5s}
+  .drop-eq span:nth-child(7){animation-delay:-0.4s}
+  @keyframes eqDance{0%,100%{height:20%}50%{height:90%}}
+
+  .drop h3{font-size:15px; margin:0 0 4px; font-weight:600}
+  .drop-meta{display:flex; justify-content:space-between; align-items:center; font-size:12px; color:var(--ink-2); font-family:'JetBrains Mono',monospace}
+  .drop-tag{padding:3px 8px; border-radius:999px; background:rgba(255,255,255,0.05); border:1px solid var(--line); font-size:10px; letter-spacing:0.05em; text-transform:uppercase; color:var(--ink-1)}
+
+  /* ───── Tweaks panel ───── */
+  .tweaks{
+    position:fixed; right:20px; bottom:20px; z-index:100;
+    width: 280px;
+    background: rgba(10,15,30,0.88);
+    border:1px solid var(--line-2);
+    border-radius: 16px;
+    padding: 16px;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 20px 50px -10px rgba(0,0,0,0.6);
+    display:none;
+    font-size:12px;
+  }
+  .tweaks.on{display:block}
+  .tweaks h4{margin:0 0 12px; font-size:12px; letter-spacing:0.12em; text-transform:uppercase; color:var(--ink-1); font-weight:600}
+  .tweak-row{display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; gap:10px}
+  .tweak-row label{color:var(--ink-1); font-size:12px}
+  .tweak-row input[type=range]{flex:1; accent-color: var(--blue)}
+  .tweak-row .val{color:var(--ink-2); font-family:'JetBrains Mono',monospace; font-size:10px; min-width:30px; text-align:right}
+  .toggle{
+    width:32px; height:18px; border-radius:999px;
+    background:rgba(255,255,255,0.1); position:relative; cursor:pointer;
+    transition: background .2s;
+  }
+  .toggle::after{content:''; position:absolute; top:2px; left:2px; width:14px; height:14px; border-radius:50%; background:white; transition:all .2s}
+  .toggle.on{background: var(--blue)}
+  .toggle.on::after{left:16px}
+
+  @media (max-width: 1024px){
+    .hero-inner{grid-template-columns:1fr}
+    .player{justify-self:center}
+    .drops-grid{grid-template-columns: repeat(2,1fr)}
+    .nav-links{display:none}
+  }
+</style>
+</head>
+<body>
+
+<!-- ───── NAV ───── -->
+<nav class="nav">
+  <div class="logo">
+    <div class="logo-mark">
+      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round">
+        <path d="M3 12 L6 12 L8 5 L10 19 L12 8 L14 16 L16 10 L18 13 L21 12"/>
+      </svg>
+    </div>
+    <div>
+      <div class="logo-text">Sonar</div>
+      <div class="logo-sub">STUDIO</div>
+    </div>
+  </div>
+
+  <div class="nav-links">
+    <a class="nav-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="6" cy="18" r="3"/><path d="M9 18V5l12-2v13"/><circle cx="18" cy="16" r="3"/></svg>
+      Tracks</a>
+    <a class="nav-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 12h2l2-7 3 14 3-10 2 6h6"/></svg>
+      Soundscapes</a>
+    <a class="nav-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 L14 10 L21 12 L14 14 L12 21 L10 14 L3 12 L10 10 Z"/></svg>
+      Spotlight</a>
+    <a class="nav-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5"/><circle cx="17" cy="7" r="2.5"/><path d="M15 15c3 0 6 2 6 5"/></svg>
+      For creators</a>
+    <a class="nav-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12 12 20 3 11V3h8z"/><circle cx="8" cy="8" r="1.2" fill="currentColor"/></svg>
+      Pricing</a>
+  </div>
+
+  <div class="nav-right">
+    <a class="btn btn-ghost">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      Search library</a>
+    <a class="btn btn-primary">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="9" r="3.5"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg>
+      Sign in</a>
+  </div>
+</nav>
+
+<!-- ───── HERO ───── -->
+<section class="hero">
+  <div class="hero-bg">
+    <canvas id="stream"></canvas>
+    <div class="hero-beam"></div>
+    <div class="hero-vignette"></div>
+  </div>
+
+  <div class="hero-inner">
+    <div class="hero-copy">
+      <div class="pill"><span class="pill-badge">AI</span> New: Studio-grade stems in one prompt</div>
+      <h1 class="headline">
+        Compose your<br/>
+        <em>signature sound</em> in<br/>
+        seconds
+      </h1>
+      <p class="sub">Sonar turns your ideas into royalty-free tracks tuned for streaming, shorts and live sessions. Describe the mood, length and energy — our engine scores, mixes and masters on the fly.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary btn-lg">Generate a track
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+        <a class="btn btn-ghost btn-lg">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          Watch demo</a>
+      </div>
+      <div class="legal">No copyright claims <span class="dot">·</span> Full commercial license included <span class="dot">·</span> 14-day free trial</div>
+    </div>
+
+    <!-- Player card -->
+    <div class="player">
+      <div class="player-top">
+        <span>Session orbit</span>
+        <span style="display:flex; align-items:center; gap:6px"><span class="dot-live" style="width:6px;height:6px;border-radius:50%;background:oklch(0.78 0.2 145); box-shadow:0 0 8px oklch(0.78 0.2 145)"></span>Live trends</span>
+      </div>
+
+      <div class="player-orb">
+        <div class="orb-chip c1">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
+          AI playlist
+        </div>
+        <div class="orb-chip c2">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 18V8l6-2v10"/><circle cx="6" cy="16" r="2"/></svg>
+          Lo-fi focus
+        </div>
+        <div class="orb-chip c3">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="11" rx="3"/><path d="M8 12h2M14 12h2M11 10v4"/></svg>
+          Game mode
+        </div>
+        <div class="orb-center">
+          <h3 class="orb-title">Trending Mix</h3>
+          <div class="orb-meta">128 BPM · CHILLWAVE</div>
+        </div>
+      </div>
+
+      <div class="scrub"><div class="scrub-fill"></div></div>
+      <div class="time-row"><span>00:47</span><span>02:27</span></div>
+
+      <div class="player-bar">
+        <div class="prompt"><span>PROMPT</span>neon midnight drive</div>
+        <div class="player-controls">
+          <button class="ctl" aria-label="mute">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="m16 9 5 6M21 9l-5 6"/></svg>
+          </button>
+          <button class="ctl play" aria-label="play" id="playBtn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </button>
+          <button class="ctl" aria-label="next">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 4v16l10-8zM17 5v14"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ───── FEATURED DROPS ───── -->
+<section class="section" data-screen-label="Featured drops">
+  <div class="section-head">
+    <div>
+      <div class="section-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg>
+        <h2>Featured drops</h2>
+      </div>
+      <div class="section-sub">Handpicked instrumentals and atmospheres tuned for creators, streamers and storytellers.</div>
+    </div>
+    <a class="view-all">View all
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+
+  <div class="drops-grid" id="dropsGrid"></div>
+</section>
+
+<!-- ───── TWEAKS ───── -->
+<div class="tweaks" id="tweaks">
+  <h4>Tweaks</h4>
+  <div class="tweak-row"><label>Stream intensity</label><input type="range" min="0.3" max="2" step="0.05" id="tkIntensity"><span class="val" id="vIntensity"></span></div>
+  <div class="tweak-row"><label>Particle density</label><input type="range" min="40" max="400" step="10" id="tkDensity"><span class="val" id="vDensity"></span></div>
+  <div class="tweak-row"><label>Accent hue</label><input type="range" min="200" max="290" step="1" id="tkHue"><span class="val" id="vHue"></span></div>
+  <div class="tweak-row"><label>Center beam</label><div class="toggle on" id="tkBeam"></div></div>
+  <div class="tweak-row"><label>Grid floor</label><div class="toggle on" id="tkGrid"></div></div>
+</div>
+
+<!-- ───── Scripts ───── -->
+<script>
+/* Editable defaults */
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "intensity": 1.1,
+  "density": 180,
+  "accentHue": 255,
+  "beam": true,
+  "grid": true
+}/*EDITMODE-END*/;
+
+const state = {...TWEAK_DEFAULTS};
+
+/* ───── Waveform bars inside orb ───── */
+(function buildWaveOverlay(){
+  // Add an audio-reactive ribbon that orbits inside the orb
+})();
+
+/* ───── Blue stream canvas ───── */
+const canvas = document.getElementById('stream');
+const ctx = canvas.getContext('2d');
+let W=0, H=0, DPR=Math.min(window.devicePixelRatio||1, 2);
+
+function resize(){
+  const rect = canvas.parentElement.getBoundingClientRect();
+  W = rect.width; H = rect.height;
+  canvas.width = W*DPR; canvas.height = H*DPR;
+  canvas.style.width = W+'px'; canvas.style.height = H+'px';
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+}
+window.addEventListener('resize', resize);
+
+/* particles flowing from bottom into a vanishing point (vp) up top */
+const particles = [];
+function spawnParticles(){
+  particles.length = 0;
+  const n = Math.floor(state.density);
+  for(let i=0;i<n;i++){
+    particles.push(newParticle(Math.random()));
+  }
+}
+function newParticle(lifeOffset=0){
+  // u: horizontal offset (-1..1), progress: 0 = at horizon, 1 = at camera
+  const u = (Math.random()*2 - 1);
+  return {
+    u,
+    progress: lifeOffset,
+    speed: 0.12 + Math.random()*0.35,
+    size: 0.6 + Math.random()*1.6,
+    hueShift: (Math.random()-0.5)*20,
+    flicker: Math.random()*Math.PI*2,
+  };
+}
+
+function drawGrid(t){
+  if(!state.grid) return;
+  const vpY = H*0.36;
+  const horizon = H*0.38;
+  const floorTop = H*0.38;
+  const cx = W/2;
+
+  ctx.save();
+  // Radial lines (converging)
+  const rays = 30;
+  for(let i=0;i<=rays;i++){
+    const k = i/rays;
+    const spread = (k-0.5) * 2.2; // -1.1..1.1
+    const xEnd = cx + spread * W * 0.75;
+    const alpha = 0.14 * (1 - Math.abs(spread)*0.4);
+    const hue = state.accentHue + (Math.abs(spread))*10;
+    ctx.strokeStyle = `oklch(0.75 0.18 ${hue} / ${alpha})`;
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(cx, vpY);
+    ctx.lineTo(xEnd, H+20);
+    ctx.stroke();
+  }
+
+  // Horizontal ribs - animated flow toward camera
+  const ribs = 18;
+  for(let i=0;i<ribs;i++){
+    const phase = ((i / ribs) + (t*0.00012) % 1) % 1;
+    const eased = Math.pow(phase, 2.4); // non-linear depth
+    const y = floorTop + eased * (H - floorTop + 40);
+    const widthFactor = eased*1.6 + 0.02;
+    const alpha = 0.35 * Math.min(1, eased*2.2) * (1-phase*0.6);
+    const hue = state.accentHue;
+    ctx.strokeStyle = `oklch(0.78 0.16 ${hue} / ${alpha})`;
+    ctx.lineWidth = 1 + eased*1.2;
+    ctx.beginPath();
+    ctx.moveTo(cx - W*0.55*widthFactor, y);
+    // slight curve
+    ctx.quadraticCurveTo(cx, y - eased*8, cx + W*0.55*widthFactor, y);
+    ctx.stroke();
+  }
+  ctx.restore();
+}
+
+function drawParticles(t){
+  const vpY = H*0.36;
+  const cx = W/2;
+
+  ctx.save();
+  ctx.globalCompositeOperation = 'lighter';
+
+  for(const p of particles){
+    p.progress += p.speed * 0.009 * state.intensity;
+    if(p.progress > 1){
+      // respawn at horizon
+      Object.assign(p, newParticle(0));
+    }
+    const eased = Math.pow(p.progress, 2.2);
+    const y = vpY + eased * (H - vpY + 40);
+    // funnel: spreads as it comes forward
+    const spread = p.u * eased * W * 0.55;
+    const x = cx + spread;
+
+    const a = Math.min(1, eased*2.2) * (0.35 + 0.65*Math.sin(p.flicker + t*0.005));
+    const size = p.size * (0.4 + eased*3.6);
+    const hue = state.accentHue + p.hueShift;
+    const lum = 0.78 + eased*0.1;
+
+    // streak trail (toward vanishing point)
+    const tailLen = 10 + eased*30;
+    const tailX = cx + p.u * Math.pow(Math.max(0, p.progress-0.04), 2.2) * W*0.55;
+    const tailY = vpY + Math.pow(Math.max(0, p.progress-0.04), 2.2) * (H - vpY + 40);
+
+    const grad = ctx.createLinearGradient(tailX, tailY, x, y);
+    grad.addColorStop(0, `oklch(${lum} 0.2 ${hue} / 0)`);
+    grad.addColorStop(1, `oklch(${lum} 0.2 ${hue} / ${a*0.9})`);
+    ctx.strokeStyle = grad;
+    ctx.lineWidth = Math.max(0.5, size*0.6);
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(tailX, tailY);
+    ctx.lineTo(x, y);
+    ctx.stroke();
+
+    // head glow
+    ctx.fillStyle = `oklch(${lum} 0.2 ${hue} / ${a})`;
+    ctx.beginPath();
+    ctx.arc(x,y,size,0,Math.PI*2);
+    ctx.fill();
+  }
+  ctx.restore();
+}
+
+/* ambient stars */
+const stars = [];
+function spawnStars(){
+  stars.length=0;
+  for(let i=0;i<120;i++){
+    stars.push({
+      x: Math.random()*W,
+      y: Math.random()* (H*0.5),
+      s: Math.random()*1.1+0.2,
+      tw: Math.random()*Math.PI*2,
+    });
+  }
+}
+function drawStars(t){
+  ctx.save();
+  for(const s of stars){
+    const a = 0.3 + 0.5*Math.sin(t*0.002 + s.tw);
+    ctx.fillStyle = `rgba(200,220,255,${a*0.6})`;
+    ctx.beginPath(); ctx.arc(s.x, s.y, s.s, 0, Math.PI*2); ctx.fill();
+  }
+  ctx.restore();
+}
+
+/* central beam glow reactive */
+function drawBeamGlow(t){
+  if(!state.beam) return;
+  const cx = W/2;
+  const pulse = 0.85 + 0.15*Math.sin(t*0.003);
+  const g = ctx.createRadialGradient(cx, H*0.4, 0, cx, H*0.4, H*0.8);
+  g.addColorStop(0, `oklch(0.78 0.2 ${state.accentHue} / ${0.28*pulse})`);
+  g.addColorStop(0.4, `oklch(0.55 0.22 ${state.accentHue} / ${0.1*pulse})`);
+  g.addColorStop(1, `transparent`);
+  ctx.fillStyle = g;
+  ctx.fillRect(0,0,W,H);
+}
+
+function frame(t){
+  ctx.clearRect(0,0,W,H);
+  // deep bg wash
+  const bg = ctx.createLinearGradient(0,0,0,H);
+  bg.addColorStop(0,'#030611');
+  bg.addColorStop(0.5,'#05091a');
+  bg.addColorStop(1,'#07102a');
+  ctx.fillStyle = bg;
+  ctx.fillRect(0,0,W,H);
+
+  drawStars(t);
+  drawBeamGlow(t);
+  drawGrid(t);
+  drawParticles(t);
+
+  requestAnimationFrame(frame);
+}
+
+/* ───── init ───── */
+function init(){
+  resize();
+  spawnStars();
+  spawnParticles();
+  requestAnimationFrame(frame);
+}
+init();
+
+/* ───── Waveform bars (live) ───── */
+// orb waveform ribbon
+const ribbon = document.createElement('div');
+ribbon.className='wave';
+ribbon.style.cssText='position:absolute; left:14%; right:14%; bottom:32px; height:26px; z-index:2; gap:3px; display:flex; align-items:center;';
+document.querySelector('.player-orb').appendChild(ribbon);
+const BARS = 32;
+const bars = [];
+for(let i=0;i<BARS;i++){
+  const b = document.createElement('span');
+  b.style.cssText='display:block; width:2px; flex:1; border-radius:2px; background:linear-gradient(180deg, oklch(0.88 0.14 225), oklch(0.58 0.2 260)); height:6px;';
+  ribbon.appendChild(b);
+  bars.push(b);
+}
+let playing = true;
+function animWave(t){
+  for(let i=0;i<BARS;i++){
+    const n = Math.sin(i*0.6 + t*0.004) * Math.cos(i*0.23 + t*0.002) * 0.5 + 0.5;
+    const h = playing ? 4 + n * 24 + (Math.random()*3) : 4;
+    bars[i].style.height = h+'px';
+    bars[i].style.opacity = playing ? (0.5 + n*0.5) : 0.25;
+  }
+  requestAnimationFrame(animWave);
+}
+requestAnimationFrame(animWave);
+
+document.getElementById('playBtn').addEventListener('click', ()=>{ playing = !playing; });
+
+/* ───── Featured drops ───── */
+const DROPS = [
+  {title:'Obsidian Bloom', bpm:92, tag:'Ambient', c1:'#24306b', c2:'#0a1230'},
+  {title:'Sol Fracture', bpm:124, tag:'Synthwave', c1:'#3a1760', c2:'#0a0a2a'},
+  {title:'Velvet Current', bpm:78, tag:'Lo-fi', c1:'#1f4b6e', c2:'#081325'},
+  {title:'Aurora Cut', bpm:140, tag:'Cinematic', c1:'#0f5a66', c2:'#041225'},
+  {title:'Paper Comet', bpm:102, tag:'Indie', c1:'#5e2a6e', c2:'#10122c'},
+  {title:'Midnight Relay', bpm:120, tag:'House', c1:'#1a3e8a', c2:'#050a24'},
+  {title:'Halogen Glow', bpm:86, tag:'Downtempo', c1:'#2b1f6e', c2:'#08082a'},
+  {title:'Copper Static', bpm:132, tag:'Techno', c1:'#6e3b1f', c2:'#1c0f22'},
+];
+const grid = document.getElementById('dropsGrid');
+grid.innerHTML = DROPS.map(d=>{
+  const eqs = Array.from({length:8}).map(()=>`<span style="animation-delay:-${(Math.random()*1.4).toFixed(2)}s"></span>`).join('');
+  return `
+  <div class="drop" style="--c1:${d.c1}; --c2:${d.c2}">
+    <div class="drop-art">
+      <div class="drop-eq">${eqs}</div>
+    </div>
+    <h3>${d.title}</h3>
+    <div class="drop-meta">
+      <span>${d.bpm} BPM</span>
+      <span class="drop-tag">${d.tag}</span>
+    </div>
+  </div>`;
+}).join('');
+
+/* ───── Tweaks panel ───── */
+function syncUI(){
+  document.getElementById('tkIntensity').value = state.intensity;
+  document.getElementById('vIntensity').textContent = state.intensity.toFixed(2);
+  document.getElementById('tkDensity').value = state.density;
+  document.getElementById('vDensity').textContent = state.density;
+  document.getElementById('tkHue').value = state.accentHue;
+  document.getElementById('vHue').textContent = state.accentHue+'°';
+  document.getElementById('tkBeam').classList.toggle('on', state.beam);
+  document.getElementById('tkGrid').classList.toggle('on', state.grid);
+  document.documentElement.style.setProperty('--blue', `oklch(0.68 0.19 ${state.accentHue})`);
+}
+function pushEdits(patch){
+  Object.assign(state, patch);
+  syncUI();
+  try{ window.parent.postMessage({type:'__edit_mode_set_keys', edits: patch}, '*'); }catch(e){}
+}
+
+['tkIntensity','tkDensity','tkHue'].forEach(id=>{
+  document.getElementById(id).addEventListener('input', e=>{
+    const v = parseFloat(e.target.value);
+    const key = id==='tkIntensity'?'intensity':id==='tkDensity'?'density':'accentHue';
+    pushEdits({[key]: v});
+    if(key==='density') spawnParticles();
+  });
+});
+document.getElementById('tkBeam').addEventListener('click', ()=> pushEdits({beam: !state.beam}));
+document.getElementById('tkGrid').addEventListener('click', ()=> pushEdits({grid: !state.grid}));
+
+syncUI();
+
+/* Tweaks host protocol */
+window.addEventListener('message', (e)=>{
+  const m = e.data||{};
+  if(m.type==='__activate_edit_mode') document.getElementById('tweaks').classList.add('on');
+  if(m.type==='__deactivate_edit_mode') document.getElementById('tweaks').classList.remove('on');
+});
+try{ window.parent.postMessage({type:'__edit_mode_available'}, '*'); }catch(e){}
+
+/* resize handler regen */
+window.addEventListener('resize', ()=>{ resize(); spawnStars(); spawnParticles(); });
+</script>
+</body>
+</html>

@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tradeverse — Client Portal (Light)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* LIGHT PALETTE */
+  --bg-0:#f4f6fb; --bg-1:#ffffff; --bg-2:#eef2f9; --bg-3:#e4eaf4;
+  --ink-0:#0b1228; --ink-1:#2a3654; --ink-2:#5c6784; --ink-3:#8a93ab;
+  --line:rgba(11,18,40,0.08); --line-2:rgba(11,18,40,0.14); --line-3:rgba(60,100,220,0.3);
+  --blue:oklch(0.58 0.22 262); --blue-2:oklch(0.5 0.22 265); --blue-3:oklch(0.42 0.23 268);
+  --cyan:oklch(0.58 0.14 220);
+  --green:oklch(0.55 0.17 150); --green-l:oklch(0.72 0.17 150 / 0.14);
+  --red:oklch(0.55 0.22 22); --red-l:oklch(0.68 0.22 20 / 0.12);
+  --yellow:oklch(0.62 0.16 75); --yellow-l:oklch(0.82 0.15 85 / 0.18);
+  --purple:oklch(0.52 0.22 300); --purple-l:oklch(0.7 0.2 300 / 0.14);
+  --cyan-l:oklch(0.7 0.14 220 / 0.14);
+  --orange:oklch(0.62 0.17 45); --orange-l:oklch(0.74 0.17 55 / 0.16);
+  --blue-l:oklch(0.58 0.22 262 / 0.1);
+  --sw:240px; --sc:64px; --hh:60px; --ts:.28s;
+  --radius:14px;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',system-ui,sans-serif;
+  background:var(--bg-0); color:var(--ink-0);
+  min-height:100vh; -webkit-font-smoothing:antialiased;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%, oklch(0.85 0.08 260 / 0.6), transparent 60%),
+    radial-gradient(ellipse 60% 40% at 90% 100%, oklch(0.88 0.07 280 / 0.5), transparent 55%);
+}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(60,100,180,0.22);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(60,100,180,0.4)}
+
+/* SIDEBAR */
+.sidebar{
+  position:fixed;left:0;top:0;height:100vh;width:var(--sw);
+  background:linear-gradient(180deg, rgba(255,255,255,0.92), rgba(244,247,253,0.92));
+  border-right:1px solid var(--line);
+  backdrop-filter: blur(24px);
+  z-index:1000;transition:width var(--ts) cubic-bezier(.4,0,.2,1);
+  display:flex;flex-direction:column;overflow:hidden;
+}
+.sidebar.c{width:var(--sc)}
+.sb-head{padding:16px 18px;display:flex;align-items:center;gap:12px;min-height:var(--hh);border-bottom:1px solid var(--line)}
+.sb-logo{
+  width:34px;height:34px;border-radius:10px;
+  display:grid;place-items:center;flex-shrink:0;
+  font-family:'Instrument Serif',serif; font-size:18px; font-weight:400;
+  background: linear-gradient(135deg, oklch(0.62 0.22 260), oklch(0.45 0.23 268));
+  border:1px solid oklch(0.45 0.23 268 / 0.4);
+  color:#fff;
+  box-shadow: 0 6px 16px -4px oklch(0.5 0.22 262 / 0.4);
+}
+.sb-brand{font-family:'Instrument Serif',serif;font-size:20px;font-weight:400;color:var(--ink-0);white-space:nowrap;transition:opacity var(--ts);letter-spacing:0.01em}
+.sidebar.c .sb-brand{opacity:0;width:0;overflow:hidden}
+.sb-toggle{position:absolute;right:-12px;top:22px;width:24px;height:24px;background:#fff;border:1px solid var(--line-2);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink-2);transition:all var(--ts);z-index:5;box-shadow:0 4px 12px -4px rgba(11,18,40,0.18)}
+.sb-toggle:hover{color:var(--blue-2);border-color:var(--blue)}
+.sb-toggle svg{width:11px;height:11px;transition:transform var(--ts)}
+.sidebar.c .sb-toggle svg{transform:rotate(180deg)}
+.sb-nav{flex:1;overflow-y:auto;padding:10px 8px}
+.nav-sec{margin-bottom:6px}
+.nav-sec-t{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:0.18em;color:var(--ink-3);padding:10px 12px 4px;white-space:nowrap;transition:opacity var(--ts)}
+.sidebar.c .nav-sec-t{opacity:0}
+.nav-i{display:flex;align-items:center;gap:12px;padding:9px 12px;border-radius:9px;cursor:pointer;transition:all var(--ts);color:var(--ink-2);text-decoration:none;white-space:nowrap;margin:1px 0;position:relative;font-size:13px;font-weight:500}
+.nav-i:hover{background:rgba(60,100,220,0.06);color:var(--ink-0)}
+.nav-i.act{
+  background: linear-gradient(90deg, oklch(0.58 0.22 262 / 0.12), oklch(0.58 0.22 262 / 0.02));
+  color:var(--blue-2);
+  box-shadow: inset 0 0 0 1px oklch(0.58 0.22 262 / 0.2);
+}
+.nav-i.act::before{content:'';position:absolute;left:-8px;top:50%;transform:translateY(-50%);width:3px;height:18px;background:var(--blue);border-radius:0 3px 3px 0;box-shadow:0 0 8px oklch(0.58 0.22 262 / 0.6)}
+.nav-i svg{width:17px;height:17px;flex-shrink:0;stroke-width:1.8}
+.nav-i-t{transition:opacity var(--ts);font-size:13px}
+.sidebar.c .nav-i-t{opacity:0;width:0;overflow:hidden}
+.nav-badge{margin-left:auto;background:linear-gradient(135deg,var(--blue),var(--blue-3));color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:8px;min-width:18px;text-align:center;font-family:'JetBrains Mono',monospace}
+.sidebar.c .nav-badge{display:none}
+.sb-foot{padding:12px 12px 16px;border-top:1px solid var(--line)}
+.sb-user{display:flex;align-items:center;gap:10px;padding:8px;border-radius:9px;cursor:pointer;transition:background var(--ts)}
+.sb-user:hover{background:rgba(60,100,220,0.06)}
+.sb-u-av{width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,oklch(0.7 0.18 300),oklch(0.55 0.22 262));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex-shrink:0;color:#fff}
+.sb-u-info{overflow:hidden;transition:opacity var(--ts)}
+.sidebar.c .sb-u-info{opacity:0;width:0}
+.sb-u-nm{font-size:12px;font-weight:600;white-space:nowrap;color:var(--ink-0)}
+.sb-u-rl{font-size:10px;color:var(--ink-3);white-space:nowrap;letter-spacing:0.05em;text-transform:uppercase;margin-top:2px}
+
+/* MAIN */
+.main{margin-left:var(--sw);transition:margin-left var(--ts) cubic-bezier(.4,0,.2,1);min-height:100vh;position:relative;z-index:1}
+.sidebar.c~.main{margin-left:var(--sc)}
+
+/* TOPBAR */
+.topbar{
+  position:sticky;top:0;height:var(--hh);z-index:100;
+  background:rgba(255,255,255,0.82);backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--line);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 28px;
+}
+.tb-left{display:flex;align-items:center;gap:12px}
+.tb-title{font-family:'Instrument Serif',serif;font-size:22px;line-height:1;letter-spacing:-0.01em;color:var(--ink-0)}
+.tb-bread{font-size:11px;color:var(--ink-3);letter-spacing:0.08em;text-transform:uppercase;margin-top:3px;font-family:'JetBrains Mono',monospace}
+.tb-bread span{color:var(--ink-2)}
+.tb-right{display:flex;align-items:center;gap:8px}
+.tb-btn{width:36px;height:36px;border-radius:9px;background:#fff;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink-2);transition:all var(--ts);position:relative}
+.tb-btn:hover{color:var(--blue-2);border-color:var(--line-3);background:oklch(0.95 0.04 260)}
+.tb-btn svg{width:15px;height:15px}
+.tb-btn .dot{position:absolute;top:6px;right:6px;width:7px;height:7px;background:var(--blue);border-radius:50%;border:2px solid #fff;box-shadow:0 0 6px var(--blue)}
+.tb-search{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:9px;padding:7px 12px;width:260px;transition:all var(--ts)}
+.tb-search:focus-within{border-color:var(--line-3);box-shadow:0 0 0 3px oklch(0.58 0.22 262 / 0.12);background:#fff}
+.tb-search svg{width:14px;height:14px;color:var(--ink-3)}
+.tb-search input{background:none;border:none;outline:none;color:var(--ink-0);font-size:12px;width:100%;font-family:inherit}
+.tb-search input::placeholder{color:var(--ink-3)}
+.tb-search kbd{font-size:10px;padding:1px 6px;background:var(--bg-2);border:1px solid var(--line-2);border-radius:4px;color:var(--ink-2);font-family:'JetBrains Mono',monospace}
+
+/* CONTENT */
+.content{padding:24px 28px 60px}
+.pv{display:none;animation:pgIn .35s ease-out}
+.pv.act{display:block}
+@keyframes pgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* CARDS */
+.card{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:20px;
+  transition:all var(--ts);
+  box-shadow: 0 1px 2px rgba(11,18,40,0.04), 0 4px 16px -8px rgba(11,18,40,0.08);
+}
+.card:hover{border-color:var(--line-2)}
+.card-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.card-t{font-family:'Instrument Serif',serif;font-size:20px;font-weight:400;letter-spacing:-0.01em;color:var(--ink-0);line-height:1.1}
+.card-st{font-size:11px;color:var(--ink-3);margin-top:4px;letter-spacing:0.05em;font-family:'JetBrains Mono',monospace;text-transform:uppercase}
+
+/* GRID */
+.g2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.g5{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+.g6{display:grid;grid-template-columns:repeat(6,1fr);gap:16px}
+
+/* STATS */
+.stat-card{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:20px; transition:all var(--ts);
+  position:relative; overflow:hidden;
+  box-shadow: 0 1px 2px rgba(11,18,40,0.04), 0 4px 16px -8px rgba(11,18,40,0.08);
+}
+.stat-card::before{
+  content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background: radial-gradient(ellipse at top right, oklch(0.58 0.22 262 / 0.06), transparent 60%);
+}
+.stat-card:hover{border-color:var(--line-3)}
+.stat-label{font-size:11px;color:var(--ink-3);margin-bottom:10px;letter-spacing:0.1em;text-transform:uppercase;font-family:'JetBrains Mono',monospace;font-weight:500;position:relative}
+.stat-val{font-family:'Instrument Serif',serif; font-size:34px;font-weight:400;letter-spacing:-0.02em;color:var(--ink-0);line-height:1;position:relative}
+.stat-chg{font-size:11px;font-weight:600;margin-top:10px;display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:6px;font-family:'JetBrains Mono',monospace;letter-spacing:0.02em;position:relative}
+.stat-chg.up{background:var(--green-l);color:var(--green);border:1px solid oklch(0.72 0.17 150 / 0.3)}
+.stat-chg.dn{background:var(--red-l);color:var(--red);border:1px solid oklch(0.68 0.22 20 / 0.3)}
+
+/* TABLE */
+.tbl{width:100%;border-collapse:collapse}
+.tbl th{text-align:left;font-size:10px;font-weight:600;color:var(--ink-2);text-transform:uppercase;letter-spacing:0.1em;padding:12px 14px;border-bottom:1px solid var(--line-2);font-family:'JetBrains Mono',monospace;background:var(--bg-2)}
+.tbl td{padding:14px;font-size:13px;border-bottom:1px solid var(--line);color:var(--ink-1)}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:oklch(0.97 0.02 260)}
+.tbl td.mono{font-family:'JetBrains Mono',monospace;font-size:12px}
+
+/* BADGES */
+.badge{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:6px;font-size:10px;font-weight:600;font-family:'JetBrains Mono',monospace;letter-spacing:0.04em;text-transform:uppercase}
+.b-green{background:var(--green-l);color:var(--green);border:1px solid oklch(0.72 0.17 150 / 0.3)}
+.b-red{background:var(--red-l);color:var(--red);border:1px solid oklch(0.68 0.22 20 / 0.3)}
+.b-blue{background:var(--blue-l);color:var(--blue-2);border:1px solid var(--line-3)}
+.b-yellow{background:var(--yellow-l);color:var(--yellow);border:1px solid oklch(0.82 0.15 85 / 0.3)}
+.b-purple{background:var(--purple-l);color:var(--purple);border:1px solid oklch(0.7 0.2 300 / 0.3)}
+.b-cyan{background:var(--cyan-l);color:var(--cyan);border:1px solid oklch(0.86 0.12 220 / 0.3)}
+.b-orange{background:var(--orange-l);color:var(--orange);border:1px solid oklch(0.74 0.17 55 / 0.3)}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:9px 18px;border-radius:9px;font-size:12.5px;font-weight:600;font-family:inherit;cursor:pointer;transition:all .18s ease;border:1px solid transparent;text-decoration:none;white-space:nowrap}
+.btn svg{width:14px;height:14px}
+.btn-blue{background:linear-gradient(180deg, oklch(0.7 0.2 255), oklch(0.52 0.22 262));color:#fff;box-shadow:0 1px 0 rgba(255,255,255,0.3) inset, 0 6px 18px -6px oklch(0.5 0.22 262 / 0.55)}
+.btn-blue:hover{filter:brightness(1.1)}
+.btn-green{background:linear-gradient(180deg, oklch(0.76 0.18 155), oklch(0.55 0.17 150));color:#fff;box-shadow:0 1px 0 rgba(255,255,255,0.2) inset, 0 6px 18px -6px oklch(0.55 0.17 150 / 0.55)}
+.btn-green:hover{filter:brightness(1.1)}
+.btn-red{background:linear-gradient(180deg, oklch(0.72 0.22 25), oklch(0.55 0.22 20));color:#fff}
+.btn-red:hover{filter:brightness(1.1)}
+.btn-ghost{background:transparent;color:var(--ink-2);padding:7px 14px}
+.btn-ghost:hover{background:oklch(0.95 0.03 260);color:var(--ink-0)}
+.btn-sm{padding:6px 12px;font-size:11.5px;border-radius:7px}
+.btn-outline{background:#fff;border:1px solid var(--line-2);color:var(--ink-1)}
+.btn-outline:hover{border-color:var(--line-3);color:var(--ink-0);background:oklch(0.96 0.03 260)}
+
+/* AVATAR */
+.av{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;flex-shrink:0;color:#fff;font-family:'JetBrains Mono',monospace;letter-spacing:0.02em}
+.av-sm{width:28px;height:28px;font-size:10px;border-radius:7px}
+.av-lg{width:48px;height:48px;font-size:15px;border-radius:12px}
+
+/* PROGRESS */
+.prog{width:100%;height:5px;background:var(--bg-3);border-radius:3px;overflow:hidden}
+.prog-f{height:100%;border-radius:3px;transition:width 1s ease-out}
+.prog-f.blue{background:linear-gradient(90deg,var(--blue-2),var(--blue));box-shadow:0 0 8px oklch(0.7 0.19 250 / 0.6)}
+.prog-f.green{background:linear-gradient(90deg,oklch(0.78 0.18 155),var(--green))}
+.prog-f.yellow{background:linear-gradient(90deg,oklch(0.88 0.15 85),var(--yellow))}
+.prog-f.red{background:linear-gradient(90deg,oklch(0.74 0.22 25),var(--red))}
+.prog-f.purple{background:linear-gradient(90deg,oklch(0.78 0.2 300),var(--purple))}
+
+/* TABS */
+.tabs{display:flex;gap:2px;padding:3px;background:var(--bg-2);border:1px solid var(--line);border-radius:9px;width:fit-content}
+.tab{padding:7px 14px;border-radius:7px;font-size:12px;font-weight:500;color:var(--ink-2);cursor:pointer;transition:all var(--ts);font-family:inherit}
+.tab:hover{color:var(--ink-0)}
+.tab.act{background:#fff;color:var(--blue-2);box-shadow:0 1px 3px rgba(11,18,40,0.08), inset 0 0 0 1px var(--line-3)}
+
+/* FORM */
+.fg{margin-bottom:14px}
+.fl{display:block;font-size:11px;font-weight:500;color:var(--ink-2);margin-bottom:7px;letter-spacing:0.08em;text-transform:uppercase;font-family:'JetBrains Mono',monospace}
+.fi{width:100%;padding:10px 14px;background:#fff;border:1px solid var(--line-2);border-radius:9px;color:var(--ink-0);font-size:13px;font-family:inherit;transition:all var(--ts);outline:none}
+.fi:focus{border-color:var(--line-3);box-shadow:0 0 0 3px oklch(0.58 0.22 262 / 0.12);background:#fff}
+.fi::placeholder{color:var(--ink-3)}
+.fs{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%235c6784' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:32px}
+
+/* TOGGLE */
+.tog-row{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;background:#fff;border:1px solid var(--line);border-radius:10px;margin-bottom:8px}
+.tog-lb{font-size:13px;font-weight:500;color:var(--ink-0)}
+.tog-ds{font-size:11px;color:var(--ink-3);margin-top:3px}
+.tog-sw{width:40px;height:22px;background:var(--bg-3);border:1px solid var(--line-2);border-radius:11px;position:relative;cursor:pointer;transition:all var(--ts);flex-shrink:0}
+.tog-sw.on{background:linear-gradient(180deg, oklch(0.58 0.22 262), oklch(0.48 0.22 265));border-color:var(--line-3);box-shadow:0 0 10px oklch(0.58 0.22 262 / 0.35)}
+.tog-sw::after{content:'';position:absolute;width:16px;height:16px;background:#fff;border-radius:50%;top:2px;left:2px;transition:all var(--ts);box-shadow:0 1px 3px rgba(0,0,0,0.2)}
+.tog-sw.on::after{left:20px;background:#fff}
+
+/* TOAST */
+.toast-box{position:fixed;top:78px;right:28px;z-index:10000;display:flex;flex-direction:column;gap:8px}
+.toast{padding:12px 18px;border-radius:10px;font-size:12px;font-weight:500;display:flex;align-items:center;gap:10px;animation:tIn .3s ease-out;min-width:260px;backdrop-filter:blur(20px);box-shadow:0 20px 50px -10px rgba(0,0,0,0.5)}
+.toast.ok{background:#fff;border:1px solid oklch(0.55 0.17 150 / 0.4);color:var(--green)}
+.toast.err{background:#fff;border:1px solid oklch(0.55 0.22 22 / 0.4);color:var(--red)}
+.toast.inf{background:#fff;border:1px solid var(--line-3);color:var(--blue-2)}
+@keyframes tIn{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
+
+/* MODAL */
+.modal-ov{position:fixed;inset:0;background:rgba(11,18,40,0.3);backdrop-filter:blur(8px);z-index:9999;display:none;align-items:center;justify-content:center}
+.modal-ov.act{display:flex}
+.modal{background:#fff;border:1px solid var(--line-2);border-radius:16px;padding:26px;max-width:460px;width:90%;box-shadow:0 30px 80px -10px rgba(11,18,40,0.25);animation:mIn .25s ease-out}
+@keyframes mIn{from{opacity:0;transform:scale(.96) translateY(8px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.modal-t{font-family:'Instrument Serif',serif;font-size:22px;font-weight:400;margin-bottom:10px;letter-spacing:-0.01em}
+.modal-tx{font-size:13px;color:var(--ink-2);line-height:1.6;margin-bottom:22px}
+.modal-act{display:flex;gap:10px;justify-content:flex-end}
+
+/* CHART BARS */
+.chart-ph{width:100%;height:170px;background:linear-gradient(180deg, oklch(0.98 0.02 260), #fff);border:1px solid var(--line);border-radius:10px;display:flex;align-items:flex-end;padding:14px;gap:3px;position:relative;overflow:hidden}
+.chart-ph::before{
+  content:''; position:absolute; inset:0; pointer-events:none;
+  background:
+    repeating-linear-gradient(0deg, transparent 0 24px, rgba(11,18,40,0.04) 24px 25px);
+}
+.chart-b{flex:1;background:linear-gradient(to top,var(--blue),oklch(0.7 0.2 255 / 0.5));border-radius:2px 2px 0 0;min-height:3px;position:relative}
+.chart-b:nth-child(even){background:linear-gradient(to top,var(--cyan),oklch(0.7 0.14 220 / 0.5))}
+
+/* SECTION */
+.sec{margin-bottom:28px}
+.sec-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.sec-t{font-family:'Instrument Serif',serif;font-size:26px;font-weight:400;letter-spacing:-0.01em}
+.sec-t em{font-style:italic;background:linear-gradient(100deg, oklch(0.78 0.17 245), oklch(0.62 0.21 260));-webkit-background-clip:text;background-clip:text;color:transparent}
+.divider{height:1px;background:var(--line);margin:20px 0}
+
+/* ACTIVITY */
+.act-i{display:flex;align-items:center;gap:14px;padding:12px 14px;border-radius:10px;transition:background var(--ts)}
+.act-i:hover{background:oklch(0.97 0.02 260)}
+.act-ic{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid var(--line)}
+.act-ic svg{width:16px;height:16px}
+.act-info{flex:1}
+.act-t{font-size:13px;font-weight:600;color:var(--ink-0)}
+.act-d{font-size:11px;color:var(--ink-3);margin-top:3px}
+.act-amt{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--green)}
+
+/* NOTIF */
+.notif-i{display:flex;gap:12px;padding:12px 14px;border-radius:10px;transition:background var(--ts);cursor:pointer;border:1px solid transparent}
+.notif-i:hover{background:oklch(0.97 0.02 260)}
+.notif-i.unread{background:oklch(0.58 0.22 262 / 0.06);border-color:var(--line-3)}
+.notif-ic{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid var(--line)}
+.notif-ic svg{width:14px;height:14px}
+.notif-tx{font-size:12.5px;color:var(--ink-1);line-height:1.55}
+.notif-tx strong{color:var(--ink-0);font-weight:600}
+.notif-tm{font-size:10px;color:var(--ink-3);margin-top:4px;letter-spacing:0.05em;font-family:'JetBrains Mono',monospace}
+
+/* CHAT */
+.chat-msg{display:flex;gap:10px;margin-bottom:14px}
+.chat-av{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;color:#fff;font-family:'JetBrains Mono',monospace}
+.chat-bub{background:var(--bg-2);border:1px solid var(--line);border-radius:10px;padding:9px 14px;max-width:75%}
+.chat-nm{font-size:11px;font-weight:600;color:var(--blue-2);margin-bottom:3px}
+.chat-tx{font-size:12.5px;color:var(--ink-1);line-height:1.5}
+.chat-tm{font-size:9px;color:var(--ink-3);margin-top:3px;font-family:'JetBrains Mono',monospace;letter-spacing:0.05em}
+
+/* CALENDAR */
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.cal-cell{aspect-ratio:1;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;cursor:pointer;transition:all var(--ts);font-family:'JetBrains Mono',monospace;border:1px solid transparent}
+.cal-cell:hover{background:oklch(0.95 0.04 260)}
+.cal-cell.check{background:var(--green-l);color:var(--green);border-color:oklch(0.55 0.17 150 / 0.3)}
+.cal-cell.today{border:1px solid var(--blue);color:var(--blue-2);font-weight:700;box-shadow:0 0 10px oklch(0.58 0.22 262 / 0.25)}
+.cal-cell.miss{background:var(--red-l);color:var(--red);border-color:oklch(0.55 0.22 22 / 0.3)}
+.cal-cell.empty{background:transparent;cursor:default;opacity:0.2}
+
+/* LEADERBOARD ranks */
+.r1{background:linear-gradient(135deg,#fde68a,#f59e0b);color:#1a1300}
+.r2{background:linear-gradient(135deg,#cbd5e1,#64748b);color:#0f172a}
+.r3{background:linear-gradient(135deg,#fdba74,#c2410c);color:#1a0a00}
+
+/* TRAIL */
+.trail-num{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Instrument Serif',serif;font-size:17px;font-weight:400;flex-shrink:0}
+.trail-num.done{background:var(--green-l);color:var(--green);border:2px solid oklch(0.55 0.17 150 / 0.5)}
+.trail-num.curr{background:oklch(0.58 0.22 262 / 0.15);color:var(--blue-2);border:2px solid var(--blue);box-shadow:0 0 12px oklch(0.58 0.22 262 / 0.25)}
+.trail-num.lock{background:var(--bg-2);color:var(--ink-3);border:2px solid var(--line)}
+.trail-conn{width:48px;height:2px;background:var(--line-2);flex-shrink:0}
+.trail-conn.done{background:linear-gradient(90deg,oklch(0.72 0.17 150),var(--blue))}
+
+/* UTILS */
+.flex{display:flex}.aic{align-items:center}.jcb{justify-content:space-between}.gap2{gap:8px}.gap3{gap:12px}.gap4{gap:16px}.fw{width:100%}
+.mb1{margin-bottom:4px}.mb2{margin-bottom:8px}.mb3{margin-bottom:12px}.mb4{margin-bottom:16px}.mb6{margin-bottom:24px}
+.mt2{margin-top:8px}.mt4{margin-top:16px}
+.tg{color:var(--green)}.tr{color:var(--red)}.tb{color:var(--blue-2)}.tp{color:var(--purple)}.ty{color:var(--yellow)}.t3{color:var(--ink-3)}.t2{color:var(--ink-2)}
+.fb{font-weight:700}.f6{font-weight:600}.fs12{font-size:12px}.fs11{font-size:11px}
+.mono{font-family:'JetBrains Mono',monospace}
+.s-dot{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:4px}
+.s-dot.green{background:var(--green);box-shadow:0 0 6px var(--green)}
+.s-dot.red{background:var(--red);box-shadow:0 0 6px var(--red)}
+.s-dot.yellow{background:var(--yellow);box-shadow:0 0 6px var(--yellow)}
+.s-dot.blue{background:var(--blue-2);box-shadow:0 0 6px var(--blue-2)}
+
+/* WELCOME BANNER w/ animated stream */
+.welcome{
+  position:relative;
+  border-radius:18px;
+  padding:30px 34px;
+  color:#fff;
+  overflow:hidden;
+  margin-bottom:24px;
+  border:1px solid oklch(0.35 0.18 265 / 0.5);
+  background: linear-gradient(140deg, #0f1a45 0%, #0a1230 60%, #15266b 100%);
+  box-shadow: 0 20px 50px -16px oklch(0.35 0.2 260 / 0.45);
+  min-height:200px;
+}
+.welcome canvas{position:absolute;inset:0;width:100%;height:100%}
+.welcome-content{position:relative;z-index:2}
+.welcome-beam{
+  position:absolute; top:-20px; bottom:-20px; right:12%;
+  width:2px;
+  background: linear-gradient(180deg, transparent, oklch(0.92 0.1 230 / 0.9), transparent);
+  box-shadow: 0 0 40px 8px oklch(0.7 0.2 240 / 0.35), 0 0 120px 20px oklch(0.55 0.22 255 / 0.25);
+  mix-blend-mode: screen;
+}
+.welcome-pill{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:5px 14px 5px 5px;border-radius:999px;
+  background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);
+  font-size:11px;color:rgba(255,255,255,0.9);margin-bottom:16px;
+  backdrop-filter:blur(10px);font-family:'JetBrains Mono',monospace;letter-spacing:0.05em;
+}
+.welcome-pill-badge{width:22px;height:22px;border-radius:999px;display:grid;place-items:center;background:linear-gradient(135deg,var(--blue),var(--blue-3));font-size:9px;font-weight:700;color:#fff}
+.welcome h2{font-family:'Instrument Serif',serif;font-size:38px;font-weight:400;margin-bottom:10px;letter-spacing:-0.02em;line-height:1.05;color:#fff}
+.welcome h2 em{font-style:italic;background:linear-gradient(100deg, oklch(0.88 0.12 220), oklch(0.78 0.17 245));-webkit-background-clip:text;background-clip:text;color:transparent}
+.welcome p{font-size:14px;color:rgba(255,255,255,0.75);max-width:520px;line-height:1.6}
+.welcome-stats{display:flex;gap:40px;margin-top:20px}
+.welcome-stat .val{font-family:'Instrument Serif',serif;font-size:28px;font-weight:400;line-height:1;color:#fff}
+.welcome-stat .lbl{font-size:10px;color:rgba(255,255,255,0.6);letter-spacing:0.1em;text-transform:uppercase;margin-top:5px;font-family:'JetBrains Mono',monospace}
+
+/* SIGNAL CARD */
+.sig-card{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:20px;transition:all var(--ts);cursor:pointer;
+  box-shadow: 0 1px 2px rgba(11,18,40,0.04), 0 4px 16px -8px rgba(11,18,40,0.08);
+}
+.sig-card:hover{border-color:var(--line-3);transform:translateY(-2px);box-shadow:0 12px 30px -12px oklch(0.5 0.22 262 / 0.25)}
+
+/* POSITION CARD */
+.pos-card{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:18px;transition:all var(--ts);
+  box-shadow: 0 1px 2px rgba(11,18,40,0.04);
+}
+.pos-card:hover{border-color:var(--line-3);box-shadow:0 4px 18px -6px oklch(0.5 0.22 262 / 0.18)}
+
+@media(max-width:1024px){.g4{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(2,1fr)}.g5,.g6{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:768px){.sidebar{transform:translateX(-100%);width:var(--sw)!important}.sidebar.mo{transform:translateX(0)}.main{margin-left:0!important}.g2,.g3,.g4,.g5,.g6{grid-template-columns:1fr}.content{padding:16px}.tb-search{display:none}}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sb">
+    <div class="sb-head">
+        <div class="sb-logo">TV</div>
+        <span class="sb-brand">Tradeverse</span>
+    </div>
+    <div class="sb-toggle" onclick="toggleSb()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></div>
+    <nav class="sb-nav">
+        <div class="nav-sec">
+            <div class="nav-sec-t">Dashboard</div>
+            <div class="nav-i act" data-p="overview" onclick="go('overview')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg><span class="nav-i-t">Overview</span></div>
+            <div class="nav-i" data-p="portfolio" onclick="go('portfolio')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg><span class="nav-i-t">Portfolio</span></div>
+        </div>
+        <div class="nav-sec">
+            <div class="nav-sec-t">Trading</div>
+            <div class="nav-i" data-p="signals" onclick="go('signals')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><span class="nav-i-t">Signal Plaza</span><span class="nav-badge">12</span></div>
+            <div class="nav-i" data-p="trading" onclick="go('trading')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg><span class="nav-i-t">Trade</span></div>
+            <div class="nav-i" data-p="trail" onclick="go('trail')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span class="nav-i-t">Trail Mode</span></div>
+        </div>
+        <div class="nav-sec">
+            <div class="nav-sec-t">Finance</div>
+            <div class="nav-i" data-p="wallet" onclick="go('wallet')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg><span class="nav-i-t">Wallet</span></div>
+            <div class="nav-i" data-p="history" onclick="go('history')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span class="nav-i-t">History</span></div>
+        </div>
+        <div class="nav-sec">
+            <div class="nav-sec-t">Engage</div>
+            <div class="nav-i" data-p="referral" onclick="go('referral')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span class="nav-i-t">Referrals</span></div>
+            <div class="nav-i" data-p="activities" onclick="go('activities')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span class="nav-i-t">Activities</span></div>
+            <div class="nav-i" data-p="community" onclick="go('community')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="nav-i-t">Community</span></div>
+        </div>
+        <div class="nav-sec">
+            <div class="nav-sec-t">Account</div>
+            <div class="nav-i" data-p="notifications" onclick="go('notifications')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="nav-i-t">Notifications</span><span class="nav-badge">3</span></div>
+            <div class="nav-i" data-p="settings" onclick="go('settings')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.26.604.852.997 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span class="nav-i-t">Settings</span></div>
+        </div>
+    </nav>
+    <div class="sb-foot">
+        <div class="sb-user">
+            <div class="sb-u-av">JD</div>
+            <div class="sb-u-info"><div class="sb-u-nm">John Doe</div><div class="sb-u-rl">Premium</div></div>
+        </div>
+    </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main" id="main">
+    <header class="topbar">
+        <div class="tb-left">
+            <div>
+                <div class="tb-title" id="pgTitle">Overview</div>
+                <div class="tb-bread">Portal / <span id="pgBread">Overview</span></div>
+            </div>
+        </div>
+        <div class="tb-right">
+            <div class="tb-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input placeholder="Search markets, signals, orders..." /><kbd>⌘K</kbd></div>
+            <div class="tb-btn" onclick="toast('No new notifications','inf')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="dot"></span></div>
+            <div class="tb-btn" onclick="go('settings')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.26.604.852.997 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div>
+        </div>
+    </header>
+    <div class="content" id="contentArea">
+
+        <!-- OVERVIEW -->
+        <div class="pv act" id="pg-overview" data-screen-label="Overview">
+            <div class="welcome">
+                <canvas id="streamCanvas"></canvas>
+                <div class="welcome-beam"></div>
+                <div class="welcome-content">
+                    <div class="welcome-pill"><span class="welcome-pill-badge">TV</span> Markets open · Low volatility session</div>
+                    <h2>Good morning, John.<br/>Your edge is <em>compounding.</em></h2>
+                    <p>3 active positions, 2 rewards to claim, and your Trail Mode challenge advances to Level 2 today.</p>
+                    <div class="welcome-stats">
+                        <div class="welcome-stat"><div class="val mono">$48,293</div><div class="lbl">Balance</div></div>
+                        <div class="welcome-stat"><div class="val mono" style="color:oklch(0.92 0.1 150)">+12.5%</div><div class="lbl">This Month</div></div>
+                        <div class="welcome-stat"><div class="val mono">03</div><div class="lbl">Positions</div></div>
+                        <div class="welcome-stat"><div class="val mono">14d</div><div class="lbl">Streak</div></div>
+                    </div>
+                </div>
+            </div>
+            <div class="g4 mb6">
+                <div class="stat-card"><div class="stat-label">Total Balance</div><div class="stat-val">$48,293<span style="font-size:18px;color:var(--ink-3)">.57</span></div><div class="stat-chg up">↑ $5,340 MTD</div></div>
+                <div class="stat-card"><div class="stat-label">Broker Account</div><div class="stat-val">$32,450</div><div class="stat-chg up">↑ 72% invested</div></div>
+                <div class="stat-card"><div class="stat-label">Wallet USDT</div><div class="stat-val">$12,843</div><div class="stat-chg up">Available</div></div>
+                <div class="stat-card"><div class="stat-label">Trial Balance</div><div class="stat-val">$10,000</div><div class="stat-chg up">23 days left</div></div>
+            </div>
+            <div class="g2 mb6">
+                <div class="card">
+                    <div class="card-h">
+                        <div><div class="card-t">Portfolio Performance</div><div class="card-st">Last 30 days</div></div>
+                        <div class="tabs"><div class="tab act">30D</div><div class="tab">90D</div><div class="tab">1Y</div></div>
+                    </div>
+                    <div class="chart-ph" id="ovChart"></div>
+                </div>
+                <div class="card">
+                    <div class="card-h"><div><div class="card-t">Recent Activity</div></div><button class="btn btn-ghost btn-sm">View all →</button></div>
+                    <div class="act-i"><div class="act-ic" style="background:var(--green-l);color:var(--green)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div><div class="act-info"><div class="act-t">Position closed — AlphaSignal</div><div class="act-d">Profit realized · 2 hours ago</div></div><div class="act-amt">+$847</div></div>
+                    <div class="act-i"><div class="act-ic" style="background:var(--blue-l);color:var(--blue-2)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><div class="act-info"><div class="act-t">Deposit confirmed</div><div class="act-d">500 USDT via TRC20 · 5 hours ago</div></div><div class="act-amt">+$500</div></div>
+                    <div class="act-i"><div class="act-ic" style="background:var(--purple-l);color:var(--purple)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><div class="act-info"><div class="act-t">Daily login reward</div><div class="act-d">7-day streak bonus · 1 day ago</div></div><div class="act-amt">+$5</div></div>
+                </div>
+            </div>
+            <div class="sec">
+                <div class="sec-h"><div class="sec-t">Active <em>positions</em></div><button class="btn btn-outline btn-sm" onclick="go('portfolio')">View all →</button></div>
+                <div class="g3">
+                    <div class="pos-card">
+                        <div class="flex aic jcb mb3">
+                            <div class="flex aic gap2"><div class="av av-sm" style="background:linear-gradient(135deg,oklch(0.68 0.19 255),oklch(0.86 0.12 220))">AS</div><div><div class="f6 fs12">AlphaSignal</div><div class="fs11 t3">Momentum Trading</div></div></div>
+                            <span class="badge b-green"><span class="s-dot green"></span>Active</span>
+                        </div>
+                        <div class="g3 mb3">
+                            <div><div class="fs11 t3 mono" style="letter-spacing:0.08em;text-transform:uppercase">Invested</div><div class="f6 fs12 mono mt2">$5,000</div></div>
+                            <div><div class="fs11 t3 mono" style="letter-spacing:0.08em;text-transform:uppercase">P/L</div><div class="f6 fs12 tg mono mt2">+$847</div></div>
+                            <div><div class="fs11 t3 mono" style="letter-spacing:0.08em;text-transform:uppercase">Win</div><div class="f6 fs12 mono mt2">72%</div></div>
+                        </div>
+                        <div class="flex aic jcb"><div class="fs11 t3 mono">2,400 followers</div><button class="btn btn-outline btn-sm" onclick="showModal_('Close Position')">Close</button></div>
+                    </div>
+                    <div class="pos-card">
+                        <div class="flex aic jcb mb3">
+                            <div class="flex aic gap2"><div class="av av-sm" style="background:linear-gradient(135deg,oklch(0.7 0.2 300),oklch(0.68 0.22 340))">QF</div><div><div class="f6 fs12">QuantFlow</div><div class="fs11 t3">Mean Reversion</div></div></div>
+                            <span class="badge b-yellow"><span class="s-dot yellow"></span>Fundraising</span>
+                        </div>
+                        <div class="g3 mb3">
+                            <div><div class="fs11 t3 mono" style="letter-spacing:0.08em;text-transform:uppercase">Invested</div><div class="f6 fs12 mono mt2">$3,200</div></div>
+                            <div><div class="fs11 t3 mono" style="letter-spacing:0.08em;text-transform:uppercase">P/L</div><div class="f6 fs12 tg mono mt2">+$234</div></div>
+                            <div><div class="fs11 t3 mono" style="letter-spacing:0.08em;text-transform:uppercase">Win</div><div class="f6 fs12 mono mt2">65%</div></div>
+                        </div>
+                        <div class="flex aic jcb"><div class="fs11 t3 mono">890 followers</div><button class="btn btn-green btn-sm">Add Funds</button></div>
+                    </div>
+                    <div class="pos-card">
+                        <div class="flex aic jcb mb3">
+                            <div class="flex aic gap2"><div class="av av-sm" style="background:linear-gradient(135deg,oklch(0.72 0.17 150),oklch(0.86 0.12 220))">TM</div><div><div class="f6 fs12">TrendMaster</div><div class="fs11 t3">Scalping Pro</div></div></div>
+                            <span class="badge b-green"><span class="s-dot green"></span>Active</span>
+                        </div>
+                        <div class="g3 mb3">
+                            <div><div class="fs11 t3 mono" style="letter-spacing:0.08em;text-transform:uppercase">Invested</div><div class="f6 fs12 mono mt2">$8,500</div></div>
+                            <div><div class="fs11 t3 mono" style="letter-spacing:0.08em;text-transform:uppercase">P/L</div><div class="f6 fs12 tr mono mt2">-$412</div></div>
+                            <div><div class="fs11 t3 mono" style="letter-spacing:0.08em;text-transform:uppercase">Win</div><div class="f6 fs12 mono mt2">58%</div></div>
+                        </div>
+                        <div class="flex aic jcb"><div class="fs11 t3 mono">5,100 followers</div><button class="btn btn-outline btn-sm" onclick="showModal_('Close Position')">Close</button></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PORTFOLIO -->
+        <div class="pv" id="pg-portfolio" data-screen-label="Portfolio">
+            <div class="g4 mb6">
+                <div class="stat-card"><div class="stat-label">Total Invested</div><div class="stat-val">$16,700</div></div>
+                <div class="stat-card"><div class="stat-label">Total P/L</div><div class="stat-val tg">+$669</div></div>
+                <div class="stat-card"><div class="stat-label">Active Positions</div><div class="stat-val">3</div></div>
+                <div class="stat-card"><div class="stat-label">Avg Win Rate</div><div class="stat-val">65%</div></div>
+            </div>
+            <div class="flex aic gap3 mb4"><div class="tabs"><div class="tab act">All Positions</div><div class="tab">Copy Trading</div><div class="tab">Insurance</div></div></div>
+            <div class="card mb6" style="padding:4px"><table class="tbl"><thead><tr><th>Provider</th><th>Strategy</th><th>Type</th><th>Invested</th><th>P/L</th><th>Win</th><th>Followers</th><th>Status</th><th>Actions</th></tr></thead><tbody>
+                <tr><td><div class="flex aic gap2"><div class="av av-sm" style="background:linear-gradient(135deg,oklch(0.68 0.19 255),oklch(0.86 0.12 220))">AS</div><span class="f6">AlphaSignal</span></div></td><td class="t3">Momentum</td><td><span class="badge b-blue">Copy</span></td><td class="mono">$5,000</td><td class="tg f6 mono">+$847</td><td class="t3 mono">72%</td><td class="mono">2,400</td><td><span class="badge b-green">Active</span></td><td><button class="btn btn-outline btn-sm" onclick="showModal_('Close Position')">Close</button></td></tr>
+                <tr><td><div class="flex aic gap2"><div class="av av-sm" style="background:linear-gradient(135deg,oklch(0.7 0.2 300),oklch(0.68 0.22 340))">QF</div><span class="f6">QuantFlow</span></div></td><td class="t3">Mean Reversion</td><td><span class="badge b-blue">Copy</span></td><td class="mono">$3,200</td><td class="tg f6 mono">+$234</td><td class="t3 mono">65%</td><td class="mono">890</td><td><span class="badge b-yellow">Fundraising</span></td><td><button class="btn btn-green btn-sm">Add</button></td></tr>
+                <tr><td><div class="flex aic gap2"><div class="av av-sm" style="background:linear-gradient(135deg,oklch(0.72 0.17 150),oklch(0.86 0.12 220))">TM</div><span class="f6">TrendMaster</span></div></td><td class="t3">Scalping Pro</td><td><span class="badge b-purple">Insurance</span></td><td class="mono">$8,500</td><td class="tr f6 mono">-$412</td><td class="t3 mono">58%</td><td class="mono">5,100</td><td><span class="badge b-green">Active</span></td><td><button class="btn btn-outline btn-sm" onclick="showModal_('Close Position')">Close</button></td></tr>
+                <tr><td><div class="flex aic gap2"><div class="av av-sm" style="background:linear-gradient(135deg,oklch(0.82 0.15 85),oklch(0.74 0.17 55))">CR</div><span class="f6">CryptoRider</span></div></td><td class="t3">Swing Trading</td><td><span class="badge b-blue">Copy</span></td><td class="mono">$12,000</td><td class="tg f6 mono">+$2,340</td><td class="t3 mono">78%</td><td class="mono">8,200</td><td><span class="badge b-green">Completed</span></td><td><button class="btn btn-ghost btn-sm">History</button></td></tr>
+            </tbody></table></div>
+            <div class="card"><div class="card-h"><div><div class="card-t">Position Performance</div><div class="card-st">P/L over time</div></div><div class="tabs"><div class="tab act">30D</div><div class="tab">90D</div><div class="tab">All</div></div></div><div class="chart-ph" id="portChart"></div></div>
+        </div>
+
+        <!-- SIGNAL PLAZA -->
+        <div class="pv" id="pg-signals" data-screen-label="Signal Plaza">
+            <div class="flex aic jcb mb6" style="flex-wrap:wrap;gap:12px">
+                <div class="flex aic gap3">
+                    <input class="fi" placeholder="Search signal providers..." style="width:280px" />
+                    <select class="fi fs" style="width:160px"><option>All Status</option><option>Fundraising</option><option>Active</option></select>
+                    <select class="fi fs" style="width:180px"><option>Sort: Performance</option><option>Sort: AUM</option><option>Sort: Newest</option></select>
+                </div>
+                <div class="tabs"><div class="tab act">All</div><div class="tab">Copy Trading</div><div class="tab">Insurance</div></div>
+            </div>
+            <div class="g3 mb6" id="signalGrid"></div>
+        </div>
+
+        <!-- TRADE -->
+        <div class="pv" id="pg-trading" data-screen-label="Trade">
+            <div class="g2 mb6">
+                <div class="card">
+                    <div class="card-h"><div><div class="card-t">Place Order</div><div class="card-st">BTC / USDT</div></div>
+                        <div class="tabs"><div class="tab act">Limit</div><div class="tab">Market</div><div class="tab">Stop</div></div>
+                    </div>
+                    <div class="tabs mb4" style="width:100%">
+                        <div class="tab act" style="flex:1;text-align:center;background:oklch(0.72 0.17 150 / 0.2);color:oklch(0.92 0.1 150)">Buy</div>
+                        <div class="tab" style="flex:1;text-align:center">Sell</div>
+                    </div>
+                    <div class="fg"><label class="fl">Price (USDT)</label><input class="fi mono" value="67240.00" /></div>
+                    <div class="fg"><label class="fl">Amount (BTC)</label><input class="fi mono" placeholder="0.00" /></div>
+                    <div class="fg"><label class="fl">Total (USDT)</label><input class="fi mono" placeholder="0.00" readonly /></div>
+                    <div class="flex gap2 mb4">
+                        <button class="btn btn-outline btn-sm" style="flex:1">25%</button>
+                        <button class="btn btn-outline btn-sm" style="flex:1">50%</button>
+                        <button class="btn btn-outline btn-sm" style="flex:1">75%</button>
+                        <button class="btn btn-outline btn-sm" style="flex:1">Max</button>
+                    </div>
+                    <div class="flex aic jcb mb4 fs12"><span class="t3 mono">Available</span><span class="f6 mono">$12,843.57</span></div>
+                    <button class="btn btn-green fw" style="padding:13px;font-size:13px" onclick="showModal_('Confirm Buy Order')">Buy BTC</button>
+                </div>
+                <div class="card">
+                    <div class="card-h"><div><div class="card-t">Order Book</div><div class="card-st">BTC/USDT · Live</div></div><span class="badge b-green"><span class="s-dot green"></span>Live</span></div>
+                    <div style="padding:10px 12px;background:rgba(255,255,255,0.02);border:1px solid var(--line);border-radius:10px;margin-bottom:14px">
+                        <div class="flex aic jcb mb2 fs11 mono" style="color:var(--ink-3);letter-spacing:0.08em;text-transform:uppercase"><span>Price</span><span>Amount</span><span>Total</span></div>
+                        <div class="flex aic jcb mb1 fs11 mono"><span class="tr">67,450</span><span class="t3">0.45</span><span class="t3">30,352</span></div>
+                        <div class="flex aic jcb mb1 fs11 mono"><span class="tr">67,380</span><span class="t3">0.82</span><span class="t3">55,251</span></div>
+                        <div class="flex aic jcb mb1 fs11 mono"><span class="tr">67,310</span><span class="t3">1.20</span><span class="t3">80,772</span></div>
+                        <div class="flex aic jcb mb1 fs11 mono"><span class="tr">67,280</span><span class="t3">0.33</span><span class="t3">22,202</span></div>
+                        <div style="text-align:center;font-family:'Instrument Serif',serif;font-size:26px;font-weight:400;color:oklch(0.92 0.1 150);padding:10px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin:8px 0">67,240<span style="color:var(--ink-3);font-size:18px">.50</span></div>
+                        <div class="flex aic jcb mb1 fs11 mono"><span class="tg">67,210</span><span class="t3">1.35</span><span class="t3">90,733</span></div>
+                        <div class="flex aic jcb mb1 fs11 mono"><span class="tg">67,150</span><span class="t3">0.92</span><span class="t3">61,778</span></div>
+                        <div class="flex aic jcb mb1 fs11 mono"><span class="tg">67,080</span><span class="t3">0.67</span><span class="t3">44,943</span></div>
+                        <div class="flex aic jcb fs11 mono"><span class="tg">67,020</span><span class="t3">2.10</span><span class="t3">140,742</span></div>
+                    </div>
+                    <div class="card-st mb3">Recent Trades</div>
+                    <div style="max-height:140px;overflow-y:auto;padding:8px 10px;background:rgba(255,255,255,0.02);border:1px solid var(--line);border-radius:10px">
+                        <div class="flex aic jcb mb1 fs11 mono"><span class="tg">BUY</span><span class="t2">67,240</span><span class="t3">0.5</span><span class="t3">14:32</span></div>
+                        <div class="flex aic jcb mb1 fs11 mono"><span class="tr">SELL</span><span class="t2">67,235</span><span class="t3">1.2</span><span class="t3">14:31</span></div>
+                        <div class="flex aic jcb mb1 fs11 mono"><span class="tg">BUY</span><span class="t2">67,245</span><span class="t3">0.3</span><span class="t3">14:31</span></div>
+                        <div class="flex aic jcb mb1 fs11 mono"><span class="tr">SELL</span><span class="t2">67,230</span><span class="t3">2.1</span><span class="t3">14:30</span></div>
+                        <div class="flex aic jcb fs11 mono"><span class="tg">BUY</span><span class="t2">67,240</span><span class="t3">0.8</span><span class="t3">14:29</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="card" style="padding:4px"><div style="padding:16px 16px 8px" class="card-h"><div><div class="card-t">Open Orders</div></div></div>
+                <table class="tbl"><thead><tr><th>Pair</th><th>Type</th><th>Side</th><th>Price</th><th>Amount</th><th>Filled</th><th>Time</th><th>Action</th></tr></thead><tbody>
+                    <tr><td class="mono">BTC/USDT</td><td><span class="badge b-blue">Limit</span></td><td class="tg f6">Buy</td><td class="mono">$67,000</td><td class="mono">0.5 BTC</td><td class="t3 mono">0%</td><td class="t3 mono">5 min ago</td><td><button class="btn btn-outline btn-sm" onclick="showModal_('Cancel Order')">Cancel</button></td></tr>
+                    <tr><td class="mono">ETH/USDT</td><td><span class="badge b-cyan">Stop</span></td><td class="tr f6">Sell</td><td class="mono">$3,200</td><td class="mono">2.0 ETH</td><td class="t3 mono">0%</td><td class="t3 mono">15 min ago</td><td><button class="btn btn-outline btn-sm" onclick="showModal_('Cancel Order')">Cancel</button></td></tr>
+                </tbody></table>
+            </div>
+        </div>
+
+        <!-- TRAIL -->
+        <div class="pv" id="pg-trail" data-screen-label="Trail Mode">
+            <div class="g4 mb6">
+                <div class="stat-card"><div class="stat-label">Trial Balance</div><div class="stat-val">$10,000</div></div>
+                <div class="stat-card"><div class="stat-label">Current P/L</div><div class="stat-val tg">+$680</div></div>
+                <div class="stat-card"><div class="stat-label">Time Remaining</div><div class="stat-val ty" id="trailCountdown" style="font-size:22px">29d 14h 32m 15s</div></div>
+                <div class="stat-card"><div class="stat-label">Drawdown</div><div class="stat-val tg">8.3%</div></div>
+            </div>
+            <div class="card mb6">
+                <div class="card-h"><div><div class="card-t">Challenge Progress</div><div class="card-st">Journey to Provider Status</div></div><span class="badge b-blue">Level 2 In Progress</span></div>
+                <div class="flex aic gap3" style="justify-content:center;padding:14px 0">
+                    <div style="text-align:center"><div class="trail-num done">✓</div><div class="fs11 t3 mt2 mono">Level 1</div></div>
+                    <div class="trail-conn done"></div>
+                    <div style="text-align:center"><div class="trail-num curr">2</div><div class="fs11 t3 mt2 mono">Level 2</div></div>
+                    <div class="trail-conn"></div>
+                    <div style="text-align:center"><div class="trail-num lock">3</div><div class="fs11 t3 mt2 mono">Level 3</div></div>
+                </div>
+                <div class="divider"></div>
+                <div class="g2">
+                    <div><div class="f6 fs12 mb2">Level 1 — Complete ✓</div><div class="fs11 t3">Complete 10 trades with 60% win rate</div><div class="prog mt2"><div class="prog-f green" style="width:100%"></div></div><div class="fs11 tg mt2 mono">10/10 trades · 68% win rate</div></div>
+                    <div><div class="f6 fs12 mb2">Level 2 — In Progress</div><div class="fs11 t3">Complete 20 trades with 65% win rate</div><div class="prog mt2"><div class="prog-f blue" style="width:70%"></div></div><div class="fs11 tb mt2 mono">14/20 trades · 68% win rate</div></div>
+                </div>
+            </div>
+            <div class="g2 mb6">
+                <div class="card">
+                    <div class="card-h"><div><div class="card-t">Drawdown Tracker</div></div></div>
+                    <div style="text-align:center;padding:20px 10px">
+                        <div style="font-family:'Instrument Serif',serif;font-size:64px;font-weight:400;color:oklch(0.92 0.1 150);line-height:1">8.3%</div>
+                        <div class="fs12 t3 mb4 mt2">of 15% maximum allowed</div>
+                        <div class="prog" style="height:8px"><div class="prog-f green" style="width:55%"></div></div>
+                        <div class="fs11 t3 mt4 mono">6.7% remaining before failure</div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-h"><div><div class="card-t">Recent Trial Trades</div></div></div>
+                    <table class="tbl"><thead><tr><th>Pair</th><th>Side</th><th>Entry</th><th>Exit</th><th>P/L</th></tr></thead><tbody>
+                        <tr><td class="mono">BTC/USDT</td><td class="tg f6">Long</td><td class="mono">$65,100</td><td class="mono">$66,800</td><td class="tg f6 mono">+$170</td></tr>
+                        <tr><td class="mono">ETH/USDT</td><td class="tg f6">Long</td><td class="mono">$3,350</td><td class="mono">$3,420</td><td class="tg f6 mono">+$140</td></tr>
+                        <tr><td class="mono">SOL/USDT</td><td class="tr f6">Short</td><td class="mono">$155</td><td class="mono">$148</td><td class="tg f6 mono">+$70</td></tr>
+                        <tr><td class="mono">ADA/USDT</td><td class="tr f6">Long</td><td class="mono">$0.52</td><td class="mono">$0.48</td><td class="tr f6 mono">-$40</td></tr>
+                    </tbody></table>
+                </div>
+            </div>
+            <div class="card" style="background:linear-gradient(135deg, oklch(0.55 0.22 260 / 0.15), oklch(0.72 0.17 150 / 0.1));border-color:var(--line-3)">
+                <div class="flex aic jcb">
+                    <div>
+                        <div class="card-t mb2" style="font-size:22px">You're on track to qualify.</div>
+                        <div class="fs12 t2">Complete Level 2 to unlock provider status and get your $99.99 subscription refunded.</div>
+                    </div>
+                    <button class="btn btn-blue" onclick="toast('Keep trading to complete Level 2!','inf')">Continue Trading →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- WALLET -->
+        <div class="pv" id="pg-wallet" data-screen-label="Wallet">
+            <div class="g3 mb6">
+                <div class="stat-card" style="background:linear-gradient(180deg, oklch(0.55 0.22 260 / 0.2), oklch(0.35 0.18 268 / 0.1));border-color:var(--line-3)"><div class="stat-label" style="color:var(--blue-2)">Total Balance</div><div class="stat-val">$12,843<span style="font-size:18px;color:var(--ink-3)">.57</span></div><div class="fs11 t3 mt2 mono">Available + Locked</div></div>
+                <div class="stat-card"><div class="stat-label">Available</div><div class="stat-val">$12,843</div><div class="fs11 t3 mt2 mono">Ready to use</div></div>
+                <div class="stat-card"><div class="stat-label">Locked in Trades</div><div class="stat-val">$0</div><div class="fs11 t3 mt2 mono">In open positions</div></div>
+            </div>
+            <div class="flex gap3 mb6">
+                <button class="btn btn-green" style="flex:1;padding:14px" onclick="showModal_('Deposit USDT')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg> Deposit</button>
+                <button class="btn btn-outline" style="flex:1;padding:14px" onclick="showModal_('Withdraw USDT')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg> Withdraw</button>
+                <button class="btn btn-outline" style="flex:1;padding:14px" onclick="toast('Transfer opened','inf')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg> Transfer</button>
+            </div>
+            <div class="card mb6" style="padding:4px"><div style="padding:16px 16px 8px" class="card-h"><div><div class="card-t">Transaction History</div></div><div class="tabs"><div class="tab act">All</div><div class="tab">Deposits</div><div class="tab">Withdrawals</div></div></div>
+                <table class="tbl"><thead><tr><th>TX Hash</th><th>Type</th><th>Amount</th><th>Network</th><th>Status</th><th>Time</th></tr></thead><tbody>
+                    <tr><td class="mono tb">0xa1b2...c3d4</td><td><span class="badge b-green">Deposit</span></td><td class="tg f6 mono">+500 USDT</td><td class="mono">TRC20</td><td><span class="badge b-green">Confirmed</span></td><td class="t3 mono">2 hrs ago</td></tr>
+                    <tr><td class="mono tb">0xe5f6...g7h8</td><td><span class="badge b-red">Withdraw</span></td><td class="tr f6 mono">-250 USDT</td><td class="mono">ERC20</td><td><span class="badge b-yellow">Pending</span></td><td class="t3 mono">5 hrs ago</td></tr>
+                    <tr><td class="mono tb">0x9i0j...k1l2</td><td><span class="badge b-green">Deposit</span></td><td class="tg f6 mono">+1,000 USDT</td><td class="mono">BEP20</td><td><span class="badge b-green">Confirmed</span></td><td class="t3 mono">1 day ago</td></tr>
+                    <tr><td class="mono tb">0x3m4n...o5p6</td><td><span class="badge b-purple">Transfer</span></td><td class="t3 mono">-100 USDT</td><td class="mono">Internal</td><td><span class="badge b-green">Complete</span></td><td class="t3 mono">2 days ago</td></tr>
+                </tbody></table>
+            </div>
+        </div>
+
+        <!-- HISTORY -->
+        <div class="pv" id="pg-history" data-screen-label="History">
+            <div class="flex aic jcb mb6" style="flex-wrap:wrap;gap:12px">
+                <div class="flex aic gap3"><input class="fi" placeholder="Search by pair or TX..." style="width:280px" /><select class="fi fs" style="width:140px"><option>All Pairs</option><option>BTC/USDT</option><option>ETH/USDT</option></select></div>
+                <button class="btn btn-outline btn-sm" onclick="toast('Export started...','inf')">Export CSV</button>
+            </div>
+            <div class="tabs mb4"><div class="tab act">Trade History</div><div class="tab">Deposit History</div><div class="tab">Withdrawal History</div></div>
+            <div class="card" style="padding:4px"><table class="tbl"><thead><tr><th>Date</th><th>Pair</th><th>Type</th><th>Side</th><th>Entry</th><th>Exit</th><th>Amount</th><th>P/L</th><th>Fee</th></tr></thead><tbody>
+                <tr><td class="t3 mono">Apr 19, 14:32</td><td class="mono">BTC/USDT</td><td><span class="badge b-blue">Limit</span></td><td class="tg f6">Long</td><td class="mono">$65,100</td><td class="mono">$67,240</td><td class="mono">0.5</td><td class="tg f6 mono">+$1,070</td><td class="t3 mono">$21.40</td></tr>
+                <tr><td class="t3 mono">Apr 18, 09:15</td><td class="mono">ETH/USDT</td><td><span class="badge b-purple">Market</span></td><td class="tr f6">Short</td><td class="mono">$3,520</td><td class="mono">$3,420</td><td class="mono">2.0</td><td class="tg f6 mono">+$200</td><td class="t3 mono">$14.08</td></tr>
+                <tr><td class="t3 mono">Apr 17, 16:48</td><td class="mono">SOL/USDT</td><td><span class="badge b-blue">Limit</span></td><td class="tg f6">Long</td><td class="mono">$155.20</td><td class="mono">$142.50</td><td class="mono">50</td><td class="tr f6 mono">-$635</td><td class="t3 mono">$31.04</td></tr>
+                <tr><td class="t3 mono">Apr 16, 11:22</td><td class="mono">ADA/USDT</td><td><span class="badge b-blue">Limit</span></td><td class="tg f6">Long</td><td class="mono">$0.42</td><td class="mono">$0.48</td><td class="mono">5000</td><td class="tg f6 mono">+$300</td><td class="t3 mono">$10.00</td></tr>
+                <tr><td class="t3 mono">Apr 15, 08:05</td><td class="mono">BTC/USDT</td><td><span class="badge b-cyan">Stop</span></td><td class="tr f6">Short</td><td class="mono">$68,500</td><td class="mono">$67,800</td><td class="mono">0.3</td><td class="tg f6 mono">+$210</td><td class="t3 mono">$12.60</td></tr>
+            </tbody></table></div>
+        </div>
+
+        <!-- REFERRALS -->
+        <div class="pv" id="pg-referral" data-screen-label="Referrals">
+            <div class="g4 mb6">
+                <div class="stat-card"><div class="stat-label">Total Referrals</div><div class="stat-val">28</div></div>
+                <div class="stat-card"><div class="stat-label">Active</div><div class="stat-val">12</div></div>
+                <div class="stat-card"><div class="stat-label">Total Earnings</div><div class="stat-val tg">$1,240</div></div>
+                <div class="stat-card"><div class="stat-label">Pending</div><div class="stat-val ty">$85</div></div>
+            </div>
+            <div class="card mb6" style="background:linear-gradient(135deg, oklch(0.55 0.22 260 / 0.2), oklch(0.7 0.2 300 / 0.15));border-color:var(--line-3);overflow:hidden;position:relative">
+                <div style="position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:radial-gradient(circle,oklch(0.55 0.22 260 / 0.3),transparent 70%);border-radius:50%"></div>
+                <div class="flex aic jcb" style="position:relative;flex-wrap:wrap;gap:16px">
+                    <div>
+                        <div class="card-st mb2">Your Referral Code</div>
+                        <div style="font-family:'Instrument Serif',serif;font-size:44px;font-weight:400;color:var(--ink-0);letter-spacing:0.06em;line-height:1">JOHNDOE<em style="font-style:italic;background:linear-gradient(100deg,oklch(0.82 0.14 220),oklch(0.62 0.21 260));-webkit-background-clip:text;background-clip:text;color:transparent">2026</em></div>
+                        <div class="flex aic gap3 mt4">
+                            <button class="btn btn-blue btn-sm" onclick="toast('Code copied!','ok')">Copy Code</button>
+                            <button class="btn btn-outline btn-sm" onclick="toast('Share opened','inf')">Share</button>
+                        </div>
+                        <div class="fs12 t3 mt4" style="max-width:400px">Share this code and earn 20% commission on your referrals' trading fees.</div>
+                    </div>
+                    <div style="width:120px;height:120px;background:rgba(255,255,255,0.04);border:1px solid var(--line-2);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--ink-3);text-align:center;font-family:'JetBrains Mono',monospace;letter-spacing:0.1em">QR<br>PLACEHOLDER</div>
+                </div>
+            </div>
+            <div class="g2 mb6">
+                <div class="card">
+                    <div class="card-t mb4">Commission Structure</div>
+                    <div style="padding:14px 16px;background:rgba(255,255,255,0.02);border:1px solid var(--line);border-radius:10px;margin-bottom:10px"><div class="flex aic jcb"><span class="f6 fs12">Level 1 (Direct)</span><span class="tg f6 mono">20%</span></div><div class="fs11 t3 mt2">Of referred user's trading fees</div></div>
+                    <div style="padding:14px 16px;background:rgba(255,255,255,0.02);border:1px solid var(--line);border-radius:10px;margin-bottom:10px"><div class="flex aic jcb"><span class="f6 fs12">Level 2 (Sub-referral)</span><span class="tb f6 mono">10%</span></div><div class="fs11 t3 mt2">Of sub-referred user's fees</div></div>
+                    <div style="padding:14px 16px;background:rgba(255,255,255,0.02);border:1px solid var(--line);border-radius:10px"><div class="flex aic jcb"><span class="f6 fs12">Level 3 (Deep)</span><span class="tp f6 mono">5%</span></div><div class="fs11 t3 mt2">Of deep-referred user's fees</div></div>
+                </div>
+                <div class="card">
+                    <div class="card-t mb4">Your Referrals</div>
+                    <div class="act-i"><div class="av av-sm" style="background:linear-gradient(135deg,oklch(0.68 0.19 255),oklch(0.86 0.12 220))">AK</div><div class="act-info"><div class="act-t">Alex Kim</div><div class="act-d">Joined 3 days ago · 2 trades</div></div><div class="act-amt">$240</div></div>
+                    <div class="act-i"><div class="av av-sm" style="background:linear-gradient(135deg,oklch(0.7 0.2 300),oklch(0.68 0.22 340))">MJ</div><div class="act-info"><div class="act-t">Maria Johnson</div><div class="act-d">Joined 1 week ago · 5 trades</div></div><div class="act-amt">$180</div></div>
+                    <div class="act-i"><div class="av av-sm" style="background:linear-gradient(135deg,oklch(0.72 0.17 150),oklch(0.86 0.12 220))">RP</div><div class="act-info"><div class="act-t">Ryan Park</div><div class="act-d">Joined 2 weeks ago · 8 trades</div></div><div class="act-amt">$320</div></div>
+                </div>
+            </div>
+            <div class="card" style="padding:4px"><div style="padding:16px 16px 8px" class="card-h"><div><div class="card-t">Earnings History</div></div><button class="btn btn-outline btn-sm">Export</button></div>
+                <table class="tbl"><thead><tr><th>Date</th><th>User</th><th>Activity</th><th>Commission</th><th>Status</th></tr></thead><tbody>
+                    <tr><td class="t3 mono">Apr 18</td><td class="f6">Alex Kim</td><td class="t2">Trading Fee</td><td class="tg f6 mono">+$48.00</td><td><span class="badge b-green">Paid</span></td></tr>
+                    <tr><td class="t3 mono">Apr 17</td><td class="f6">Maria Johnson</td><td class="t2">Deposit Bonus</td><td class="ty f6 mono">+$25.00</td><td><span class="badge b-yellow">Pending</span></td></tr>
+                    <tr><td class="t3 mono">Apr 16</td><td class="f6">Ryan Park</td><td class="t2">Subscription</td><td class="tg f6 mono">+$20.00</td><td><span class="badge b-green">Paid</span></td></tr>
+                </tbody></table>
+            </div>
+        </div>
+
+        <!-- ACTIVITIES -->
+        <div class="pv" id="pg-activities" data-screen-label="Activities">
+            <div class="g4 mb6">
+                <div class="stat-card"><div class="stat-label">Login Streak</div><div class="stat-val">14 days</div></div>
+                <div class="stat-card"><div class="stat-label">Tasks Today</div><div class="stat-val">3/5</div></div>
+                <div class="stat-card"><div class="stat-label">Rewards Claimed</div><div class="stat-val tg">$45</div></div>
+                <div class="stat-card"><div class="stat-label">Next Milestone</div><div class="stat-val ty">30 days</div></div>
+            </div>
+            <div class="g2 mb6">
+                <div class="card">
+                    <div class="card-h"><div><div class="card-t">Login Calendar</div><div class="card-st">April 2026</div></div></div>
+                    <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-bottom:8px">
+                        <div class="fs11 t3 mono" style="text-align:center">Su</div><div class="fs11 t3 mono" style="text-align:center">Mo</div><div class="fs11 t3 mono" style="text-align:center">Tu</div><div class="fs11 t3 mono" style="text-align:center">We</div><div class="fs11 t3 mono" style="text-align:center">Th</div><div class="fs11 t3 mono" style="text-align:center">Fr</div><div class="fs11 t3 mono" style="text-align:center">Sa</div>
+                    </div>
+                    <div class="cal-grid" id="calGrid"></div>
+                    <div class="flex aic gap3 mt4"><div style="width:12px;height:12px;border-radius:3px;background:oklch(0.72 0.17 150 / 0.2);border:1px solid oklch(0.72 0.17 150 / 0.3)"></div><span class="fs11 t3 mono">Logged</span><div style="width:12px;height:12px;border-radius:3px;border:1px solid var(--blue-2)"></div><span class="fs11 t3 mono">Today</span><div style="width:12px;height:12px;border-radius:3px;background:var(--red-l);border:1px solid oklch(0.68 0.22 20 / 0.3)"></div><span class="fs11 t3 mono">Missed</span></div>
+                </div>
+                <div class="card">
+                    <div class="card-t mb4">Daily Tasks</div>
+                    <div class="act-i" style="border:1px solid oklch(0.72 0.17 150 / 0.35);border-radius:10px;margin-bottom:8px;background:oklch(0.72 0.17 150 / 0.08)"><div class="act-ic" style="background:var(--green-l);color:var(--green)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div><div class="act-info"><div class="act-t">Daily Login</div><div class="act-d">Completed · 7-day streak bonus</div></div><div class="act-amt">+$5</div></div>
+                    <div class="act-i" style="border:1px solid oklch(0.72 0.17 150 / 0.35);border-radius:10px;margin-bottom:8px;background:oklch(0.72 0.17 150 / 0.08)"><div class="act-ic" style="background:var(--green-l);color:var(--green)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div><div class="act-info"><div class="act-t">First Trade of Day</div><div class="act-d">Completed · Fee discount voucher</div></div><button class="btn btn-green btn-sm" onclick="toast('Reward claimed!','ok')">Claim</button></div>
+                    <div class="act-i" style="border:1px solid var(--line);border-radius:10px;margin-bottom:8px"><div class="act-ic" style="background:rgba(255,255,255,0.04);color:var(--ink-3)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg></div><div class="act-info"><div class="act-t">Referral Deposit</div><div class="act-d">Get a referral to deposit $100+</div></div><span class="badge b-yellow">In Progress</span></div>
+                    <div class="act-i" style="border:1px solid var(--line);border-radius:10px;opacity:.55"><div class="act-ic" style="background:rgba(255,255,255,0.04);color:var(--ink-3)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg></div><div class="act-info"><div class="act-t">Weekly Milestone</div><div class="act-d">Complete 5 tasks this week</div></div><span class="badge" style="background:rgba(255,255,255,0.04);color:var(--ink-3);border:1px solid var(--line)">Locked</span></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-t mb4">Milestone Badges</div>
+                <div class="flex gap4" style="justify-content:space-around;padding:12px 0">
+                    <div style="text-align:center"><div style="width:72px;height:72px;border-radius:50%;background:radial-gradient(circle,oklch(0.82 0.15 85 / 0.3),oklch(0.74 0.17 55 / 0.1));border:2px solid oklch(0.82 0.15 85 / 0.5);display:grid;place-items:center;margin:0 auto 10px;font-family:'Instrument Serif',serif;font-size:28px;color:var(--yellow);box-shadow:0 0 24px oklch(0.82 0.15 85 / 0.3)">7</div><div class="f6 fs12">7-Day Streak</div><div class="fs11 tg mono mt2">UNLOCKED</div></div>
+                    <div style="text-align:center"><div style="width:72px;height:72px;border-radius:50%;background:radial-gradient(circle,oklch(0.55 0.22 260 / 0.3),oklch(0.35 0.18 268 / 0.1));border:2px solid var(--line-3);display:grid;place-items:center;margin:0 auto 10px;font-family:'Instrument Serif',serif;font-size:28px;color:var(--blue-2);box-shadow:0 0 24px oklch(0.55 0.22 260 / 0.3)">14</div><div class="f6 fs12">14-Day Streak</div><div class="fs11 tg mono mt2">UNLOCKED</div></div>
+                    <div style="text-align:center;opacity:0.45"><div style="width:72px;height:72px;border-radius:50%;background:rgba(255,255,255,0.03);border:2px solid var(--line);display:grid;place-items:center;margin:0 auto 10px;font-family:'Instrument Serif',serif;font-size:28px;color:var(--ink-3)">30</div><div class="f6 fs12">30-Day Streak</div><div class="fs11 t3 mono mt2">16 days left</div></div>
+                    <div style="text-align:center;opacity:0.3"><div style="width:72px;height:72px;border-radius:50%;background:rgba(255,255,255,0.03);border:2px solid var(--line);display:grid;place-items:center;margin:0 auto 10px;font-family:'Instrument Serif',serif;font-size:28px;color:var(--ink-3)">90</div><div class="f6 fs12">90-Day Streak</div><div class="fs11 t3 mono mt2">76 days left</div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- COMMUNITY -->
+        <div class="pv" id="pg-community" data-screen-label="Community">
+            <div class="g2 mb6">
+                <div class="card">
+                    <div class="card-h"><div><div class="card-t">Latest News</div><div class="card-st">CryptoPanic · Live</div></div><span class="badge b-blue"><span class="s-dot blue"></span>Live</span></div>
+                    <div class="notif-i unread"><div class="notif-ic" style="background:var(--blue-l);color:var(--blue-2)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><div style="flex:1"><div class="notif-tx"><strong>Bitcoin ETF Approval</strong> — SEC approves new Bitcoin ETF application from BlackRock</div><div class="notif-tm">15 MIN AGO</div></div></div>
+                    <div class="notif-i"><div class="notif-ic" style="background:var(--purple-l);color:var(--purple)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg></div><div style="flex:1"><div class="notif-tx"><strong>Ethereum 2.0 Update</strong> — Network upgrade scheduled for Q3 2026</div><div class="notif-tm">1 HOUR AGO</div></div></div>
+                    <div class="notif-i"><div class="notif-ic" style="background:var(--green-l);color:var(--green)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/></svg></div><div style="flex:1"><div class="notif-tx"><strong>DeFi Protocol Launch</strong> — New lending platform opens with 15% APY</div><div class="notif-tm">3 HOURS AGO</div></div></div>
+                    <div class="notif-i"><div class="notif-ic" style="background:var(--yellow-l);color:var(--yellow)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div style="flex:1"><div class="notif-tx"><strong>Regulation Update</strong> — New crypto regulations proposed in EU</div><div class="notif-tm">5 HOURS AGO</div></div></div>
+                </div>
+                <div class="card">
+                    <div class="card-h"><div><div class="card-t">Community Chat</div></div><span class="badge b-green"><span class="s-dot green"></span>247 online</span></div>
+                    <div style="max-height:320px;overflow-y:auto;padding:10px;background:rgba(255,255,255,0.02);border:1px solid var(--line);border-radius:10px;margin-bottom:12px">
+                        <div class="chat-msg"><div class="chat-av" style="background:linear-gradient(135deg,oklch(0.68 0.19 255),oklch(0.86 0.12 220))">AK</div><div><div class="chat-bub"><div class="chat-nm">Alex Kim</div><div class="chat-tx">Just subscribed to the Momentum strategy. Great win rate so far!</div></div><div class="chat-tm">2 MIN AGO</div></div></div>
+                        <div class="chat-msg"><div class="chat-av" style="background:linear-gradient(135deg,oklch(0.7 0.2 300),oklch(0.68 0.22 340))">MJ</div><div><div class="chat-bub"><div class="chat-nm">Maria Johnson</div><div class="chat-tx">Has anyone tried the Trail Mode challenge?</div></div><div class="chat-tm">5 MIN AGO</div></div></div>
+                        <div class="chat-msg"><div class="chat-av" style="background:linear-gradient(135deg,oklch(0.72 0.17 150),oklch(0.86 0.12 220))">RP</div><div><div class="chat-bub"><div class="chat-nm">Ryan Park</div><div class="chat-tx">Passed Level 1 in 3 days!</div></div><div class="chat-tm">8 MIN AGO</div></div></div>
+                    </div>
+                    <div class="flex gap2"><input class="fi" placeholder="Type a message..." style="flex:1" /><button class="btn btn-blue btn-sm" onclick="toast('Message sent!','ok')">Send</button></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-t mb4">Tradeverse on Telegram</div>
+                <div style="display:grid;grid-template-columns:1fr auto;gap:32px;align-items:center">
+                    <div>
+                        <div class="card-t" style="font-size:28px">Join <em style="font-style:italic;background:linear-gradient(100deg,oklch(0.82 0.14 220),oklch(0.62 0.21 260));-webkit-background-clip:text;background-clip:text;color:transparent">12,847</em> members</div>
+                        <div class="fs12 t2 mt2 mb4" style="max-width:420px">Our main communication channel — daily signal highlights, market commentary, and a community of traders. Fast answers, quick wins.</div>
+                        <button class="btn btn-blue" onclick="toast('Invite link copied!','ok')">Copy Invite Link</button>
+                    </div>
+                    <div style="width:140px;height:140px;background:rgba(255,255,255,0.04);border:1px solid var(--line-2);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--ink-3);font-family:'JetBrains Mono',monospace;letter-spacing:0.1em">QR CODE</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- NOTIFICATIONS -->
+        <div class="pv" id="pg-notifications" data-screen-label="Notifications">
+            <div class="flex aic jcb mb6">
+                <div class="tabs"><div class="tab act">All</div><div class="tab">Trade</div><div class="tab">System</div></div>
+                <button class="btn btn-ghost btn-sm" onclick="toast('All marked as read','ok')">Mark all read</button>
+            </div>
+            <div class="card">
+                <div class="notif-i unread"><div class="notif-ic" style="background:var(--green-l);color:var(--green)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/></svg></div><div style="flex:1"><div class="notif-tx"><strong>Trade Executed</strong> — Your buy order for 0.5 BTC executed at $67,240</div><div class="notif-tm">2 MIN AGO</div></div></div>
+                <div class="notif-i unread"><div class="notif-ic" style="background:var(--blue-l);color:var(--blue-2)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div><div style="flex:1"><div class="notif-tx"><strong>Order Filled</strong> — Limit order filled: 1 ETH @ $3,420</div><div class="notif-tm">5 MIN AGO</div></div></div>
+                <div class="notif-i"><div class="notif-ic" style="background:var(--yellow-l);color:var(--yellow)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/></svg></div><div style="flex:1"><div class="notif-tx"><strong>Price Alert</strong> — BTC reached $67,500</div><div class="notif-tm">15 MIN AGO</div></div></div>
+                <div class="notif-i"><div class="notif-ic" style="background:var(--green-l);color:var(--green)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/></svg></div><div style="flex:1"><div class="notif-tx"><strong>Deposit Confirmed</strong> — 500 USDT deposit confirmed (TRC20)</div><div class="notif-tm">1 HOUR AGO</div></div></div>
+                <div class="notif-i"><div class="notif-ic" style="background:var(--purple-l);color:var(--purple)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div style="flex:1"><div class="notif-tx"><strong>Referral Activity</strong> — Sarah Kim signed up via your referral</div><div class="notif-tm">2 HOURS AGO</div></div></div>
+                <div class="notif-i"><div class="notif-ic" style="background:var(--blue-l);color:var(--blue-2)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><div style="flex:1"><div class="notif-tx"><strong>Trial Mode Alert</strong> — 3 days remaining in your challenge</div><div class="notif-tm">6 HOURS AGO</div></div></div>
+            </div>
+        </div>
+
+        <!-- SETTINGS -->
+        <div class="pv" id="pg-settings" data-screen-label="Settings">
+            <div class="tabs mb6"><div class="tab act">Profile</div><div class="tab">Security</div><div class="tab">Preferences</div></div>
+            <div class="g2 mb6">
+                <div class="card">
+                    <div class="card-t mb4">Profile Information</div>
+                    <div style="text-align:center;margin-bottom:22px">
+                        <div class="av av-lg" style="width:72px;height:72px;font-size:22px;margin:0 auto 12px;background:linear-gradient(135deg,oklch(0.7 0.2 300),oklch(0.52 0.22 262))">JD</div>
+                        <div class="f6 fs12">John Doe</div>
+                        <div class="fs11 t3 mono mt2">john.doe@email.com</div>
+                        <button class="btn btn-ghost btn-sm mt2" onclick="toast('Avatar upload opened','inf')">Change Avatar</button>
+                    </div>
+                    <div class="fg"><label class="fl">Full Name</label><input class="fi" value="John Doe" /></div>
+                    <div class="fg"><label class="fl">Email</label><input class="fi" value="john.doe@email.com" disabled style="opacity:.5" /></div>
+                    <div class="fg"><label class="fl">Phone</label><input class="fi" value="+1 (555) 123-4567" /></div>
+                    <div class="fg"><label class="fl">KYC Status</label><div style="padding:11px 14px;background:var(--green-l);border:1px solid oklch(0.72 0.17 150 / 0.4);border-radius:9px"><div class="flex aic gap2"><span class="s-dot green"></span><span class="f6 fs12 tg">Verified</span></div></div></div>
+                    <button class="btn btn-blue" onclick="toast('Profile saved!','ok')">Save Changes</button>
+                </div>
+                <div class="card">
+                    <div class="card-t mb4">Security</div>
+                    <div class="tog-row"><div><div class="tog-lb">Two-Factor Authentication</div><div class="tog-ds">Secure your account with 2FA</div></div><div class="tog-sw on" onclick="this.classList.toggle('on')"></div></div>
+                    <div class="tog-row"><div><div class="tog-lb">Email Notifications</div><div class="tog-ds">Receive alerts via email</div></div><div class="tog-sw on" onclick="this.classList.toggle('on')"></div></div>
+                    <div class="tog-row"><div><div class="tog-lb">Push Notifications</div><div class="tog-ds">Browser push notifications</div></div><div class="tog-sw" onclick="this.classList.toggle('on')"></div></div>
+                    <div class="tog-row"><div><div class="tog-lb">Trade Alerts</div><div class="tog-ds">Notify on order fills and executions</div></div><div class="tog-sw on" onclick="this.classList.toggle('on')"></div></div>
+                    <div class="tog-row"><div><div class="tog-lb">Price Alerts</div><div class="tog-ds">Notify when price reaches threshold</div></div><div class="tog-sw on" onclick="this.classList.toggle('on')"></div></div>
+                    <div class="divider"></div>
+                    <div class="fg"><label class="fl">Current Password</label><input class="fi" type="password" placeholder="••••••••" /></div>
+                    <div class="fg"><label class="fl">New Password</label><input class="fi" type="password" placeholder="••••••••" /></div>
+                    <div class="fg"><label class="fl">Confirm Password</label><input class="fi" type="password" placeholder="••••••••" /></div>
+                    <button class="btn btn-blue" onclick="toast('Password updated!','ok')">Update Password</button>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-t mb4">Preferences</div>
+                <div class="g3">
+                    <div class="fg"><label class="fl">Language</label><select class="fi fs"><option>English</option><option>中文</option><option>Español</option><option>Français</option></select></div>
+                    <div class="fg"><label class="fl">Display Currency</label><select class="fi fs"><option>USD ($)</option><option>EUR (€)</option><option>GBP (£)</option><option>CNY (¥)</option></select></div>
+                    <div class="fg"><label class="fl">Timezone</label><select class="fi fs"><option>UTC-5 (Eastern)</option><option>UTC-8 (Pacific)</option><option>UTC+0 (London)</option><option>UTC+9 (Tokyo)</option></select></div>
+                </div>
+                <button class="btn btn-blue" onclick="toast('Preferences saved!','ok')">Save Preferences</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast-box" id="toastBox"></div>
+
+<!-- MODAL -->
+<div class="modal-ov" id="modalOv" onclick="if(event.target===this)hideModal_()">
+    <div class="modal">
+        <div class="modal-t" id="mTitle">Confirm Action</div>
+        <div class="modal-tx" id="mTx">Are you sure you want to proceed? This action cannot be undone.</div>
+        <div class="modal-act">
+            <button class="btn btn-outline btn-sm" onclick="hideModal_()">Cancel</button>
+            <button class="btn btn-blue btn-sm" onclick="hideModal_();toast('Action confirmed!','ok')">Confirm</button>
+        </div>
+    </div>
+</div>
+
+<script>
+const PAGES={overview:'Overview',portfolio:'Portfolio',signals:'Signal Plaza',trading:'Trade',trail:'Trail Mode',wallet:'Wallet',history:'History',referral:'Referrals',activities:'Activities',community:'Community',notifications:'Notifications',settings:'Settings'};
+
+function toggleSb(){document.getElementById('sb').classList.toggle('c')}
+
+function go(page){
+    document.querySelectorAll('.pv').forEach(p=>p.classList.remove('act'));
+    const el=document.getElementById('pg-'+page);
+    if(el)el.classList.add('act');
+    document.querySelectorAll('.nav-i').forEach(n=>{n.classList.remove('act');if(n.dataset.p===page)n.classList.add('act')});
+    document.getElementById('pgTitle').textContent=PAGES[page]||page;
+    document.getElementById('pgBread').textContent=PAGES[page]||page;
+    try{localStorage.setItem('tvPage',page)}catch(e){}
+    window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function toast(msg,type='inf'){
+    const box=document.getElementById('toastBox');
+    const t=document.createElement('div');
+    t.className='toast '+type;
+    const icons={ok:'✓',err:'✕',inf:'ℹ'};
+    t.innerHTML='<span style="font-weight:700">'+(icons[type]||'ℹ')+'</span><span>'+msg+'</span>';
+    box.appendChild(t);
+    setTimeout(()=>{t.style.opacity='0';t.style.transform='translateX(30px)';t.style.transition='all .3s';setTimeout(()=>t.remove(),300)},3000);
+}
+
+function showModal_(title){document.getElementById('mTitle').textContent=title;document.getElementById('modalOv').classList.add('act')}
+function hideModal_(){document.getElementById('modalOv').classList.remove('act')}
+
+function renderChart(id){
+    const el=document.getElementById(id);
+    if(!el)return;
+    const hts=Array.from({length:36},(_,i)=>30+Math.sin(i*0.4)*15+Math.random()*35);
+    el.innerHTML=hts.map(h=>`<div class="chart-b" style="height:${h}%"></div>`).join('');
+}
+
+function renderSignals(){
+    const providers=[
+        {n:'AlphaSignal',i:'AS',c:'oklch(0.68 0.19 255),oklch(0.86 0.12 220)',s:'Momentum Trading',wr:'72%',dd:'8.3%',aum:'$124K',fol:'2,400',ps:'20%',st:'Active',sc:'b-green'},
+        {n:'QuantFlow',i:'QF',c:'oklch(0.7 0.2 300),oklch(0.68 0.22 340)',s:'Mean Reversion',wr:'65%',dd:'12.1%',aum:'$45K',fol:'890',ps:'15%',st:'Fundraising',sc:'b-yellow'},
+        {n:'TrendMaster',i:'TM',c:'oklch(0.72 0.17 150),oklch(0.86 0.12 220)',s:'Scalping Pro',wr:'58%',dd:'14.7%',aum:'$340K',fol:'5,100',ps:'25%',st:'Active',sc:'b-green'},
+        {n:'CryptoRider',i:'CR',c:'oklch(0.82 0.15 85),oklch(0.74 0.17 55)',s:'Swing Trading',wr:'78%',dd:'6.2%',aum:'$890K',fol:'8,200',ps:'30%',st:'Active',sc:'b-green'},
+        {n:'SignalWhale',i:'SW',c:'oklch(0.86 0.12 220),oklch(0.68 0.19 255)',s:'Arbitrage',wr:'52%',dd:'18.4%',aum:'$67K',fol:'340',ps:'15%',st:'Fundraising',sc:'b-yellow'},
+        {n:'TradeLeader',i:'TL',c:'oklch(0.68 0.22 340),oklch(0.7 0.2 300)',s:'DCA Strategy',wr:'69%',dd:'9.8%',aum:'$210K',fol:'3,600',ps:'20%',st:'Active',sc:'b-green'},
+    ];
+    const grid=document.getElementById('signalGrid');
+    if(!grid)return;
+    grid.innerHTML=providers.map(p=>`
+        <div class="sig-card" onclick="showModal_('Subscribe to ${p.n}')">
+            <div class="flex aic gap3 mb4">
+                <div class="av" style="background:linear-gradient(135deg,${p.c})">${p.i}</div>
+                <div style="flex:1">
+                    <div class="f6" style="font-size:15px">${p.n}</div>
+                    <div class="fs11 t3 mt2 mono" style="letter-spacing:0.06em;text-transform:uppercase">${p.s}</div>
+                </div>
+                <span class="badge ${p.sc}"><span class="s-dot ${p.st==='Active'?'green':'yellow'}"></span>${p.st}</span>
+            </div>
+            <div class="g2 mb4" style="gap:10px">
+                <div style="padding:10px 12px;background:rgba(255,255,255,0.02);border:1px solid var(--line);border-radius:8px">
+                    <div class="fs11 t3 mono" style="letter-spacing:0.06em;text-transform:uppercase">Win Rate</div>
+                    <div class="f6 tg mono mt2" style="font-size:15px">${p.wr}</div>
+                </div>
+                <div style="padding:10px 12px;background:rgba(255,255,255,0.02);border:1px solid var(--line);border-radius:8px">
+                    <div class="fs11 t3 mono" style="letter-spacing:0.06em;text-transform:uppercase">Max DD</div>
+                    <div class="f6 ${parseFloat(p.dd)>10?'tr':'tg'} mono mt2" style="font-size:15px">${p.dd}</div>
+                </div>
+                <div style="padding:10px 12px;background:rgba(255,255,255,0.02);border:1px solid var(--line);border-radius:8px">
+                    <div class="fs11 t3 mono" style="letter-spacing:0.06em;text-transform:uppercase">AUM</div>
+                    <div class="f6 mono mt2" style="font-size:15px">${p.aum}</div>
+                </div>
+                <div style="padding:10px 12px;background:rgba(255,255,255,0.02);border:1px solid var(--line);border-radius:8px">
+                    <div class="fs11 t3 mono" style="letter-spacing:0.06em;text-transform:uppercase">Followers</div>
+                    <div class="f6 mono mt2" style="font-size:15px">${p.fol}</div>
+                </div>
+            </div>
+            <div class="flex aic jcb">
+                <span class="fs11 t3 mono">Profit share: ${p.ps}</span>
+                <button class="btn ${p.st==='Active'?'btn-outline':'btn-green'} btn-sm">${p.st==='Active'?'View':'Subscribe'}</button>
+            </div>
+        </div>
+    `).join('');
+}
+
+function renderCalendar(){
+    const grid=document.getElementById('calGrid');
+    if(!grid)return;
+    const today=19;
+    const missed=[3,7,14];
+    let html='';
+    // April 2026 starts on Wednesday (index 3)
+    for(let i=0;i<3;i++)html+='<div class="cal-cell empty"></div>';
+    for(let i=1;i<=30;i++){
+        if(i>today)html+='<div class="cal-cell" style="color:var(--ink-3)">'+i+'</div>';
+        else {
+            const cls=missed.includes(i)?'miss':i===today?'today':'check';
+            html+='<div class="cal-cell '+cls+'">'+i+'</div>';
+        }
+    }
+    grid.innerHTML=html;
+}
+
+function updateCountdown(){
+    const el=document.getElementById('trailCountdown');
+    if(!el)return;
+    const parts=el.textContent.match(/(\d+)d\s+(\d+)h\s+(\d+)m\s+(\d+)s/);
+    if(!parts)return;
+    let[,d,h,m,s]=parts.map(Number);
+    s--;if(s<0){s=59;m--}if(m<0){m=59;h--}if(h<0){h=23;d--}
+    el.textContent=d+'d '+h+'h '+m+'m '+s+'s';
+}
+setInterval(updateCountdown,1000);
+
+// Tab clicks
+document.addEventListener('click',e=>{
+    if(e.target.classList.contains('tab')){
+        e.target.parentElement.querySelectorAll('.tab').forEach(t=>t.classList.remove('act'));
+        e.target.classList.add('act');
+    }
+});
+
+document.addEventListener('keydown',e=>{
+    if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();document.querySelector('.tb-search input').focus()}
+    if(e.key==='Escape')hideModal_();
+});
+
+/* ────── ANIMATED BLUE STREAM IN WELCOME BANNER ────── */
+(function initStream(){
+  const canvas=document.getElementById('streamCanvas');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  const DPR=Math.min(window.devicePixelRatio||1,2);
+  let W=0,H=0;
+
+  function resize(){
+    const r=canvas.parentElement.getBoundingClientRect();
+    W=r.width;H=r.height;
+    canvas.width=W*DPR;canvas.height=H*DPR;
+    canvas.style.width=W+'px';canvas.style.height=H+'px';
+    ctx.setTransform(DPR,0,0,DPR,0,0);
+  }
+
+  const particles=[];
+  function newP(life){
+    return {
+      u:(Math.random()*2-1),
+      progress:life,
+      speed:0.15+Math.random()*0.45,
+      size:0.5+Math.random()*1.4,
+      flicker:Math.random()*Math.PI*2,
+    };
+  }
+  function spawn(){
+    particles.length=0;
+    for(let i=0;i<120;i++)particles.push(newP(Math.random()));
+  }
+
+  function frame(t){
+    ctx.clearRect(0,0,W,H);
+    const vpX=W*0.88, vpY=H*0.45;
+
+    // ambient stars
+    for(let i=0;i<35;i++){
+      const x=(i*97.3)%W;
+      const y=(i*53.7)%H;
+      const a=0.2+0.4*Math.sin(t*0.002+i);
+      ctx.fillStyle='rgba(200,220,255,'+(a*0.3)+')';
+      ctx.fillRect(x,y,1,1);
+    }
+
+    // grid ribs
+    ctx.save();
+    for(let i=0;i<14;i++){
+      const phase=((i/14)+(t*0.00018))%1;
+      const eased=Math.pow(phase,2.2);
+      const x=vpX - eased*(W*1.2);
+      const alpha=0.28*Math.min(1,eased*2)*(1-phase*0.6);
+      ctx.strokeStyle='oklch(0.78 0.16 255 / '+alpha+')';
+      ctx.lineWidth=1+eased;
+      ctx.beginPath();
+      ctx.moveTo(x, vpY - H*0.55*eased);
+      ctx.lineTo(x, vpY + H*0.55*eased);
+      ctx.stroke();
+    }
+    ctx.restore();
+
+    // particles streaming from vanishing point (right) outward-left
+    ctx.save();
+    ctx.globalCompositeOperation='lighter';
+    for(const p of particles){
+      p.progress+=p.speed*0.008;
+      if(p.progress>1)Object.assign(p,newP(0));
+      const eased=Math.pow(p.progress,2.1);
+      const x=vpX - eased*(W*1.1);
+      const y=vpY + p.u*eased*H*0.6;
+      const a=Math.min(1,eased*2.2)*(0.35+0.65*Math.sin(p.flicker+t*0.005));
+      const size=p.size*(0.4+eased*3);
+
+      const tailProg=Math.max(0,p.progress-0.05);
+      const tailE=Math.pow(tailProg,2.1);
+      const tailX=vpX - tailE*(W*1.1);
+      const tailY=vpY + p.u*tailE*H*0.6;
+
+      const grad=ctx.createLinearGradient(tailX,tailY,x,y);
+      grad.addColorStop(0,'oklch(0.82 0.18 250 / 0)');
+      grad.addColorStop(1,'oklch(0.82 0.18 250 / '+(a*0.85)+')');
+      ctx.strokeStyle=grad;
+      ctx.lineWidth=Math.max(0.5,size*0.55);
+      ctx.lineCap='round';
+      ctx.beginPath();
+      ctx.moveTo(tailX,tailY);
+      ctx.lineTo(x,y);
+      ctx.stroke();
+
+      ctx.fillStyle='oklch(0.85 0.18 250 / '+a+')';
+      ctx.beginPath();ctx.arc(x,y,size,0,Math.PI*2);ctx.fill();
+    }
+    ctx.restore();
+
+    // right-side glow
+    const g=ctx.createRadialGradient(vpX,vpY,0,vpX,vpY,H*0.9);
+    g.addColorStop(0,'oklch(0.78 0.2 250 / 0.25)');
+    g.addColorStop(0.4,'oklch(0.55 0.22 260 / 0.08)');
+    g.addColorStop(1,'transparent');
+    ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+
+    requestAnimationFrame(frame);
+  }
+
+  resize();
+  spawn();
+  window.addEventListener('resize',()=>{resize();spawn()});
+  requestAnimationFrame(frame);
+})();
+
+// Init
+renderChart('ovChart');
+renderChart('portChart');
+renderSignals();
+renderCalendar();
+
+// Restore page
+try{
+  const saved=localStorage.getItem('tvPage');
+  if(saved&&PAGES[saved])go(saved);
+}catch(e){}
+</script>
+</body>
+</html>
