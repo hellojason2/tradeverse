@@ -76,6 +76,16 @@ After context compaction, re-injects critical project rules that may have been s
 
 Native OS notification when Claude needs user attention (waiting for input, long idle). Supports macOS (`osascript`), Linux (`notify-send`), and WSL (`powershell.exe`). Degrades silently if no notification backend is available.
 
+### post-edit-verify.sh
+**Event**: PostToolUse (Edit|Write)
+
+After Claude edits a TypeScript/TSX file, runs `tsc --noEmit` to catch type errors immediately. Warns (does not block) on errors. Only runs on files in `*/src/` directories.
+
+### post-merge-map-update.sh
+**Event**: PostToolUse (Bash)
+
+Detects `git merge`, `git pull`, or `git rebase` commands and reminds the user to invoke `@map-keeper` to update `MAP.md`. Lightweight trigger — the actual update is done by the agent.
+
 ## Testing
 
 Every hook ships with regression fixtures. Run locally:

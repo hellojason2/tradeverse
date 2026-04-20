@@ -43,6 +43,9 @@ Accuracy, completeness, staleness, clarity. Cross-references docs against actual
 | `@performance-reviewer` | PR touches a request handler, DB query, render-hot component, or data pipeline. Skip for CLI-only or one-shot scripts. |
 | `@doc-reviewer` | PR changes `README.md`, `docs/`, API docs, or public-facing docstrings. |
 | `@frontend-designer` | Greenfield UI, new page/component, design overhaul. |
+| `@map-keeper` | After any merge to main, or when new modules are added. Updates `MAP.md` with module graph. |
+| `@ui-verifier` | After any frontend unit claims done. Verifies against `design.md` and `VERIFICATION.md`. |
+| `@debug-detective` | When a bug takes > 30 minutes to understand. Writes forensic root-cause report, not fix. |
 
 Agents run in isolated context — they don't see your conversation history or loaded rules, but they have codebase access through their tools.
 
