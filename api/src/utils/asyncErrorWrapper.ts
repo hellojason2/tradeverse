@@ -1,5 +1,5 @@
 import type { FastifyReply, FastifyRequest } from 'fastify';
-import { DomainError, HttpStatusMap } from '@types/errors.js';
+import { DomainError, HttpStatusMap } from '../types/errors.js';
 
 export type FastifyRouteHandler = (
   req: FastifyRequest,

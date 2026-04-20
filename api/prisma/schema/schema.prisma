@@ -1,0 +1,12 @@
+// Models live in `schema/*.prisma`. Do not add models here.
+// See OWNERSHIP.md for ownership.
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["prismaSchemaFolder"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}

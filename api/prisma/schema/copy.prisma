@@ -1,0 +1,85 @@
+// OWNED BY AGENT 2 — see OWNERSHIP.md. Other agents: read-only.
+
+model MtAccount {
+  id               String        @id @default(cuid())
+  userId           String        @map("user_id")
+  accountNumber    String        @map("account_number")
+  broker           String
+  platform         Platform
+  accountType      String        @map("account_type")
+  status           AccountStatus @default(PENDING)
+  copyProAccountId String?       @map("copy_pro_account_id")
+  copyProApiId     String?       @map("copy_pro_api_id")
+  password         String
+  server           String
+  balance          Decimal?      @db.Decimal(19, 8)
+  equity           Decimal?      @db.Decimal(19, 8)
+  createdAt        DateTime      @default(now()) @map("created_at")
+  updatedAt        DateTime      @updatedAt @map("updated_at")
+
+  @@map("mt_accounts")
+}
+
+model Strategy {
+  id               String         @id @default(cuid())
+  masterAccountId  String         @unique @map("master_account_id")
+  userId           String         @map("user_id")
+  name             String
+  description      String?
+  riskType         RiskType
+  riskValue        Decimal        @db.Decimal(19, 8)
+  followerSplitPct Decimal        @map("follower_split_pct") @db.Decimal(5, 4)
+  status           StrategyStatus @default(DRAFT)
+  minRiskCapital   Decimal?       @map("min_risk_capital") @db.Decimal(19, 8)
+  maxRiskCapital   Decimal?       @map("max_risk_capital") @db.Decimal(19, 8)
+  createdAt        DateTime       @default(now()) @map("created_at")
+  updatedAt        DateTime       @updatedAt @map("updated_at")
+
+  copyRelations CopyRelation[]
+
+  @@map("strategies")
+}
+
+model CopyRelation {
+  id                        String     @id @default(cuid())
+  slaveAccountId            String     @unique @map("slave_account_id")
+  strategyId                String     @map("strategy_id")
+  followerUserId            String     @map("follower_user_id")
+  status                    CopyStatus @default(PENDING)
+  riskCapital               Decimal    @map("risk_capital") @db.Decimal(19, 8)
+  followerSplitPctSnapshot  Decimal    @map("follower_split_pct_snapshot") @db.Decimal(5, 4)
+  traderSplitPctSnapshot    Decimal    @map("trader_split_pct_snapshot") @db.Decimal(5, 4)
+  insuranceSplitPctSnapshot Decimal    @map("insurance_split_pct_snapshot") @db.Decimal(5, 4)
+  platformSplitPctSnapshot  Decimal    @map("platform_split_pct_snapshot") @db.Decimal(5, 4)
+  copyProCopierId           String?    @map("copy_pro_copier_id")
+  equityProtectorPct        Decimal?   @map("equity_protector_pct") @db.Decimal(5, 4)
+  activatedAt               DateTime?  @map("activated_at")
+  closedAt                  DateTime?  @map("closed_at")
+  createdAt                 DateTime   @default(now()) @map("created_at")
+  updatedAt                 DateTime   @updatedAt @map("updated_at")
+
+  strategy Strategy @relation(fields: [strategyId], references: [id])
+  trades   Trade[]
+
+  @@map("copy_relations")
+}
+
+model Trade {
+  id             String    @id @default(cuid())
+  copyRelationId String    @map("copy_relation_id")
+  ticket         String
+  symbol         String
+  type           String
+  lots           Decimal   @db.Decimal(10, 2)
+  openPrice      Decimal   @map("open_price") @db.Decimal(19, 8)
+  closePrice     Decimal?  @map("close_price") @db.Decimal(19, 8)
+  profit         Decimal?  @db.Decimal(19, 8)
+  openedAt       DateTime  @map("opened_at")
+  closedAt       DateTime? @map("closed_at")
+  createdAt      DateTime  @default(now()) @map("created_at")
+
+  copyRelation CopyRelation @relation(fields: [copyRelationId], references: [id])
+
+  @@unique([ticket, copyRelationId])
+  @@map("trades")
+}

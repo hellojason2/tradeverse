@@ -1,0 +1,58 @@
+// OWNED BY AGENT 1 — see OWNERSHIP.md. Other agents: read-only.
+// Cross-cutting enums only. Domain enums live in the domain fragment.
+
+enum UserRole {
+  USER
+  TRADER
+  ADMIN
+  MANAGER
+  SUPER_ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  SUSPENDED
+  DELETED
+}
+
+enum CopyStatus {
+  PENDING
+  ACTIVE
+  PAUSED
+  CLOSED
+  BREACHED
+}
+
+enum TxnType {
+  DEPOSIT
+  WITHDRAWAL
+  SETTLEMENT
+  FEE
+  REFUND
+  ATLAS_GOLD_PURCHASE
+  ATLAS_GOLD_REDEEM
+}
+
+enum Platform {
+  MT4
+  MT5
+}
+
+enum AccountStatus {
+  PENDING
+  ACTIVE
+  ERROR
+  CLOSED
+}
+
+enum RiskType {
+  FIXED
+  PROPORTIONAL
+}
+
+enum StrategyStatus {
+  DRAFT
+  ACTIVE
+  PAUSED
+  CLOSED
+}

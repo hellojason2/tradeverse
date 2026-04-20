@@ -1,0 +1,71 @@
+// OWNED BY AGENT 3 — see OWNERSHIP.md. Other agents: read-only.
+
+model Wallet {
+  id        String   @id @default(cuid())
+  userId    String   @unique @map("user_id")
+  balance   Decimal  @default("0") @db.Decimal(19, 8)
+  currency  String   @default("USD")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  transactions Transaction[]
+
+  @@map("wallets")
+}
+
+model Transaction {
+  id        String   @id @default(cuid())
+  walletId  String   @map("wallet_id")
+  amount    Decimal  @db.Decimal(19, 8)
+  type      TxnType
+  reference String?
+  metadata  Json?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  wallet Wallet @relation(fields: [walletId], references: [id])
+
+  @@map("transactions")
+}
+
+model Subscription {
+  id             String   @id @default(cuid())
+  userId         String   @map("user_id")
+  strategyId     String   @map("strategy_id")
+  copyRelationId String   @unique @map("copy_relation_id")
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  @@map("subscriptions")
+}
+
+model AtlasGoldHolding {
+  id        String   @id @default(cuid())
+  userId    String   @unique @map("user_id")
+  balance   Decimal  @default("0") @db.Decimal(19, 8)
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  transactions AtlasGoldTransaction[]
+
+  @@map("atlas_gold_holdings")
+}
+
+model AtlasGoldTransaction {
+  id        String   @id @default(cuid())
+  holdingId String   @map("holding_id")
+  amount    Decimal  @db.Decimal(19, 8)
+  type      String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  holding AtlasGoldHolding @relation(fields: [holdingId], references: [id])
+
+  @@map("atlas_gold_transactions")
+}
+
+model Notification {
+  id        String    @id @default(cuid())
+  userId    String    @map("user_id")
+  type      String
+  payload   Json
+  readAt    DateTime? @map("read_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  @@map("notifications")
+}

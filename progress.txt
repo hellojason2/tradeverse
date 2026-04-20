@@ -8,7 +8,7 @@
 
 ## Current Phase
 
-BUILD — Wave 2 (Foundation continues + CopyPro client starts)
+BUILD — Wave 2 (all 4 agents running in parallel)
 
 ## Completed
 
@@ -21,39 +21,30 @@ BUILD — Wave 2 (Foundation continues + CopyPro client starts)
 - [x] Agent guides per worktree (CLAUDE.md)
 - [x] **Wave 1 (A1-A5):** Fastify scaffold, env config, errors, server bootstrap, Prisma setup
 - [x] Agent 1 code merged to main, all worktrees rebased
+- [x] Wave 2 pre-flight: contracts layer (auth, config-catalog, copyPro, routes), Prisma schema fragment split, Prisma client generates cleanly, tsc passes
 
 ## In Progress
 
-- [ ] Agent 1 — Foundation: Wave 2 (B1-B5, C1-C2) then Wave 3 (C3-C6)
-- [ ] Agent 2 — Copy Engine: **D1 CopyPro HTTP client** (READY TO START)
+- [ ] Agent 1 — Foundation: running in TV-2.0-foundation/, unblocked, contracts layer ready
+- [ ] Agent 2 — Copy Engine: running in TV-2.0-copy-engine/, unblocked, copy.prisma fragment owned
+- [ ] Agent 3 — Business & Wallet: running in TV-2.0-business-wallet/, unblocked, wallet.prisma fragment owned
+- [ ] Agent 4 — Frontend: running in TV-2.0-frontend/, unblocked, MSW mocks derive from contracts/routes.ts
 
 ## Blocked
 
-- Agent 3 — Business & Wallet: waiting for Agent 1 to finish C5 auth middleware + B3 config service
-- Agent 4 — Frontend: waiting for Agent 1 to finish C4 login route
+(none)
 
 ## Last Action
 
-Merged feat/foundation (Wave 1) into main. Rebased all 3 other worktrees. Updated ralph-state.md to Wave 2.
+Wave 2 pre-flight committed to main: contracts layer (api/src/contracts/*.ts), Prisma schema fragment split (api/prisma/schema/), OWNERSHIP.md rewritten for parallel architecture, COORDINATION_REQUESTS.md migration serialization protocol added, progress.txt updated. All 4 feature worktrees rebased onto main.
 
 ## Next Action
 
-1. **Start Agent 2** in TV-2.0-copy-engine/ — execute D1 (CopyPro HTTP client)
-2. **Continue Agent 1** in TV-2.0-foundation/ — execute B1-B5, C1-C2, then C3-C6
-
-## Dispatch Instructions
-
-### Agent 2 — Copy Engine (START NOW)
-Open new session at: `/Users/thuanle/Documents/JSR/TV-2.0-copy-engine/`
-Tell it: "You are Agent 2 — Copy Engine. Wave 1 is done. Start D1: CopyPro HTTP client. Read your CLAUDE.md and docs/external/copypro-api-documentation.md. Build a typed REST client for copyback3.mrpc.pro with timeout and circuit breaker. Unit test with nock."
-
-### Agent 1 — Foundation (CONTINUE)
-Continue in: `/Users/thuanle/Documents/JSR/TV-2.0-foundation/`
-Execute B1-B5 (full schema, migration, config service, seed config, seed test data) then C1-C6 (auth system).
+Dispatch all 4 agents in their respective worktrees. Orchestrator monitors COORDINATION_REQUESTS.md daily and runs migrations as Agents 2/3 signal readiness.
 
 ## Notes
 
 - CopyPro URLs: copyback3.mrpc.pro (backend), copy3.mrpc.pro (frontend)
 - Prisma chosen for rapid structural changes
 - Pending decisions: wallet project path, CopyPro userKey strategy (only block Wave 4)
-- Agent 2 can only do D1 right now — D2-D6 need auth middleware (C5) which Agent 1 hasn't built yet
+- Migration protocol: Agents 2/3 signal via COORDINATION_REQUESTS.md; Agent 1 runs all `prisma migrate dev` commands

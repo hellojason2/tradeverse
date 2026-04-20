@@ -1,7 +1,7 @@
 {
   "tool_name": "Bash",
-  "tool_input_preview": "{\"command\":\"ls -la \\\"/Users/thuanle/Documents/JSR/TV 2.0/.claude\\\" 2>&1; ls \\\"/Users/thuanle/Documents/JSR/TV 2.0/CLAUDE.md\\\" 2>&1\",\"description\":\"Check existing .claude dir and CLAUDE.md\"}",
-  "error": "Exit code 1\nls: /Users/thuanle/Documents/JSR/TV 2.0/.claude: No such file or directory\nls: /Users/thuanle/Documents/JSR/TV 2.0/CLAUDE.md: No such file or directory",
-  "timestamp": "2026-04-19T11:14:37.747Z",
+  "tool_input_preview": "{\"command\":\"cd \\\"/Users/thuanle/Documents/JSR/TV 2.0\\\" && cat /tmp/tv2-executor-prompt.txt | claude --print --dangerously-skip-permissions 2>&1\",\"timeout\":300000,\"description\":\"Run executor subagent v...",
+  "error": "Exit code 1\nError: Input must be provided either through stdin or as a prompt argument when using --print",
+  "timestamp": "2026-04-20T12:29:39.837Z",
   "retry_count": 1
 }

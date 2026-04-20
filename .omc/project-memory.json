@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "lastScanned": 1776580618975,
+  "lastScanned": 1776670427438,
   "projectRoot": "/Users/thuanle/Documents/JSR/TV 2.0",
   "techStack": {
     "languages": [
@@ -50,7 +50,8 @@
       "dev": "vite",
       "build": "tsc -b && vite build",
       "lint": "eslint .",
-      "preview": "vite preview"
+      "preview": "vite preview",
+      "responsive:check": "npx ts-node scripts/responsive-check.ts"
     }
   },
   "conventions": {
@@ -63,50 +64,105 @@
     "isMonorepo": false,
     "workspaces": [],
     "mainDirectories": [
+      "app",
+      "docs",
       "public",
+      "scripts",
       "src"
     ],
     "gitBranches": null
   },
   "customNotes": [],
   "directoryMap": {
+    "api": {
+      "path": "api",
+      "purpose": "API routes",
+      "fileCount": 5,
+      "lastAccessed": 1776670427421,
+      "keyFiles": [
+        "package-lock.json",
+        "package.json",
+        "tsconfig.json"
+      ]
+    },
+    "app": {
+      "path": "app",
+      "purpose": "Application code",
+      "fileCount": 18,
+      "lastAccessed": 1776670427431,
+      "keyFiles": [
+        "AGENTS.md",
+        "README.md",
+        "Tradeverse-2.0-PRD.md",
+        "WORKSPACE.md",
+        "design.json"
+      ]
+    },
     "design": {
       "path": "design",
       "purpose": null,
-      "fileCount": 3,
-      "lastAccessed": 1776580618944,
+      "fileCount": 5,
+      "lastAccessed": 1776670427432,
       "keyFiles": [
         "057642C8-7335-40A4-9BBE-6A85E891F4DE.png",
         "3D839FFC-02CD-463F-A352-702F654DA7EF.png",
-        "BAAA7543-4551-4CFF-B629-72B722A81C51.png"
+        "BAAA7543-4551-4CFF-B629-72B722A81C51.png",
+        "admindashboard.html",
+        "clientdashboard.html"
       ]
     },
     "dist": {
       "path": "dist",
       "purpose": "Distribution/build output",
       "fileCount": 3,
-      "lastAccessed": 1776580618945,
+      "lastAccessed": 1776670427433,
       "keyFiles": [
         "favicon.svg",
         "icons.svg",
         "index.html"
       ]
     },
+    "docs": {
+      "path": "docs",
+      "purpose": "Documentation",
+      "fileCount": 0,
+      "lastAccessed": 1776670427434,
+      "keyFiles": []
+    },
+    "features": {
+      "path": "features",
+      "purpose": null,
+      "fileCount": 0,
+      "lastAccessed": 1776670427434,
+      "keyFiles": []
+    },
     "public": {
       "path": "public",
       "purpose": "Public files",
       "fileCount": 2,
-      "lastAccessed": 1776580618957,
+      "lastAccessed": 1776670427434,
       "keyFiles": [
         "favicon.svg",
         "icons.svg"
+      ]
+    },
+    "scripts": {
+      "path": "scripts",
+      "purpose": "Build/utility scripts",
+      "fileCount": 4,
+      "lastAccessed": 1776670427435,
+      "keyFiles": [
+        "new-feature.sh",
+        "remove-feature.sh",
+        "responsive-check.ts",
+        "status.sh"
       ]
     },
     "src": {
       "path": "src",
       "purpose": "Source code",
       "fileCount": 4,
-      "lastAccessed": 1776580618958,
+      "lastAccessed": 1776670427435,
       "keyFiles": [
         "App.css",
         "App.tsx",
@@ -114,11 +170,31 @@
         "main.tsx"
       ]
     },
+    "api/scripts": {
+      "path": "api/scripts",
+      "purpose": "Build/utility scripts",
+      "fileCount": 5,
+      "lastAccessed": 1776670427436,
+      "keyFiles": [
+        "test-env.ts",
+        "test-errors.ts",
+        "test-pg.ts"
+      ]
+    },
+    "api/src": {
+      "path": "api/src",
+      "purpose": "Source code",
+      "fileCount": 1,
+      "lastAccessed": 1776670427436,
+      "keyFiles": [
+        "server.ts"
+      ]
+    },
     "dist/assets": {
       "path": "dist/assets",
       "purpose": "Static assets",
       "fileCount": 2,
-      "lastAccessed": 1776580618960,
+      "lastAccessed": 1776670427437,
       "keyFiles": [
         "index-BgjMGXTu.css",
         "index-C6aY8ffu.js"
@@ -128,7 +204,7 @@
       "path": "src/assets",
       "purpose": "Static assets",
       "fileCount": 3,
-      "lastAccessed": 1776580618961,
+      "lastAccessed": 1776670427437,
       "keyFiles": [
         "hero.png",
         "react.svg",
@@ -139,29 +215,43 @@
       "path": "src/components",
       "purpose": "UI components",
       "fileCount": 0,
-      "lastAccessed": 1776580618961,
+      "lastAccessed": 1776670427437,
       "keyFiles": []
     },
     "src/lib": {
       "path": "src/lib",
       "purpose": "Library code",
-      "fileCount": 1,
-      "lastAccessed": 1776580618961,
-      "keyFiles": [
-        "utils.ts"
-      ]
+      "fileCount": 0,
+      "lastAccessed": 1776670427438,
+      "keyFiles": []
     },
-    "src/types": {
-      "path": "src/types",
-      "purpose": "Type definitions",
-      "fileCount": 1,
-      "lastAccessed": 1776580618962,
-      "keyFiles": [
-        "index.ts"
-      ]
+    "src/pages": {
+      "path": "src/pages",
+      "purpose": "Page components",
+      "fileCount": 0,
+      "lastAccessed": 1776670427438,
+      "keyFiles": []
     }
   },
   "hotPaths": [
+    {
+      "path": "docs/external/copypro-api-documentation.md",
+      "accessCount": 8,
+      "lastAccessed": 1776686816118,
+      "type": "file"
+    },
+    {
+      "path": "CONTRACTS.md",
+      "accessCount": 5,
+      "lastAccessed": 1776686767661,
+      "type": "file"
+    },
+    {
+      "path": "OWNERSHIP.md",
+      "accessCount": 5,
+      "lastAccessed": 1776688359395,
+      "type": "file"
+    },
     {
       "path": "package.json",
       "accessCount": 4,
@@ -169,9 +259,33 @@
       "type": "file"
     },
     {
+      "path": "Tradeverse-2.0-PRD.md",
+      "accessCount": 4,
+      "lastAccessed": 1776686760979,
+      "type": "file"
+    },
+    {
+      "path": "COORDINATION_REQUESTS.md",
+      "accessCount": 4,
+      "lastAccessed": 1776688388756,
+      "type": "file"
+    },
+    {
       "path": "CLAUDE.md",
       "accessCount": 3,
       "lastAccessed": 1776597724334,
+      "type": "file"
+    },
+    {
+      "path": "api/prisma/schema.prisma",
+      "accessCount": 3,
+      "lastAccessed": 1776686788182,
+      "type": "file"
+    },
+    {
+      "path": "progress.txt",
+      "accessCount": 3,
+      "lastAccessed": 1776688359460,
       "type": "file"
     },
     {
@@ -199,6 +313,18 @@
       "type": "file"
     },
     {
+      "path": "docs/blueprint/BEHAVIOR.md",
+      "accessCount": 2,
+      "lastAccessed": 1776686706075,
+      "type": "file"
+    },
+    {
+      "path": "BLUEPRINT.md",
+      "accessCount": 2,
+      "lastAccessed": 1776686743594,
+      "type": "file"
+    },
+    {
       "path": ".claude/skills/pr-review/SKILL.md",
       "accessCount": 1,
       "lastAccessed": 1776597732448,
@@ -214,6 +340,54 @@
       "path": ".claude/skills/responsive-check/SKILL.md",
       "accessCount": 1,
       "lastAccessed": 1776597784512,
+      "type": "file"
+    },
+    {
+      "path": "api/src/middleware/auth.ts",
+      "accessCount": 1,
+      "lastAccessed": 1776686684676,
+      "type": "file"
+    },
+    {
+      "path": "docs/blueprint/blueprint.md",
+      "accessCount": 1,
+      "lastAccessed": 1776686688777,
+      "type": "file"
+    },
+    {
+      "path": "docs/blueprint/CONFIG_CATALOG.md",
+      "accessCount": 1,
+      "lastAccessed": 1776686698843,
+      "type": "file"
+    },
+    {
+      "path": "api/src/types/errors.ts",
+      "accessCount": 1,
+      "lastAccessed": 1776686707217,
+      "type": "file"
+    },
+    {
+      "path": "docs/external/copypro-integration-architecture.md",
+      "accessCount": 1,
+      "lastAccessed": 1776686716735,
+      "type": "file"
+    },
+    {
+      "path": "docs/business-logic/00-business-logic-prd.md",
+      "accessCount": 1,
+      "lastAccessed": 1776686750685,
+      "type": "file"
+    },
+    {
+      "path": "api/package.json",
+      "accessCount": 1,
+      "lastAccessed": 1776686768022,
+      "type": "file"
+    },
+    {
+      "path": "api/src/contracts/auth.ts",
+      "accessCount": 1,
+      "lastAccessed": 1776686845634,
       "type": "file"
     }
   ],

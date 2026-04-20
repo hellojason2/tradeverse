@@ -20,6 +20,29 @@
 
 ---
 
+## Migration Serialization Protocol
+
+Prisma migrations cannot be parallelized. Agent 1 runs every migration against main. Agents 2 and 3 add models to their fragments, then signal readiness as follows:
+
+1. Agent 2/3 commits the completed fragment changes to their feature branch.
+2. Agent 2/3 appends a row to the Open Requests table below tagged `@agent1`:
+   `| NEXT | YYYY-MM-DD | @agentN | @agent1 | MIGRATION READY: <domain>.prisma revision <commit-sha>. Changes: <one-line summary>. | OPEN |`
+3. Agent 1 (or the orchestrator in daily triage) runs:
+   - Merges the fragment via a fast-forward or cherry-pick of the model-only commit(s).
+   - Executes `cd api && npx prisma migrate dev --name <feature_name> --schema=prisma/schema`.
+   - Commits both the fragment change and the generated migration SQL to main.
+   - Pushes main.
+   - Marks the request RESOLVED with the migration commit hash.
+4. Agents 2/3 rebase their feature branch onto main to pick up the generated migration + regenerated Prisma client types.
+
+**Do NOT** run `prisma migrate dev` from a feature worktree. Only Agent 1 runs migrations. Running parallel migrations creates conflicting migration files that are painful to untangle.
+
+### Example Migration Request Row
+
+| NEXT | 2026-04-21 | @agent2 | @agent1 | MIGRATION READY: copy.prisma revision abc1234. Changes: Add MtAccount, CopyRelation, Trade models. | OPEN |
+
+---
+
 ## Template for New Requests
 
 Copy this block to the Open Requests table:
