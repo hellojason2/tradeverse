@@ -1,0 +1,45 @@
+# Tradeverse 2.0 — Build Progress Log
+
+> **This file is the session continuity anchor.**
+> **After every context compaction, read this file first to understand where we are.**
+> **Last updated:** 2026-04-20
+
+---
+
+## Current Phase
+
+BUILD — Wave 1 (Foundation)
+
+## Completed
+
+- [x] Planning: CopyPro API docs, design system, integration architecture
+- [x] Task decomposition: 48 units in 6 waves
+- [x] Ralph Loop integration
+- [x] Parallel worktree setup: 4 worktrees created
+- [x] File ownership defined (OWNERSHIP.md)
+- [x] Coordination protocol (COORDINATION_REQUESTS.md)
+- [x] Agent guides per worktree (CLAUDE.md)
+
+## In Progress
+
+- [ ] Agent 1 — Foundation: Wave 1 units (A1-A5)
+
+## Blocked
+
+- Agent 2 — Copy Engine: waiting for Agent 1 schema lock (v0.1.0-types)
+- Agent 3 — Business & Wallet: waiting for Agent 1 schema lock
+- Agent 4 — Frontend: waiting for Agent 1 schema lock
+
+## Last Action
+
+Created 4 git worktrees, committed planning docs, flipped ralph-state.md to BUILD phase.
+
+## Next Action
+
+Start Agent 1 in TV-2.0-foundation/ worktree. Execute A1-A5.
+
+## Notes
+
+- CopyPro URLs: copyback3.mrpc.pro (backend), copy3.mrpc.pro (frontend)
+- Prisma chosen for rapid structural changes
+- Pending decisions: wallet project path, CopyPro userKey strategy (only block Wave 4)

@@ -1,6 +1,6 @@
 ---
-phase: PLAN
-current_wave: 0
+phase: BUILD
+current_wave: 1
 current_unit: 0
 total_units: 48
 iteration: 0
@@ -17,6 +17,19 @@ This Ralph Loop covers the **complete Tradeverse 2.0 platform**:
 - **Integration:** CopyPro trade copier orchestration
 - **Business:** Strategies, subscriptions, wallet, Atlas Gold insurance
 - **Plan:** 48 units in 6 waves (see `.claude/TASKS.md`)
+
+## Parallel Worktree Status
+
+| Worktree | Branch | Agent | Status | Blocked Until |
+|----------|--------|-------|--------|---------------|
+| `TV-2.0-foundation/` | `feat/foundation` | Agent 1 | **READY** | — |
+| `TV-2.0-copy-engine/` | `feat/copy-engine` | Agent 2 | BLOCKED | Agent 1 finishes Wave 2 (types + schema locked) |
+| `TV-2.0-business-wallet/` | `feat/business-wallet` | Agent 3 | BLOCKED | Agent 1 finishes Wave 2 (types + schema locked) |
+| `TV-2.0-frontend/` | `feat/frontend` | Agent 4 | BLOCKED | Agent 1 finishes Wave 2 (types + schema locked) |
+
+**Orchestrator instruction:** Start Agent 1 NOW. Agents 2-4 remain blocked until Agent 1 commits the schema-lock tag (`v0.1.0-types`) to main.
+
+**Schema lock rule:** Once Agent 1 tags `v0.1.0-types`, no schema changes without coordination request. Agent 1 may still append fields to schema, but must notify all agents via `COORDINATION_REQUESTS.md`.
 
 ## Research Findings
 
