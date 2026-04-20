@@ -8,7 +8,7 @@
 
 ## Current Phase
 
-BUILD — Wave 1 (Foundation)
+BUILD — Wave 2 (Foundation continues + CopyPro client starts)
 
 ## Completed
 
@@ -19,27 +19,41 @@ BUILD — Wave 1 (Foundation)
 - [x] File ownership defined (OWNERSHIP.md)
 - [x] Coordination protocol (COORDINATION_REQUESTS.md)
 - [x] Agent guides per worktree (CLAUDE.md)
+- [x] **Wave 1 (A1-A5):** Fastify scaffold, env config, errors, server bootstrap, Prisma setup
+- [x] Agent 1 code merged to main, all worktrees rebased
 
 ## In Progress
 
-- [ ] Agent 1 — Foundation: Wave 1 units (A1-A5)
+- [ ] Agent 1 — Foundation: Wave 2 (B1-B5, C1-C2) then Wave 3 (C3-C6)
+- [ ] Agent 2 — Copy Engine: **D1 CopyPro HTTP client** (READY TO START)
 
 ## Blocked
 
-- Agent 2 — Copy Engine: waiting for Agent 1 schema lock (v0.1.0-types)
-- Agent 3 — Business & Wallet: waiting for Agent 1 schema lock
-- Agent 4 — Frontend: waiting for Agent 1 schema lock
+- Agent 3 — Business & Wallet: waiting for Agent 1 to finish C5 auth middleware + B3 config service
+- Agent 4 — Frontend: waiting for Agent 1 to finish C4 login route
 
 ## Last Action
 
-Created 4 git worktrees, committed planning docs, flipped ralph-state.md to BUILD phase.
+Merged feat/foundation (Wave 1) into main. Rebased all 3 other worktrees. Updated ralph-state.md to Wave 2.
 
 ## Next Action
 
-Start Agent 1 in TV-2.0-foundation/ worktree. Execute A1-A5.
+1. **Start Agent 2** in TV-2.0-copy-engine/ — execute D1 (CopyPro HTTP client)
+2. **Continue Agent 1** in TV-2.0-foundation/ — execute B1-B5, C1-C2, then C3-C6
+
+## Dispatch Instructions
+
+### Agent 2 — Copy Engine (START NOW)
+Open new session at: `/Users/thuanle/Documents/JSR/TV-2.0-copy-engine/`
+Tell it: "You are Agent 2 — Copy Engine. Wave 1 is done. Start D1: CopyPro HTTP client. Read your CLAUDE.md and docs/external/copypro-api-documentation.md. Build a typed REST client for copyback3.mrpc.pro with timeout and circuit breaker. Unit test with nock."
+
+### Agent 1 — Foundation (CONTINUE)
+Continue in: `/Users/thuanle/Documents/JSR/TV-2.0-foundation/`
+Execute B1-B5 (full schema, migration, config service, seed config, seed test data) then C1-C6 (auth system).
 
 ## Notes
 
 - CopyPro URLs: copyback3.mrpc.pro (backend), copy3.mrpc.pro (frontend)
 - Prisma chosen for rapid structural changes
 - Pending decisions: wallet project path, CopyPro userKey strategy (only block Wave 4)
+- Agent 2 can only do D1 right now — D2-D6 need auth middleware (C5) which Agent 1 hasn't built yet

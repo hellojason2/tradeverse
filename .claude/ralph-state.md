@@ -1,7 +1,7 @@
 ---
 phase: BUILD
-current_wave: 1
-current_unit: 5
+current_wave: 2
+current_unit: 6
 total_units: 48
 iteration: 5
 max_iterations: 100
@@ -22,12 +22,15 @@ This Ralph Loop covers the **complete Tradeverse 2.0 platform**:
 
 | Worktree | Branch | Agent | Status | Blocked Until |
 |----------|--------|-------|--------|---------------|
-| `TV-2.0-foundation/` | `feat/foundation` | Agent 1 | **READY** | — |
-| `TV-2.0-copy-engine/` | `feat/copy-engine` | Agent 2 | BLOCKED | Agent 1 finishes Wave 2 (types + schema locked) |
-| `TV-2.0-business-wallet/` | `feat/business-wallet` | Agent 3 | BLOCKED | Agent 1 finishes Wave 2 (types + schema locked) |
-| `TV-2.0-frontend/` | `feat/frontend` | Agent 4 | BLOCKED | Agent 1 finishes Wave 2 (types + schema locked) |
+| `TV-2.0-foundation/` | `feat/foundation` | Agent 1 | **WAVE 2** | Continuing B1-B5, C1-C2 |
+| `TV-2.0-copy-engine/` | `feat/copy-engine` | Agent 2 | **READY** (D1 only) | D2-D6 blocked until C5 auth middleware |
+| `TV-2.0-business-wallet/` | `feat/business-wallet` | Agent 3 | BLOCKED | Agent 1 finishes C5 auth middleware + B3 config service |
+| `TV-2.0-frontend/` | `feat/frontend` | Agent 4 | BLOCKED | Agent 1 finishes C4 login route |
 
-**Orchestrator instruction:** Start Agent 1 NOW. Agents 2-4 remain blocked until Agent 1 commits the schema-lock tag (`v0.1.0-types`) to main.
+**Orchestrator instruction:**
+- Agent 1 continues Wave 2 (B1-B5, C1-C2) then Wave 3 (C3-C6)
+- **Agent 2 can START NOW** on D1 (CopyPro HTTP client) — only depends on A2 (env) which is DONE
+- Agents 3 and 4 remain blocked until Agent 1 finishes auth routes (C3-C6)
 
 **Schema lock rule:** Once Agent 1 tags `v0.1.0-types`, no schema changes without coordination request. Agent 1 may still append fields to schema, but must notify all agents via `COORDINATION_REQUESTS.md`.
 
