@@ -1,9 +1,9 @@
 ---
 phase: BUILD
 current_wave: 1
-current_unit: 0
+current_unit: 5
 total_units: 48
-iteration: 0
+iteration: 5
 max_iterations: 100
 ---
 
@@ -44,11 +44,11 @@ This Ralph Loop covers the **complete Tradeverse 2.0 platform**:
 
 | Unit | Status | Attempts | Notes |
 |------|--------|----------|-------|
-| A1 | PENDING | 0 | Backend scaffolding |
-| A2 | PENDING | 0 | Env config |
-| A3 | PENDING | 0 | Error types |
-| A4 | PENDING | 0 | Server bootstrap |
-| A5 | PENDING | 0 | Prisma setup |
+| A1 | PASSED | 1 | Backend scaffolding |
+| A2 | PASSED | 1 | Env config |
+| A3 | PASSED | 1 | Error types |
+| A4 | PASSED | 1 | Server bootstrap |
+| A5 | PASSED | 1 | Prisma setup |
 | B1 | PENDING | 0 | Full schema |
 | B2 | PENDING | 0 | Migration |
 | B3 | PENDING | 0 | Config service |
