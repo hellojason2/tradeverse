@@ -1,13 +1,21 @@
-import type { FastifyReply, FastifyRequest } from 'fastify';
+import type { FastifyReply, FastifyRequest, RouteGenericInterface } from 'fastify';
 import { DomainError, HttpStatusMap } from '../types/errors.js';
 
-export type FastifyRouteHandler = (
-  req: FastifyRequest,
+/**
+ * Generic Fastify route handler compatible with typed schema interfaces.
+ * Uses `unknown` for generic params so that `FastifyRequest<RouteGenericInterface>` works
+ * correctly when combined with module augmentation (req.user is always available on
+ * authenticated routes after the auth decoration is applied).
+ */
+export type FastifyRouteHandler<T extends RouteGenericInterface = RouteGenericInterface> = (
+  req: FastifyRequest<T>,
   reply: FastifyReply,
 ) => Promise<void>;
 
-export const asyncErrorWrapper = (fn: FastifyRouteHandler) => {
-  return async (req: FastifyRequest, reply: FastifyReply) => {
+export const asyncErrorWrapper = <T extends RouteGenericInterface>(
+  fn: FastifyRouteHandler<T>,
+): FastifyRouteHandler<T> => {
+  return async (req: FastifyRequest<T>, reply: FastifyReply) => {
     try {
       await fn(req, reply);
     } catch (err) {
