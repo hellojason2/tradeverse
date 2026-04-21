@@ -88,6 +88,25 @@ class ApiClient {
     });
 
     if (response.status === 401) {
+      // Auth endpoints return 401 for invalid credentials — do NOT refresh/redirect
+      if (
+        endpoint.startsWith('/auth/login') ||
+        endpoint.startsWith('/auth/register') ||
+        endpoint.startsWith('/auth/oauth/')
+      ) {
+        const error = await response.json().catch(() => ({ message: response.statusText }));
+        const message =
+          (typeof error === 'object' && error !== null &&
+            typeof (error as Record<string, unknown>).error === 'object' &&
+            (error as Record<string, unknown>).error !== null &&
+            typeof ((error as Record<string, unknown>).error as Record<string, unknown>).message === 'string')
+            ? (((error as Record<string, unknown>).error as Record<string, unknown>).message as string)
+            : (typeof error === 'object' && error !== null && typeof (error as Record<string, unknown>).message === 'string')
+              ? ((error as Record<string, unknown>).message as string)
+              : 'Request failed';
+        throw new ApiError(401, message, error);
+      }
+
       if (!isRefreshing) {
         isRefreshing = true;
         const newToken = await doRefresh();
