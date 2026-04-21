@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 import { useWalletBalance, useTransactions, useDeposit, useWithdraw } from '@/hooks/useWallet';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -15,6 +16,7 @@ import { ArrowUpRight, ArrowDownLeft, CheckCircle, XCircle, Clock, ExternalLink 
 import type { Transaction, TransactionType, WalletBalance } from '@contracts/routes';
 
 export function WalletPage() {
+  useDocumentTitle('Wallet');
   const [txFilter, setTxFilter] = useState<TransactionType | 'ALL'>('ALL');
   const { data: walletData, isLoading: walletLoading } = useWalletBalance();
   const { data: txData, isLoading: txLoading } = useTransactions(txFilter !== 'ALL' ? { type: txFilter } : undefined);

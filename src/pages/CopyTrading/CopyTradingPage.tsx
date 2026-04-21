@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 import { useCopyRelations } from '@/hooks/useCopyRelations';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -24,6 +25,7 @@ function useCopyTraders(params?: Record<string, string>) {
 }
 
 export function CopyTradingPage() {
+  useDocumentTitle('Copy Trading');
   const [sortBy, setSortBy] = useState('roi');
   const { data: leaderboardData, isLoading } = useCopyTraders({ sort: sortBy });
   const { data: relationsData } = useCopyRelations();

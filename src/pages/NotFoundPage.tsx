@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 
 export function NotFoundPage() {
+  useDocumentTitle('Page Not Found');
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#030611] p-4">
       <div className="text-center">

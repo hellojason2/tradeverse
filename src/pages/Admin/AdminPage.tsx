@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 import { useAdminUsers, useAdminConfig, useAdminWithdrawals, useApproveWithdrawal, useRejectWithdrawal, useSuspendUser, useUnsuspendUser, useKycApprove } from '@/hooks/useAdmin';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -193,6 +194,7 @@ import { useUpdateConfig } from '@/hooks/useAdmin';
 import { Label } from '@/components/ui/label';
 
 export function AdminPage() {
+  useDocumentTitle('Admin');
   const { data, isLoading } = useAdminUsers();
   const suspend = useSuspendUser();
   const unsuspend = useUnsuspendUser();

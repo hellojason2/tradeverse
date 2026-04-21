@@ -1,11 +1,13 @@
 import { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 import { apiClient } from '@/services/api-client';
 import type { ApiResponse, LoginResponse } from '@contracts/routes';
 import { Loader2 } from 'lucide-react';
 
 export function OAuthCallbackPage() {
+  useDocumentTitle('Signing In');
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { login } = useAuth();
