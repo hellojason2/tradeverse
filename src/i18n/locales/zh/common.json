@@ -189,6 +189,11 @@
     "loading": "加载中...",
     "error": "出现错误",
     "retry": "重试",
-    "noData": "暂无数据"
+    "noData": "暂无数据",
+    "clipboard": {
+      "defaultLabel": "内容",
+      "copied": "{{label}} 已复制",
+      "failed": "复制失败"
+    }
   }
 }

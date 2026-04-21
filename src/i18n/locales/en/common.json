@@ -189,6 +189,11 @@
     "loading": "Loading...",
     "error": "Something went wrong",
     "retry": "Retry",
-    "noData": "No data available"
+    "noData": "No data available",
+    "clipboard": {
+      "defaultLabel": "Value",
+      "copied": "{{label}} copied",
+      "failed": "Copy failed"
+    }
   }
 }
