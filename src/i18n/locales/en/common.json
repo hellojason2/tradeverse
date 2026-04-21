@@ -1,0 +1,194 @@
+{
+  "app": {
+    "name": "TradeVerse",
+    "tagline": "INSURED",
+    "loading": "Loading..."
+  },
+  "nav": {
+    "overview": "Overview",
+    "portfolio": "My Portfolio",
+    "strategies": "Signal Plaza",
+    "copyTrading": "Trade",
+    "atlasGold": "Trail Mode",
+    "wallet": "Wallet",
+    "history": "History",
+    "referral": "Referrals",
+    "activities": "Activities",
+    "community": "Community",
+    "notifications": "Notifications",
+    "settings": "Settings",
+    "search": "Search..."
+  },
+  "topbar": {
+    "portal": "Portal",
+    "notifications": "Notifications",
+    "settings": "Settings",
+    "profile": "Profile",
+    "logout": "Logout"
+  },
+  "auth": {
+    "signIn": "Sign in",
+    "signUp": "Sign up",
+    "login": "Login",
+    "register": "Register",
+    "logout": "Logout",
+    "email": "Email",
+    "password": "Password",
+    "forgotPassword": "Forgot password?",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?"
+  },
+  "landing": {
+    "hero": {
+      "badge": "Every trade insured the moment it opens",
+      "title": "Trade with",
+      "titleHighlight": "every position",
+      "titleEnd": "insured",
+      "description": "TradeVerse routes your live P/L through an on-chain shield the moment a trade is opened — so profits and drawdowns are protected end to end. Connect your broker, set your coverage, and watch every trade clear the shield in real time.",
+      "cta": "Insure your trades",
+      "ctaLive": "See it live",
+      "works": "Works with MT4, MT5 & cTrader",
+      "payouts": "Payouts in under 24h",
+      "trial": "14-day free trial",
+      "goToDashboard": "Go to Dashboard"
+    },
+    "nav": {
+      "tracks": "Tracks",
+      "soundscapes": "Soundscapes",
+      "spotlight": "Spotlight",
+      "forCreators": "For creators",
+      "pricing": "Pricing",
+      "searchLibrary": "Search library"
+    },
+    "drops": {
+      "title": "Featured drops",
+      "subtitle": "Handpicked instrumentals and atmospheres tuned for creators, streamers and storytellers.",
+      "viewAll": "View all"
+    },
+    "phone": {
+      "livePl": "Live P/L Flow",
+      "insuring": "Insuring",
+      "securedPL": "Secured P/L",
+      "tradesShielded": "trades shielded",
+      "rawPL": "Raw P/L",
+      "insuredBy": "Insured by TradeVerse"
+    }
+  },
+  "dashboard": {
+    "title": "Overview",
+    "welcome": "Welcome back",
+    "portfolio": "Portfolio Value",
+    "todayPL": "Today's P&L",
+    "activeTrades": "Active Trades",
+    "winRate": "Win Rate",
+    "recentActivity": "Recent Activity",
+    "performance": "Performance",
+    "openPositions": "Open Positions",
+    "viewAll": "View All"
+  },
+  "admin": {
+    "title": "Admin Dashboard",
+    "totalUsers": "Total Users",
+    "tradingVolume": "Trading Volume",
+    "activeSignals": "Active Signals",
+    "openTickets": "Open Tickets",
+    "volumeOverview": "Trading Volume Overview",
+    "userDistribution": "User Distribution",
+    "recentUsers": "Recent Users",
+    "recentTransactions": "Recent Transactions",
+    "viewAll": "View All",
+    "users": "Users",
+    "type": "Type",
+    "status": "Status",
+    "action": "Action",
+    "amount": "Amount",
+    "search": "Search users, transactions...",
+    "period24h": "24h",
+    "period7d": "7d",
+    "period30d": "30d",
+    "nav": {
+      "dashboard": "Dashboard",
+      "analytics": "Analytics",
+      "users": "Users",
+      "transactions": "Transactions",
+      "kyc": "KYC Review",
+      "settings": "Settings",
+      "security": "Security",
+      "overview": "Main"
+    }
+  },
+  "wallet": {
+    "title": "Wallet",
+    "available": "Available",
+    "locked": "Locked",
+    "total": "Total",
+    "deposit": "Deposit",
+    "withdraw": "Withdraw",
+    "history": "History",
+    "recentTransactions": "Recent Transactions"
+  },
+  "strategies": {
+    "title": "Signal Plaza",
+    "active": "Active",
+    "paused": "Paused",
+    "all": "All",
+    "followers": "followers",
+    "aum": "AUM",
+    "winRate": "Win Rate",
+    "maxDrawdown": "Max DD",
+    "profitShare": "Profit Share",
+    "follow": "Follow",
+    "unfollow": "Unfollow"
+  },
+  "copyTrading": {
+    "title": "Trade",
+    "activePositions": "Active Positions",
+    "closedPositions": "Closed Positions",
+    "riskCapital": "Risk Capital",
+    "status": "Status",
+    "pnl": "P&L"
+  },
+  "atlasGold": {
+    "title": "Trail Mode",
+    "startTrail": "Start Trail",
+    "checkpoints": "Checkpoints",
+    "completed": "Completed",
+    "locked": "Locked",
+    "current": "Current",
+    "reward": "Reward"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "markAllRead": "Mark all as read",
+    "unread": "Unread",
+    "all": "All",
+    "noNotifications": "No notifications"
+  },
+  "settings": {
+    "title": "Settings",
+    "profile": "Profile",
+    "security": "Security",
+    "preferences": "Preferences",
+    "language": "Language",
+    "theme": "Theme",
+    "notifications": "Notifications",
+    "save": "Save Changes"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "close": "Close",
+    "confirm": "Confirm",
+    "back": "Back",
+    "next": "Next",
+    "yes": "Yes",
+    "no": "No",
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "retry": "Retry",
+    "noData": "No data available"
+  }
+}
