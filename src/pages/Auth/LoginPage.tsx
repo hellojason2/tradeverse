@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/hooks/useAuth';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 import { loginApi, oauthLoginApi } from '@/services/api-client';
@@ -23,6 +24,7 @@ type FormData = z.infer<typeof schema>;
 
 export function LoginPage() {
   useDocumentTitle('Login');
+  const { t } = useTranslation('auth');
   const { login } = useAuth();
   const navigate = useNavigate();
   const [apiError, setApiError] = useState<string | null>(null);
@@ -81,20 +83,20 @@ export function LoginPage() {
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <div className="w-14 h-14 rounded-xl bg-[linear-gradient(135deg,oklch(0.7_0.2_255),oklch(0.5_0.22_262))] mx-auto flex items-center justify-center text-white font-mono font-bold text-lg mb-4">TV</div>
-          <h1 className="text-[28px] text-[#f5f7ff] font-serif">Welcome back</h1>
-          <p className="text-[13px] text-[#8892b0] mt-2">Sign in to your Tradeverse account</p>
+          <h1 className="text-[28px] text-[#f5f7ff] font-serif">{t('login.title')}</h1>
+          <p className="text-[13px] text-[#8892b0] mt-2">{t('login.subtitle')}</p>
         </div>
 
         <Card className="bg-[linear-gradient(180deg,rgba(14,20,44,0.6),rgba(8,12,28,0.6))] backdrop-blur-[20px] border-white/[0.08] rounded-[14px]">
           <CardContent className="p-6">
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
               <div>
-                <Label className="text-[11px] font-mono uppercase tracking-[0.08em] text-[#8892b0]">Email</Label>
+                <Label className="text-[11px] font-mono uppercase tracking-[0.08em] text-[#8892b0]">{t('fields.email')}</Label>
                 <div className="relative mt-1.5">
                   <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#545d78]" />
                   <Input
                     type="email"
-                    placeholder="you@example.com"
+                    placeholder={t('placeholders.email')}
                     className="pl-10 bg-white/[0.03] border-white/[0.08] focus:border-[rgba(120,160,255,0.22)] focus:shadow-[0_0_0_3px_oklch(0.55_0.22_260/0.15)]"
                     {...register('identifier', {
                       onChange: () => setApiError(null),
@@ -108,14 +110,14 @@ export function LoginPage() {
 
               <div>
                 <div className="flex items-center justify-between">
-                  <Label className="text-[11px] font-mono uppercase tracking-[0.08em] text-[#8892b0]">Password</Label>
-                  <Link to="/forgot-password" className="text-[11px] text-[#7aadff] hover:text-[#4f8eff]">Forgot password?</Link>
+                  <Label className="text-[11px] font-mono uppercase tracking-[0.08em] text-[#8892b0]">{t('fields.password')}</Label>
+                  <Link to="/forgot-password" className="text-[11px] text-[#7aadff] hover:text-[#4f8eff]">{t('login.forgot')}</Link>
                 </div>
                 <div className="relative mt-1.5">
                   <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#545d78]" />
                   <Input
                     type="password"
-                    placeholder="••••••••"
+                    placeholder={t('placeholders.password')}
                     className="pl-10 bg-white/[0.03] border-white/[0.08] focus:border-[rgba(120,160,255,0.22)] focus:shadow-[0_0_0_3px_oklch(0.55_0.22_260/0.15)]"
                     {...register('password', {
                       onChange: () => setApiError(null),
@@ -139,13 +141,13 @@ export function LoginPage() {
                 className="w-full bg-[linear-gradient(180deg,oklch(0.7_0.2_255),oklch(0.52_0.22_262))] text-white border-0 hover:brightness-110 h-10"
                 disabled={isSubmitting}
               >
-                {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Sign In'}
+                {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : t('login.submit')}
               </Button>
             </form>
 
             <div className="relative my-6">
               <div className="absolute inset-0 flex items-center"><span className="w-full border-t border-white/[0.06]" /></div>
-              <div className="relative flex justify-center text-xs uppercase"><span className="bg-[#030611] px-2 text-[#545d78]">or continue with</span></div>
+              <div className="relative flex justify-center text-xs uppercase"><span className="bg-[#030611] px-2 text-[#545d78]">{t('divider')}</span></div>
             </div>
 
             <div className="grid grid-cols-3 gap-3">
@@ -167,8 +169,8 @@ export function LoginPage() {
             </div>
 
             <div className="text-center mt-6 text-[13px] text-[#8892b0]">
-              Don't have an account?{' '}
-              <Link to="/register" className="text-[#7aadff] hover:text-[#4f8eff]">Sign up</Link>
+              {t('login.noAccount')}{' '}
+              <Link to="/register" className="text-[#7aadff] hover:text-[#4f8eff]">{t('login.signUpLink')}</Link>
             </div>
           </CardContent>
         </Card>
