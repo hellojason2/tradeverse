@@ -9,25 +9,29 @@ import { Decimal } from '@prisma/client/runtime/library.js';
 import { CONFIG_CATALOG, type ConfigKey } from '../contracts/config-catalog.js';
 import type { FastifyRequest, FastifyReply } from 'fastify';
 
-// In-memory config store — in production this would be DB-backed
-const configStore = new Map<string, string>();
-
-for (const [key, entry] of Object.entries(CONFIG_CATALOG)) {
-  const val = entry.default;
-  configStore.set(key, val instanceof Decimal ? val.toFixed(8) : String(val));
-}
-
 export async function getConfig(_req: FastifyRequest, reply: FastifyReply) {
-  const entries = Array.from(configStore.entries()).map(([key, value]) => {
-    const catalogEntry = CONFIG_CATALOG[key as ConfigKey];
-    return {
+  const entries = [];
+  for (const [key, entry] of Object.entries(CONFIG_CATALOG)) {
+    let row = await prisma.config.findUnique({ where: { key } });
+    if (!row) {
+      const defaultVal = entry.default;
+      const serialized = defaultVal instanceof Decimal ? defaultVal.toFixed(8) : String(defaultVal);
+      row = await prisma.config.create({
+        data: {
+          key,
+          value: JSON.stringify(serialized),
+          description: entry.description,
+        },
+      });
+    }
+    entries.push({
       key,
-      value,
-      description: catalogEntry?.description ?? '',
-      updatedAt: new Date().toISOString(),
+      value: row.value,
+      description: entry.description,
+      updatedAt: row.updatedAt.toISOString(),
       updatedByUserId: null,
-    };
-  });
+    });
+  }
   return reply.send({ data: entries });
 }
 
@@ -44,14 +48,22 @@ export async function updateConfig(req: FastifyRequest, reply: FastifyReply) {
     return reply.status(404).send({ error: { code: 'USER_INPUT', message: 'Config key not found' } });
   }
 
-  configStore.set(key, body.value);
+  const updated = await prisma.config.upsert({
+    where: { key },
+    update: { value: JSON.stringify(body.value) },
+    create: {
+      key,
+      value: JSON.stringify(body.value),
+      description: CONFIG_CATALOG[key].description,
+    },
+  });
 
   return reply.send({
     data: {
       key,
-      value: body.value,
+      value: updated.value,
       description: CONFIG_CATALOG[key].description,
-      updatedAt: new Date().toISOString(),
+      updatedAt: updated.updatedAt.toISOString(),
       updatedByUserId: req.user!.id,
     },
   });
