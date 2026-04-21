@@ -47,10 +47,10 @@ export function NotificationsPage() {
     <div className="p-6 pb-16 animate-[pgIn_0.35s_ease-out]">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-[26px] text-[#f5f7ff] font-serif leading-tight">Notifications</h1>
-          <p className="text-[13px] text-[#8892b0] mt-1">Stay updated with your trading activity</p>
+          <h1 className="text-[26px] text-foreground font-serif leading-tight">Notifications</h1>
+          <p className="text-[13px] text-muted-foreground mt-1">Stay updated with your trading activity</p>
         </div>
-        <Button variant="outline" className="bg-white/[0.02] text-[#c9d1e8] border-white/[0.14] hover:border-[rgba(120,160,255,0.22)]" onClick={() => markAll.mutate()}>
+        <Button variant="outline" className="" onClick={() => markAll.mutate()}>
           <CheckCheck className="w-4 h-4" /> Mark all read
         </Button>
       </div>
@@ -63,7 +63,7 @@ export function NotificationsPage() {
         </div>
       )}
 
-      <Card className="bg-[linear-gradient(180deg,rgba(14,20,44,0.55),rgba(8,12,28,0.55))] backdrop-blur-[20px] border-white/[0.08] rounded-[14px]">
+      <Card className="rounded-[14px]">
         <CardContent className="p-0">
           {isLoading ? (
             <div className="divide-y divide-white/[0.04]">
@@ -73,8 +73,8 @@ export function NotificationsPage() {
             </div>
           ) : notifications.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-16 text-center">
-              <Bell className="w-8 h-8 text-[#545d78] mb-3" />
-              <p className="text-[13px] text-[#8892b0]">No notifications yet</p>
+              <Bell className="w-8 h-8 text-muted-foreground mb-3" />
+              <p className="text-[13px] text-muted-foreground">No notifications yet</p>
             </div>
           ) : (
             <div className="divide-y divide-white/[0.04]">
@@ -82,8 +82,8 @@ export function NotificationsPage() {
                 <div
                   key={notif.id}
                   className={cn(
-                    'flex items-start gap-4 p-4 transition-colors hover:bg-white/[0.02] cursor-pointer',
-                    !notif.isRead && 'bg-white/[0.02]'
+                    'flex items-start gap-4 p-4 transition-colors hover:bg-muted/50 cursor-pointer',
+                    !notif.isRead && 'bg-muted/30'
                   )}
                   onClick={() => {
                     if (!notif.isRead) markRead.mutate(notif.id);
@@ -94,15 +94,15 @@ export function NotificationsPage() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-0.5">
-                      <span className={cn('text-[13px] font-medium', notif.isRead ? 'text-[#8892b0]' : 'text-[#f5f7ff]')}>
+                      <span className={cn('text-[13px] font-medium', notif.isRead ? 'text-muted-foreground' : 'text-foreground')}>
                         {notif.title}
                       </span>
                       {!notif.isRead && <div className="w-1.5 h-1.5 rounded-full bg-[#4f8eff]" />}
                     </div>
-                    <p className={cn('text-[12px] leading-relaxed', notif.isRead ? 'text-[#545d78]' : 'text-[#8892b0]')}>
+                    <p className={cn('text-[12px] leading-relaxed', notif.isRead ? 'text-muted-foreground/60' : 'text-muted-foreground')}>
                       {notif.body}
                     </p>
-                    <div className="text-[10px] font-mono text-[#3e4663] mt-1.5">
+                    <div className="text-[10px] font-mono text-muted-foreground/60 mt-1.5">
                       {new Date(notif.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
                     </div>
                   </div>

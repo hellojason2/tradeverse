@@ -19,12 +19,12 @@ export function SettingsPage() {
   return (
     <div className="p-6 pb-16 animate-[pgIn_0.35s_ease-out]">
       <div className="mb-6">
-        <h1 className="text-[26px] text-[#f5f7ff] font-serif leading-tight">Settings</h1>
-        <p className="text-[13px] text-[#8892b0] mt-1">Manage your account preferences</p>
+        <h1 className="text-[26px] text-foreground font-serif leading-tight">Settings</h1>
+        <p className="text-[13px] text-muted-foreground mt-1">Manage your account preferences</p>
       </div>
 
       <Tabs defaultValue="profile" className="max-w-2xl">
-        <TabsList className="bg-white/[0.03] border-white/[0.08] mb-6 list-none p-0">
+        <TabsList className="mb-6">
           <TabsTrigger value="profile" className="text-[12px] gap-1.5"><User className="w-3.5 h-3.5" />Profile</TabsTrigger>
           <TabsTrigger value="security" className="text-[12px] gap-1.5"><Shield className="w-3.5 h-3.5" />Security</TabsTrigger>
           <TabsTrigger value="notifications" className="text-[12px] gap-1.5"><Bell className="w-3.5 h-3.5" />Notifications</TabsTrigger>
@@ -32,23 +32,23 @@ export function SettingsPage() {
         </TabsList>
 
         <TabsContent value="profile">
-          <Card className="bg-[linear-gradient(180deg,rgba(14,20,44,0.55),rgba(8,12,28,0.55))] backdrop-blur-[20px] border-white/[0.08] rounded-[14px] shadow-sm">
-            <CardHeader><CardTitle className="text-[18px] text-[#f5f7ff] font-serif">Profile Information</CardTitle></CardHeader>
+          <Card className="rounded-[14px]">
+            <CardHeader><CardTitle className="text-[18px] font-serif">Profile Information</CardTitle></CardHeader>
             <CardContent className="space-y-6">
               <div className="flex items-center gap-4">
                 <div className="w-16 h-16 rounded-xl bg-[linear-gradient(135deg,oklch(0.5_0.2_280),oklch(0.6_0.2_260))] flex items-center justify-center text-white text-xl font-mono font-bold shrink-0">
                   {user ? initials(user.displayName) : '?'}
                 </div>
                 <div className="min-w-0">
-                  <div className="text-[15px] font-medium text-[#f5f7ff] truncate">{user?.displayName ?? 'Unknown'}</div>
-                  <div className="text-[12px] text-[#545d78] font-mono truncate">{user?.email ?? ''}</div>
+                  <div className="text-[15px] font-medium text-foreground truncate">{user?.displayName ?? 'Unknown'}</div>
+                  <div className="text-[12px] text-muted-foreground font-mono truncate">{user?.email ?? ''}</div>
                   <Badge variant="outline" className="text-[9px] font-mono text-[#7aadff] border-[rgba(120,160,255,0.22)] mt-1">{user?.role ?? 'USER'}</Badge>
                 </div>
               </div>
-              <Separator className="bg-white/[0.06]" />
+              <Separator className="" />
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div><Label className="text-[11px] font-mono uppercase tracking-[0.08em] text-[#8892b0]">Display Name</Label><Input defaultValue={user?.displayName ?? ''} className="bg-white/[0.03] border-white/[0.08] mt-1" /></div>
-                <div><Label className="text-[11px] font-mono uppercase tracking-[0.08em] text-[#8892b0]">Email</Label><Input defaultValue={user?.email ?? ''} className="bg-white/[0.03] border-white/[0.08] mt-1" /></div>
+                <div><Label className="text-[11px] font-mono uppercase tracking-[0.08em] text-muted-foreground">Display Name</Label><Input defaultValue={user?.displayName ?? ''} className="mt-1" /></div>
+                <div><Label className="text-[11px] font-mono uppercase tracking-[0.08em] text-muted-foreground">Email</Label><Input defaultValue={user?.email ?? ''} className="mt-1" /></div>
               </div>
               <Button className="bg-[linear-gradient(180deg,oklch(0.7_0.2_255),oklch(0.52_0.22_262))] text-white border-0 hover:brightness-110">
                 <Save className="w-4 h-4" /> Save Changes
@@ -58,15 +58,15 @@ export function SettingsPage() {
         </TabsContent>
 
         <TabsContent value="security">
-          <Card className="bg-[linear-gradient(180deg,rgba(14,20,44,0.55),rgba(8,12,28,0.55))] backdrop-blur-[20px] border-white/[0.08] rounded-[14px] shadow-sm">
-            <CardHeader><CardTitle className="text-[18px] text-[#f5f7ff] font-serif">Security Settings</CardTitle></CardHeader>
+          <Card className="rounded-[14px]">
+            <CardHeader><CardTitle className="text-[18px] font-serif">Security Settings</CardTitle></CardHeader>
             <CardContent className="space-y-6">
-              <div><Label className="text-[11px] font-mono uppercase tracking-[0.08em] text-[#8892b0]">Current Password</Label><Input type="password" className="bg-white/[0.03] border-white/[0.08] mt-1" /></div>
+              <div><Label className="text-[11px] font-mono uppercase tracking-[0.08em] text-muted-foreground">Current Password</Label><Input type="password" className="mt-1" /></div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div><Label className="text-[11px] font-mono uppercase tracking-[0.08em] text-[#8892b0]">New Password</Label><Input type="password" className="bg-white/[0.03] border-white/[0.08] mt-1" /></div>
-                <div><Label className="text-[11px] font-mono uppercase tracking-[0.08em] text-[#8892b0]">Confirm Password</Label><Input type="password" className="bg-white/[0.03] border-white/[0.08] mt-1" /></div>
+                <div><Label className="text-[11px] font-mono uppercase tracking-[0.08em] text-muted-foreground">New Password</Label><Input type="password" className="mt-1" /></div>
+                <div><Label className="text-[11px] font-mono uppercase tracking-[0.08em] text-muted-foreground">Confirm Password</Label><Input type="password" className="mt-1" /></div>
               </div>
-              <Separator className="bg-white/[0.06]" />
+              <Separator className="" />
               <div className="flex items-center justify-between">
                 <div>
                   <div className="text-[14px] font-medium text-[#f5f7ff]">Two-Factor Authentication</div>
@@ -82,8 +82,8 @@ export function SettingsPage() {
         </TabsContent>
 
         <TabsContent value="notifications">
-          <Card className="bg-[linear-gradient(180deg,rgba(14,20,44,0.55),rgba(8,12,28,0.55))] backdrop-blur-[20px] border-white/[0.08] rounded-[14px] shadow-sm">
-            <CardHeader><CardTitle className="text-[18px] text-[#f5f7ff] font-serif">Notification Preferences</CardTitle></CardHeader>
+          <Card className="rounded-[14px]">
+            <CardHeader><CardTitle className="text-[18px] font-serif">Notification Preferences</CardTitle></CardHeader>
             <CardContent className="space-y-4">
               {['Trade Executions', 'Strategy Updates', 'Copy Trade Alerts', 'Deposit/Withdrawal', 'Security Alerts', 'Marketing'].map((label) => (
                 <div key={label} className="flex items-center justify-between py-2">
@@ -99,8 +99,8 @@ export function SettingsPage() {
         </TabsContent>
 
         <TabsContent value="appearance">
-          <Card className="bg-[linear-gradient(180deg,rgba(14,20,44,0.55),rgba(8,12,28,0.55))] backdrop-blur-[20px] border-white/[0.08] rounded-[14px] shadow-sm">
-            <CardHeader><CardTitle className="text-[18px] text-[#f5f7ff] font-serif">Appearance</CardTitle></CardHeader>
+          <Card className="rounded-[14px]">
+            <CardHeader><CardTitle className="text-[18px] font-serif">Appearance</CardTitle></CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center justify-between py-2">
                 <div>

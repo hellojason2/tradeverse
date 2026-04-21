@@ -45,8 +45,8 @@ export function WalletPage() {
     <div className="p-6 pb-16 animate-[pgIn_0.35s_ease-out]">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-[26px] text-[#f5f7ff] font-serif leading-tight">Wallet</h1>
-          <p className="text-[13px] text-[#8892b0] mt-1">Manage your funds and transactions</p>
+          <h1 className="text-[26px] text-foreground font-serif leading-tight">Wallet</h1>
+          <p className="text-[13px] text-muted-foreground mt-1">Manage your funds and transactions</p>
         </div>
         <div className="flex gap-2">
           <Dialog>
@@ -55,13 +55,13 @@ export function WalletPage() {
                 <ArrowDownLeft className="w-4 h-4" /> Deposit
               </Button>
             </DialogTrigger>
-            <DialogContent className="bg-[#0b1228] border-white/[0.14]">
-              <DialogHeader><DialogTitle className="text-[#f5f7ff] font-serif">Deposit USDT</DialogTitle></DialogHeader>
+            <DialogContent className="">
+              <DialogHeader><DialogTitle className="font-serif">Deposit USDT</DialogTitle></DialogHeader>
               <div className="space-y-4 mt-4">
                 <div>
-                  <Label className="text-[#c9d1e8]">Network</Label>
+                  <Label className="text-foreground">Network</Label>
                   <Select value={depositNetwork} onValueChange={(v) => setDepositNetwork(v as 'ERC20' | 'TRC20' | 'BEP20')}>
-                    <SelectTrigger className="bg-white/[0.03] border-white/[0.08] mt-1"><SelectValue placeholder="Select network" /></SelectTrigger>
+                    <SelectTrigger className="mt-1"><SelectValue placeholder="Select network" /></SelectTrigger>
                     <SelectContent>
                       <SelectItem value="ERC20">ERC20</SelectItem>
                       <SelectItem value="TRC20">TRC20</SelectItem>
@@ -70,8 +70,8 @@ export function WalletPage() {
                   </Select>
                 </div>
                 <div>
-                  <Label className="text-[#c9d1e8]">TX Hash (optional)</Label>
-                  <Input value={depositTxHash} onChange={(e) => setDepositTxHash(e.target.value)} placeholder="0x..." className="bg-white/[0.03] border-white/[0.08] mt-1" />
+                  <Label className="text-foreground">TX Hash (optional)</Label>
+                  <Input value={depositTxHash} onChange={(e) => setDepositTxHash(e.target.value)} placeholder="0x..." className="mt-1" />
                 </div>
                 <Button
                   className="w-full bg-[linear-gradient(180deg,oklch(0.76_0.18_155),oklch(0.55_0.17_150))] text-white border-0"
@@ -85,17 +85,17 @@ export function WalletPage() {
           </Dialog>
           <Dialog>
             <DialogTrigger asChild>
-              <Button variant="outline" className="bg-white/[0.02] text-[#c9d1e8] border-white/[0.14] hover:border-[rgba(120,160,255,0.22)]">
+              <Button variant="outline" className="">
                 <ArrowUpRight className="w-4 h-4" /> Withdraw
               </Button>
             </DialogTrigger>
-            <DialogContent className="bg-[#0b1228] border-white/[0.14]">
-              <DialogHeader><DialogTitle className="text-[#f5f7ff] font-serif">Withdraw USDT</DialogTitle></DialogHeader>
+            <DialogContent className="">
+              <DialogHeader><DialogTitle className="font-serif">Withdraw USDT</DialogTitle></DialogHeader>
               <div className="space-y-4 mt-4">
                 <div>
-                  <Label className="text-[#c9d1e8]">Network</Label>
+                  <Label className="text-foreground">Network</Label>
                   <Select value={withdrawNetwork} onValueChange={(v) => setWithdrawNetwork(v as 'ERC20' | 'TRC20' | 'BEP20')}>
-                    <SelectTrigger className="bg-white/[0.03] border-white/[0.08] mt-1"><SelectValue placeholder="Select network" /></SelectTrigger>
+                    <SelectTrigger className="mt-1"><SelectValue placeholder="Select network" /></SelectTrigger>
                     <SelectContent>
                       <SelectItem value="ERC20">ERC20</SelectItem>
                       <SelectItem value="TRC20">TRC20</SelectItem>
@@ -103,9 +103,9 @@ export function WalletPage() {
                     </SelectContent>
                   </Select>
                 </div>
-                <div><Label className="text-[#c9d1e8]">Amount (USDT)</Label><Input type="number" value={withdrawAmount} onChange={(e) => setWithdrawAmount(e.target.value)} placeholder="0.00" className="bg-white/[0.03] border-white/[0.08] mt-1" /></div>
-                <div><Label className="text-[#c9d1e8]">Wallet Address</Label><Input value={withdrawAddress} onChange={(e) => setWithdrawAddress(e.target.value)} placeholder="0x..." className="bg-white/[0.03] border-white/[0.08] mt-1" /></div>
-                <div><Label className="text-[#c9d1e8]">2FA Code</Label><Input value={withdrawTwoFa} onChange={(e) => setWithdrawTwoFa(e.target.value)} placeholder="000000" className="bg-white/[0.03] border-white/[0.08] mt-1" /></div>
+                <div><Label className="text-foreground">Amount (USDT)</Label><Input type="number" value={withdrawAmount} onChange={(e) => setWithdrawAmount(e.target.value)} placeholder="0.00" className="mt-1" /></div>
+                <div><Label className="text-foreground">Wallet Address</Label><Input value={withdrawAddress} onChange={(e) => setWithdrawAddress(e.target.value)} placeholder="0x..." className="mt-1" /></div>
+                <div><Label className="text-foreground">2FA Code</Label><Input value={withdrawTwoFa} onChange={(e) => setWithdrawTwoFa(e.target.value)} placeholder="000000" className="mt-1" /></div>
                 <Button
                   className="w-full bg-[linear-gradient(180deg,oklch(0.72_0.22_25),oklch(0.55_0.22_20))] text-white border-0"
                   onClick={() => withdraw.mutate({ amount: withdrawAmount, toAddress: withdrawAddress, network: withdrawNetwork, twoFaCode: withdrawTwoFa })}
@@ -125,34 +125,34 @@ export function WalletPage() {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-          <Card className="bg-[linear-gradient(180deg,rgba(14,20,44,0.55),rgba(8,12,28,0.55))] backdrop-blur-[20px] border-white/[0.08] rounded-[14px]">
+          <Card className="rounded-[14px]">
             <CardContent className="p-5">
-              <div className="text-[11px] font-mono uppercase tracking-[0.08em] text-[#545d78] mb-2">Total Balance</div>
-              <div className="text-[26px] font-mono font-medium text-[#f5f7ff]">{formatCurrency(wallet?.total ?? '0')}</div>
-              <div className="text-[12px] font-mono text-[#8892b0] mt-1">USDT</div>
+              <div className="text-[11px] font-mono uppercase tracking-[0.08em] text-muted-foreground mb-2">Total Balance</div>
+              <div className="text-[26px] font-mono font-medium text-foreground">{formatCurrency(wallet?.total ?? '0')}</div>
+              <div className="text-[12px] font-mono text-muted-foreground mt-1">USDT</div>
             </CardContent>
           </Card>
-          <Card className="bg-[linear-gradient(180deg,rgba(14,20,44,0.55),rgba(8,12,28,0.55))] backdrop-blur-[20px] border-white/[0.08] rounded-[14px]">
+          <Card className="rounded-[14px]">
             <CardContent className="p-5">
-              <div className="text-[11px] font-mono uppercase tracking-[0.08em] text-[#545d78] mb-2">Available</div>
+              <div className="text-[11px] font-mono uppercase tracking-[0.08em] text-muted-foreground mb-2">Available</div>
               <div className="text-[26px] font-mono font-medium text-[#3ddc84]">{formatCurrency(wallet?.available ?? '0')}</div>
             </CardContent>
           </Card>
-          <Card className="bg-[linear-gradient(180deg,rgba(14,20,44,0.55),rgba(8,12,28,0.55))] backdrop-blur-[20px] border-white/[0.08] rounded-[14px]">
+          <Card className="rounded-[14px]">
             <CardContent className="p-5">
-              <div className="text-[11px] font-mono uppercase tracking-[0.08em] text-[#545d78] mb-2">Locked</div>
+              <div className="text-[11px] font-mono uppercase tracking-[0.08em] text-muted-foreground mb-2">Locked</div>
               <div className="text-[26px] font-mono font-medium text-[#ffd166]">{formatCurrency(wallet?.locked ?? '0')}</div>
             </CardContent>
           </Card>
         </div>
       )}
 
-      <Card className="bg-[linear-gradient(180deg,rgba(14,20,44,0.55),rgba(8,12,28,0.55))] backdrop-blur-[20px] border-white/[0.08] rounded-[14px]">
+      <Card className="rounded-[14px]">
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle className="text-[20px] text-[#f5f7ff] font-serif">Transaction History</CardTitle>
+            <CardTitle className="text-[20px] font-serif">Transaction History</CardTitle>
             <Tabs value={txFilter} onValueChange={(v) => setTxFilter(v as TransactionType | 'ALL')}>
-              <TabsList className="bg-white/[0.03] border-white/[0.08]">
+              <TabsList className="">
                 <TabsTrigger value="ALL" className="text-[11px]">All</TabsTrigger>
                 <TabsTrigger value="DEPOSIT" className="text-[11px]">Deposits</TabsTrigger>
                 <TabsTrigger value="WITHDRAWAL" className="text-[11px]">Withdrawals</TabsTrigger>
@@ -166,18 +166,18 @@ export function WalletPage() {
           ) : (
             <Table>
               <TableHeader>
-                <TableRow className="border-white/[0.08] hover:bg-transparent">
-                  <TableHead className="text-[10px] font-mono uppercase tracking-[0.1em] text-[#545d78]">Status</TableHead>
-                  <TableHead className="text-[10px] font-mono uppercase tracking-[0.1em] text-[#545d78]">Type</TableHead>
-                  <TableHead className="text-[10px] font-mono uppercase tracking-[0.1em] text-[#545d78]">Amount</TableHead>
-                  <TableHead className="text-[10px] font-mono uppercase tracking-[0.1em] text-[#545d78]">Network</TableHead>
-                  <TableHead className="text-[10px] font-mono uppercase tracking-[0.1em] text-[#545d78]">Date</TableHead>
-                  <TableHead className="text-[10px] font-mono uppercase tracking-[0.1em] text-[#545d78]">Tx Hash</TableHead>
+                <TableRow className="hover:bg-transparent">
+                  <TableHead className="text-[10px] font-mono uppercase tracking-[0.1em] text-muted-foreground">Status</TableHead>
+                  <TableHead className="text-[10px] font-mono uppercase tracking-[0.1em] text-muted-foreground">Type</TableHead>
+                  <TableHead className="text-[10px] font-mono uppercase tracking-[0.1em] text-muted-foreground">Amount</TableHead>
+                  <TableHead className="text-[10px] font-mono uppercase tracking-[0.1em] text-muted-foreground">Network</TableHead>
+                  <TableHead className="text-[10px] font-mono uppercase tracking-[0.1em] text-muted-foreground">Date</TableHead>
+                  <TableHead className="text-[10px] font-mono uppercase tracking-[0.1em] text-muted-foreground">Tx Hash</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {transactions.map((tx) => (
-                  <TableRow key={tx.id} className="border-white/[0.04]">
+                  <TableRow key={tx.id} className="">
                     <TableCell>{statusIcon(tx.status)}</TableCell>
                     <TableCell>
                       <Badge variant="outline" className={cn('text-[10px] font-mono', tx.type === 'DEPOSIT' ? 'text-[#3ddc84] border-[oklch(0.72_0.17_150/0.3)]' : tx.type === 'WITHDRAWAL' ? 'text-[#ff5555] border-[oklch(0.68_0.22_20/0.3)]' : 'text-[#8892b0] border-white/[0.14]')}>
@@ -187,10 +187,10 @@ export function WalletPage() {
                     <TableCell className={cn('font-mono text-[13px] font-semibold', Number(tx.amount) >= 0 ? 'text-[#3ddc84]' : 'text-[#ff5555]')}>
                       {Number(tx.amount) >= 0 ? '+' : ''}{formatCurrency(tx.amount)}
                     </TableCell>
-                    <TableCell className="text-[12px] font-mono text-[#8892b0]">{tx.network ?? '-'}</TableCell>
-                    <TableCell className="text-[12px] text-[#8892b0]">{new Date(tx.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</TableCell>
+                    <TableCell className="text-[12px] font-mono text-muted-foreground">{tx.network ?? '-'}</TableCell>
+                    <TableCell className="text-[12px] text-muted-foreground">{new Date(tx.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</TableCell>
                     <TableCell>
-                      <div className="flex items-center gap-1 text-[11px] font-mono text-[#545d78]">
+                      <div className="flex items-center gap-1 text-[11px] font-mono text-muted-foreground">
                         {tx.txHash ? formatAddress(tx.txHash, 4) : '-'}
                         {tx.txHash && <ExternalLink className="w-3 h-3" />}
                       </div>

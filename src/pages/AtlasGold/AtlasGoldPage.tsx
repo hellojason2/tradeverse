@@ -46,16 +46,16 @@ export function AtlasGoldPage() {
       <div className="mb-6">
         <div className="flex items-center gap-2 mb-1">
           <Scale className="w-5 h-5 text-[#ffd166]" />
-          <h1 className="text-[26px] text-[#f5f7ff] font-serif leading-tight">Atlas Gold</h1>
+          <h1 className="text-[26px] text-foreground font-serif leading-tight">Atlas Gold</h1>
         </div>
-        <p className="text-[13px] text-[#8892b0]">Gold-backed holdings and redemption</p>
+        <p className="text-[13px] text-muted-foreground">Gold-backed holdings and redemption</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
         {/* Holdings Card */}
-        <Card className="lg:col-span-1 bg-[linear-gradient(180deg,rgba(14,20,44,0.55),rgba(8,12,28,0.55))] backdrop-blur-[20px] border-white/[0.08] rounded-[14px]">
+        <Card className="lg:col-span-1 bg-card border-border rounded-[14px]">
           <CardHeader>
-            <CardTitle className="text-[20px] text-[#f5f7ff] font-serif">Your Holdings</CardTitle>
+            <CardTitle className="text-[20px] text-foreground font-serif">Your Holdings</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             {balanceLoading ? (
@@ -67,16 +67,16 @@ export function AtlasGoldPage() {
             ) : (
               <>
                 <div>
-                  <div className="text-[11px] font-mono uppercase tracking-[0.08em] text-[#545d78] mb-1">Gold Balance</div>
-                  <div className="text-[28px] font-mono font-medium text-[#f5f7ff]">{balance ? `${Number(balance.grams).toFixed(4)} g` : '0.0000 g'}</div>
+                  <div className="text-[11px] font-mono uppercase tracking-[0.08em] text-muted-foreground mb-1">Gold Balance</div>
+                  <div className="text-[28px] font-mono font-medium text-foreground">{balance ? `${Number(balance.grams).toFixed(4)} g` : '0.0000 g'}</div>
                 </div>
                 <div>
-                  <div className="text-[11px] font-mono uppercase tracking-[0.08em] text-[#545d78] mb-1">USDT Value</div>
+                  <div className="text-[11px] font-mono uppercase tracking-[0.08em] text-muted-foreground mb-1">USDT Value</div>
                   <div className="text-[20px] font-mono font-medium text-[#ffd166]">{balance ? formatCurrency(balance.usdtValue) : '$0.00'}</div>
                 </div>
-                <div className="pt-3 border-t border-white/[0.08]">
-                  <div className="text-[11px] font-mono uppercase tracking-[0.08em] text-[#545d78] mb-1">Spot Price</div>
-                  <div className="text-[14px] font-mono text-[#c9d1e8]">{balance ? `${formatCurrency(balance.spotPricePerGram)} / g` : '-'}</div>
+                <div className="pt-3 border-t border-border">
+                  <div className="text-[11px] font-mono uppercase tracking-[0.08em] text-muted-foreground mb-1">Spot Price</div>
+                  <div className="text-[14px] font-mono text-foreground">{balance ? `${formatCurrency(balance.spotPricePerGram)} / g` : '-'}</div>
                 </div>
               </>
             )}
@@ -84,12 +84,12 @@ export function AtlasGoldPage() {
         </Card>
 
         {/* Price Chart Placeholder */}
-        <Card className="lg:col-span-2 bg-[linear-gradient(180deg,rgba(14,20,44,0.55),rgba(8,12,28,0.55))] backdrop-blur-[20px] border-white/[0.08] rounded-[14px]">
+        <Card className="lg:col-span-2 bg-card border-border rounded-[14px]">
           <CardHeader>
-            <CardTitle className="text-[20px] text-[#f5f7ff] font-serif">Price History</CardTitle>
+            <CardTitle className="text-[20px] text-foreground font-serif">Price History</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="w-full h-[200px] bg-white/[0.02] border border-white/[0.08] rounded-[10px] flex items-end p-4 gap-[3px] overflow-hidden">
+            <div className="w-full h-[200px] bg-muted/30 border border-border rounded-[10px] flex items-end p-4 gap-[3px] overflow-hidden">
               {Array.from({ length: 40 }).map((_, i) => {
                 const h = 20 + Math.random() * 70;
                 return (
@@ -107,23 +107,23 @@ export function AtlasGoldPage() {
 
       {/* Buy / Redeem Forms */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
-        <Card className="bg-[linear-gradient(180deg,rgba(14,20,44,0.55),rgba(8,12,28,0.55))] backdrop-blur-[20px] border-white/[0.08] rounded-[14px]">
+        <Card className="bg-card border-border rounded-[14px]">
           <CardHeader>
-            <CardTitle className="text-[20px] text-[#f5f7ff] font-serif flex items-center gap-2">
+            <CardTitle className="text-[20px] text-foreground font-serif flex items-center gap-2">
               <ArrowUpRight className="w-5 h-5 text-[#3ddc84]" /> Buy Gold
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
-              <Label className="text-[11px] font-mono uppercase tracking-[0.08em] text-[#8892b0]">USDT Amount</Label>
+              <Label className="text-[11px] font-mono uppercase tracking-[0.08em] text-muted-foreground">USDT Amount</Label>
               <Input
                 type="number"
                 placeholder="100.00"
                 value={buyAmount}
                 onChange={(e) => setBuyAmount(e.target.value)}
-                className="mt-1.5 bg-white/[0.03] border-white/[0.08] focus:border-[rgba(120,160,255,0.22)] font-mono"
+                className="mt-1.5 bg-muted/30 border-border focus:border-[rgba(120,160,255,0.22)] font-mono"
               />
-              <p className="mt-1 text-[11px] text-[#545d78] font-mono">Available: {wallet ? formatCurrency(wallet.available) : '$0.00'}</p>
+              <p className="mt-1 text-[11px] text-muted-foreground font-mono">Available: {wallet ? formatCurrency(wallet.available) : '$0.00'}</p>
             </div>
             <Button
               className="w-full bg-[linear-gradient(180deg,oklch(0.76_0.18_155),oklch(0.55_0.17_150))] text-white border-0 hover:brightness-110"
@@ -135,23 +135,23 @@ export function AtlasGoldPage() {
           </CardContent>
         </Card>
 
-        <Card className="bg-[linear-gradient(180deg,rgba(14,20,44,0.55),rgba(8,12,28,0.55))] backdrop-blur-[20px] border-white/[0.08] rounded-[14px]">
+        <Card className="bg-card border-border rounded-[14px]">
           <CardHeader>
-            <CardTitle className="text-[20px] text-[#f5f7ff] font-serif flex items-center gap-2">
+            <CardTitle className="text-[20px] text-foreground font-serif flex items-center gap-2">
               <ArrowDownRight className="w-5 h-5 text-[#ff5555]" /> Redeem Gold
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
-              <Label className="text-[11px] font-mono uppercase tracking-[0.08em] text-[#8892b0]">Grams</Label>
+              <Label className="text-[11px] font-mono uppercase tracking-[0.08em] text-muted-foreground">Grams</Label>
               <Input
                 type="number"
                 placeholder="1.0000"
                 value={redeemAmount}
                 onChange={(e) => setRedeemAmount(e.target.value)}
-                className="mt-1.5 bg-white/[0.03] border-white/[0.08] focus:border-[rgba(120,160,255,0.22)] font-mono"
+                className="mt-1.5 bg-muted/30 border-border focus:border-[rgba(120,160,255,0.22)] font-mono"
               />
-              <p className="mt-1 text-[11px] text-[#545d78] font-mono">Balance: {balance ? `${Number(balance.grams).toFixed(4)} g` : '0.0000 g'}</p>
+              <p className="mt-1 text-[11px] text-muted-foreground font-mono">Balance: {balance ? `${Number(balance.grams).toFixed(4)} g` : '0.0000 g'}</p>
             </div>
             <Button
               className="w-full bg-[linear-gradient(180deg,oklch(0.72_0.22_25),oklch(0.55_0.22_20))] text-white border-0 hover:brightness-110"
@@ -165,32 +165,32 @@ export function AtlasGoldPage() {
       </div>
 
       {/* Transaction History */}
-      <Card className="bg-[linear-gradient(180deg,rgba(14,20,44,0.55),rgba(8,12,28,0.55))] backdrop-blur-[20px] border-white/[0.08] rounded-[14px]">
+      <Card className="bg-card border-border rounded-[14px]">
         <CardHeader>
-          <CardTitle className="text-[20px] text-[#f5f7ff] font-serif">Transaction History</CardTitle>
+          <CardTitle className="text-[20px] text-foreground font-serif">Transaction History</CardTitle>
         </CardHeader>
         <CardContent>
           {historyLoading ? (
             <div className="space-y-3">{Array.from({ length: 4 }).map((_, i) => <Skeleton key={i} className="h-10 w-full" />)}</div>
           ) : history.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-12 text-center">
-              <Scale className="w-8 h-8 text-[#545d78] mb-3" />
-              <p className="text-[13px] text-[#8892b0]">No transactions yet</p>
+              <Scale className="w-8 h-8 text-muted-foreground mb-3" />
+              <p className="text-[13px] text-muted-foreground">No transactions yet</p>
             </div>
           ) : (
             <Table>
               <TableHeader>
-                <TableRow className="border-white/[0.08] hover:bg-transparent">
-                  <TableHead className="text-[10px] font-mono uppercase tracking-[0.1em] text-[#545d78]">Type</TableHead>
-                  <TableHead className="text-[10px] font-mono uppercase tracking-[0.1em] text-[#545d78]">Grams</TableHead>
-                  <TableHead className="text-[10px] font-mono uppercase tracking-[0.1em] text-[#545d78]">USDT Amount</TableHead>
-                  <TableHead className="text-[10px] font-mono uppercase tracking-[0.1em] text-[#545d78]">Price / g</TableHead>
-                  <TableHead className="text-[10px] font-mono uppercase tracking-[0.1em] text-[#545d78]">Date</TableHead>
+                <TableRow className="border-border hover:bg-transparent">
+                  <TableHead className="text-[10px] font-mono uppercase tracking-[0.1em] text-muted-foreground">Type</TableHead>
+                  <TableHead className="text-[10px] font-mono uppercase tracking-[0.1em] text-muted-foreground">Grams</TableHead>
+                  <TableHead className="text-[10px] font-mono uppercase tracking-[0.1em] text-muted-foreground">USDT Amount</TableHead>
+                  <TableHead className="text-[10px] font-mono uppercase tracking-[0.1em] text-muted-foreground">Price / g</TableHead>
+                  <TableHead className="text-[10px] font-mono uppercase tracking-[0.1em] text-muted-foreground">Date</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {history.map((tx) => (
-                  <TableRow key={tx.id} className="border-white/[0.04]">
+                  <TableRow key={tx.id} className="border-border">
                     <TableCell>
                       <Badge variant="outline" className={`text-[9px] font-mono ${
                         tx.type === 'BUY' ? 'text-[#3ddc84] border-[oklch(0.72_0.17_150/0.3)]' : 'text-[#ff5555] border-[oklch(0.68_0.22_20/0.3)]'
@@ -198,10 +198,10 @@ export function AtlasGoldPage() {
                         {tx.type}
                       </Badge>
                     </TableCell>
-                    <TableCell className="font-mono text-[12px] text-[#f5f7ff]">{Number(tx.grams).toFixed(4)} g</TableCell>
-                    <TableCell className="font-mono text-[12px] text-[#c9d1e8]">{formatCurrency(tx.usdtAmount)}</TableCell>
-                    <TableCell className="font-mono text-[12px] text-[#c9d1e8]">{formatCurrency(tx.pricePerGram)}</TableCell>
-                    <TableCell className="text-[11px] text-[#545d78]">{new Date(tx.createdAt).toLocaleDateString()}</TableCell>
+                    <TableCell className="font-mono text-[12px] text-foreground">{Number(tx.grams).toFixed(4)} g</TableCell>
+                    <TableCell className="font-mono text-[12px] text-foreground">{formatCurrency(tx.usdtAmount)}</TableCell>
+                    <TableCell className="font-mono text-[12px] text-foreground">{formatCurrency(tx.pricePerGram)}</TableCell>
+                    <TableCell className="text-[11px] text-muted-foreground">{new Date(tx.createdAt).toLocaleDateString()}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>

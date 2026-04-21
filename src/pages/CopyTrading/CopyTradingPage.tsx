@@ -39,21 +39,21 @@ export function CopyTradingPage() {
     <div className="p-6 pb-16 animate-[pgIn_0.35s_ease-out]">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-[26px] text-[#f5f7ff] font-serif leading-tight">Copy Trading</h1>
-          <p className="text-[13px] text-[#8892b0] mt-1">Follow top traders and mirror their strategies</p>
+          <h1 className="text-[26px] text-foreground font-serif leading-tight">Copy Trading</h1>
+          <p className="text-[13px] text-muted-foreground mt-1">Follow top traders and mirror their strategies</p>
         </div>
       </div>
 
       {relations.length > 0 && (
         <div className="mb-6">
-          <h2 className="text-[16px] font-medium text-[#f5f7ff] mb-3">Your Active Copies</h2>
+          <h2 className="text-[16px] font-medium text-foreground mb-3">Your Active Copies</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {relations.map((rel) => (
-              <Card key={rel.id} className="bg-[linear-gradient(180deg,rgba(14,20,44,0.55),rgba(8,12,28,0.55))] backdrop-blur-[14px] border-white/[0.08] rounded-[14px]">
+              <Card key={rel.id} className="bg-[linear-gradient(180deg,rgba(14,20,44,0.55),rgba(8,12,28,0.55))] backdrop-blur-[14px] border-border rounded-[14px]">
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <div className="text-[14px] font-medium text-[#f5f7ff]">{rel.strategyName}</div>
+                      <div className="text-[14px] font-medium text-foreground">{rel.strategyName}</div>
                       <Badge
                         variant="outline"
                         className={cn(
@@ -69,10 +69,10 @@ export function CopyTradingPage() {
                       </Badge>
                     </div>
                     <div className="text-right">
-                      <div className="text-[16px] font-mono font-medium text-[#f5f7ff]">
+                      <div className="text-[16px] font-mono font-medium text-foreground">
                         {formatCurrency(rel.riskCapital)}
                       </div>
-                      <div className="text-[11px] font-mono text-[#545d78]">Risk Capital</div>
+                      <div className="text-[11px] font-mono text-muted-foreground">Risk Capital</div>
                     </div>
                   </div>
                 </CardContent>
@@ -82,15 +82,15 @@ export function CopyTradingPage() {
         </div>
       )}
 
-      <Card className="bg-[linear-gradient(180deg,rgba(14,20,44,0.55),rgba(8,12,28,0.55))] backdrop-blur-[20px] border-white/[0.08] rounded-[14px]">
+      <Card className="bg-card border-border rounded-[14px]">
         <CardHeader>
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <CardTitle className="text-[20px] text-[#f5f7ff] font-serif flex items-center gap-2">
+            <CardTitle className="text-[20px] text-foreground font-serif flex items-center gap-2">
               <Trophy className="w-5 h-5 text-[#ffd166]" />
               Leaderboard
             </CardTitle>
             <Tabs value={sortBy} onValueChange={setSortBy}>
-              <TabsList className="bg-white/[0.03] border-white/[0.08]">
+              <TabsList className="bg-muted/30 border-border">
                 <TabsTrigger value="roi" className="text-[11px]">ROI</TabsTrigger>
                 <TabsTrigger value="winRate" className="text-[11px]">Win Rate</TabsTrigger>
                 <TabsTrigger value="followers" className="text-[11px]">Followers</TabsTrigger>
@@ -108,20 +108,20 @@ export function CopyTradingPage() {
           ) : (
             <Table>
               <TableHeader>
-                <TableRow className="border-white/[0.08] hover:bg-transparent">
-                  <TableHead className="text-[10px] font-mono uppercase tracking-[0.1em] text-[#545d78]">#</TableHead>
-                  <TableHead className="text-[10px] font-mono uppercase tracking-[0.1em] text-[#545d78]">Trader</TableHead>
-                  <TableHead className="text-[10px] font-mono uppercase tracking-[0.1em] text-[#545d78]">ROI</TableHead>
-                  <TableHead className="text-[10px] font-mono uppercase tracking-[0.1em] text-[#545d78]">Win Rate</TableHead>
-                  <TableHead className="text-[10px] font-mono uppercase tracking-[0.1em] text-[#545d78]">Risk</TableHead>
-                  <TableHead className="text-[10px] font-mono uppercase tracking-[0.1em] text-[#545d78]">Followers</TableHead>
-                  <TableHead className="text-[10px] font-mono uppercase tracking-[0.1em] text-[#545d78] text-right">Action</TableHead>
+                <TableRow className="border-border hover:bg-transparent">
+                  <TableHead className="text-[10px] font-mono uppercase tracking-[0.1em] text-muted-foreground">#</TableHead>
+                  <TableHead className="text-[10px] font-mono uppercase tracking-[0.1em] text-muted-foreground">Trader</TableHead>
+                  <TableHead className="text-[10px] font-mono uppercase tracking-[0.1em] text-muted-foreground">ROI</TableHead>
+                  <TableHead className="text-[10px] font-mono uppercase tracking-[0.1em] text-muted-foreground">Win Rate</TableHead>
+                  <TableHead className="text-[10px] font-mono uppercase tracking-[0.1em] text-muted-foreground">Risk</TableHead>
+                  <TableHead className="text-[10px] font-mono uppercase tracking-[0.1em] text-muted-foreground">Followers</TableHead>
+                  <TableHead className="text-[10px] font-mono uppercase tracking-[0.1em] text-muted-foreground text-right">Action</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {leaderboard.map((trader, i) => (
-                  <TableRow key={trader.id as string} className="border-white/[0.04]">
-                    <TableCell className="font-mono text-[12px] text-[#545d78] font-bold">
+                  <TableRow key={trader.id as string} className="border-border">
+                    <TableCell className="font-mono text-[12px] text-muted-foreground font-bold">
                       {i + 1}
                     </TableCell>
                     <TableCell>
@@ -130,23 +130,23 @@ export function CopyTradingPage() {
                           {(trader.name as string).slice(0, 2).toUpperCase()}
                         </div>
                         <div>
-                          <div className="text-[13px] font-medium text-[#f5f7ff]">{trader.name as string}</div>
-                          <div className="text-[11px] text-[#545d78] font-mono">{trader.strategy as string}</div>
+                          <div className="text-[13px] font-medium text-foreground">{trader.name as string}</div>
+                          <div className="text-[11px] text-muted-foreground font-mono">{trader.strategy as string}</div>
                         </div>
                       </div>
                     </TableCell>
                     <TableCell className="font-mono text-[13px] font-semibold text-[#3ddc84]">
                       +{(trader.roi as number).toFixed(1)}%
                     </TableCell>
-                    <TableCell className="font-mono text-[12px] text-[#c9d1e8]">
+                    <TableCell className="font-mono text-[12px] text-foreground">
                       {(trader.winRate as number).toFixed(1)}%
                     </TableCell>
                     <TableCell>
-                      <Badge variant="outline" className="text-[9px] font-mono text-[#545d78] border-white/[0.14]">
+                      <Badge variant="outline" className="text-[9px] font-mono text-muted-foreground border-border">
                         {(trader.riskScore as number)}/10
                       </Badge>
                     </TableCell>
-                    <TableCell className="font-mono text-[12px] text-[#8892b0]">
+                    <TableCell className="font-mono text-[12px] text-muted-foreground">
                       <div className="flex items-center gap-1">
                         <Users className="w-3 h-3" />
                         {trader.followers as number}
@@ -155,7 +155,7 @@ export function CopyTradingPage() {
                     <TableCell className="text-right">
                       <Button
                         size="sm"
-                        className="text-[11px] bg-white/[0.06] text-[#8892b0] border border-white/[0.14] hover:bg-white/[0.1] hover:text-[#f5f7ff] hover:border-[rgba(120,160,255,0.22)]"
+                        className="text-[11px] bg-muted/30 text-muted-foreground border border-border hover:bg-muted/30 hover:text-foreground hover:border-[rgba(120,160,255,0.22)]"
                         variant="outline"
                         onClick={() => console.log('Copy', trader.id)}
                       >
