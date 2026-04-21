@@ -255,6 +255,16 @@ export const handlers = [
       };
       return HttpResponse.json(success(res));
     }
+    // Admin login
+    if (body?.identifier === 'admin@tradeverse.io' && body?.password === 'password') {
+      const res: LoginResponse = {
+        accessToken: 'mock-jwt-admin-access-token',
+        refreshToken: 'mock-jwt-admin-refresh-token',
+        expiresAt: new Date(Date.now() + 15 * 60 * 1000).toISOString(),
+        user: mockAdminUser,
+      };
+      return HttpResponse.json(success(res));
+    }
     return HttpResponse.json({ error: { code: 'INVALID_CREDENTIALS', message: 'Invalid credentials' } }, { status: 401 });
   }),
 
