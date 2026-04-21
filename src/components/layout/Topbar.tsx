@@ -1,12 +1,12 @@
 import { useLocation } from 'react-router-dom';
-import { Search, Bell, Settings, Sun, Moon } from 'lucide-react';
+import { Search, Bell, Sun, Moon } from 'lucide-react';
 import { useUIStore } from '@/stores/ui-store';
 import { useAuthStore } from '@/stores/auth-store';
 import { initials } from '@/lib/utils';
 
 const clientPageTitles: Record<string, string> = {
-  '/': 'Overview',
-  '/portfolio': 'Portfolio',
+  '/dashboard': 'Overview',
+  '/portfolio': 'My Portfolio',
   '/strategies': 'Signal Plaza',
   '/copy-trading': 'Trade',
   '/atlas-gold': 'Trail Mode',
@@ -21,80 +21,43 @@ const clientPageTitles: Record<string, string> = {
 
 export function ClientTopbar() {
   const location = useLocation();
-  const theme = useUIStore((s) => s.theme);
-  const setTheme = useUIStore((s) => s.setTheme);
   const pageTitle = clientPageTitles[location.pathname] || 'Overview';
 
   return (
-    <header
-      className="sticky top-0 h-[60px] z-[100] flex items-center justify-between px-7 gap-4"
-      style={{
-        background: 'rgba(255,255,255,0.82)',
-        backdropFilter: 'blur(24px)',
-        borderBottom: '1px solid var(--line)',
-      }}
-    >
-      <div className="flex items-center gap-3 min-w-0">
-        <div className="min-w-0">
-          <div className="font-serif text-[22px] leading-none tracking-[-0.01em] text-ink-0 truncate">
-            {pageTitle}
-          </div>
-          <div className="text-[11px] text-ink-3 uppercase tracking-[0.08em] font-mono mt-[3px]">
-            Portal / <span className="text-ink-2">{pageTitle}</span>
+    <header className="topbar">
+      <div className="tb-left">
+        <div>
+          <div className="tb-title">{pageTitle}</div>
+          <div className="tb-bread">
+            Portal / <span>{pageTitle}</span>
           </div>
         </div>
       </div>
 
-      <div className="flex items-center gap-2 flex-shrink-0">
-        {/* Search */}
-        <div
-          className="hidden md:flex items-center gap-2 bg-bg-1 border border-line rounded-[9px] px-3 py-[7px] w-[260px] transition-all duration-[280ms]"
-          style={{
-            borderColor: 'var(--line)',
-          }}
-          onFocus={(e) => {
-            const target = e.currentTarget;
-            target.style.borderColor = 'var(--line-3)';
-            target.style.boxShadow = '0 0 0 3px oklch(0.58 0.22 262 / 0.12)';
-          }}
-          onBlur={(e) => {
-            const target = e.currentTarget;
-            target.style.borderColor = 'var(--line)';
-            target.style.boxShadow = 'none';
-          }}
-        >
-          <Search className="w-[14px] h-[14px] text-ink-3" />
-          <input
-            placeholder="Search markets, signals, orders..."
-            className="bg-transparent border-none outline-none text-ink-0 text-[12px] w-full font-sans placeholder:text-ink-3"
-          />
-          <kbd className="text-[10px] px-[6px] py-[1px] bg-bg-2 border border-line-2 rounded text-ink-2 font-mono">
-            ⌘K
-          </kbd>
+      <div className="tb-right">
+        <div className="tb-search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+          <input placeholder="Search..." />
+          <kbd>⌘K</kbd>
         </div>
 
-        {/* Theme Toggle */}
-        <button
-          onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-          className="w-9 h-9 rounded-[9px] bg-bg-1 border border-line flex items-center justify-center text-ink-2 hover:text-blue-2 hover:border-line-3 hover:bg-[oklch(0.95_0.04_260)] transition-all duration-[280ms] relative"
-        >
-          {theme === 'dark' ? <Moon className="w-[15px] h-[15px]" /> : <Sun className="w-[15px] h-[15px]" />}
-        </button>
+        <div className="tb-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+            <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+          </svg>
+          <span className="dot"></span>
+        </div>
 
-        {/* Notifications */}
-        <button
-          className="w-9 h-9 rounded-[9px] bg-bg-1 border border-line flex items-center justify-center text-ink-2 hover:text-blue-2 hover:border-line-3 hover:bg-[oklch(0.95_0.04_260)] transition-all duration-[280ms] relative"
-        >
-          <Bell className="w-[15px] h-[15px]" />
-          <span className="absolute top-[6px] right-[6px] w-[7px] h-[7px] bg-blue rounded-full border-2 border-bg-1" style={{ boxShadow: '0 0 6px var(--blue)' }} />
-        </button>
-
-        {/* Settings */}
-        <button
-          className="w-9 h-9 rounded-[9px] bg-bg-1 border border-line flex items-center justify-center text-ink-2 hover:text-blue-2 hover:border-line-3 hover:bg-[oklch(0.95_0.04_260)] transition-all duration-[280ms]"
-        >
-          <Settings className="w-[15px] h-[15px]" />
-        </button>
+        <div className="tb-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <circle cx="12" cy="12" r="3" />
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.26.604.852.997 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+          </svg>
+        </div>
       </div>
     </header>
   );

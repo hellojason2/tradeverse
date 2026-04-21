@@ -1,587 +1,622 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 import { useAuth } from '@/hooks/useAuth';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
 
-/* ─── Chart placeholder bars ─── */
-function ChartPlaceholder() {
-  const bars = Array.from({ length: 36 }, (_, i) =>
-    30 + Math.sin(i * 0.4) * 15 + Math.random() * 35
-  );
-  return (
-    <div className="w-full h-[170px] bg-[linear-gradient(180deg,oklch(0.98_0.02_260),#fff)] border border-line rounded-[10px] flex items-end p-[14px] gap-[3px] relative overflow-hidden"
-      style={{
-        backgroundImage:
-          'repeating-linear-gradient(0deg, transparent 0 24px, rgba(11,18,40,0.04) 24px 25px)',
-      }}
-    >
-      {bars.map((h, i) => (
-        <div
-          key={i}
-          className={cn(
-            'flex-1 rounded-t-[2px] min-h-[3px]',
-            i % 2 === 0
-              ? 'bg-[linear-gradient(to_top,var(--blue),oklch(0.7_0.2_255_/_0.5))]'
-              : 'bg-[linear-gradient(to_top,var(--cyan),oklch(0.7_0.14_220_/_0.5))]'
-          )}
-          style={{ height: `${h}%` }}
-        />
-      ))}
-    </div>
-  );
-}
+export function DashboardPage() {
+  useDocumentTitle('Overview');
+  const { user } = useAuth();
+  const firstName = user?.displayName?.split(' ')[0] ?? 'John';
+  const initials = user?.displayName
+    ?.split(' ')
+    .map((n) => n[0])
+    .join('')
+    .slice(0, 2) ?? 'JD';
 
-/* ─── Stat Card ─── */
-function StatCard({
-  label,
-  value,
-  change,
-  changeType = 'up',
-}: {
-  label: string;
-  value: string;
-  change: string;
-  changeType?: 'up' | 'dn';
-}) {
-  return (
-    <div
-      className="bg-bg-1 border border-line rounded-[14px] p-5 transition-all duration-[280ms]"
-      style={{
-        boxShadow: '0 1px 2px rgba(11,18,40,0.04), 0 4px 16px -8px rgba(11,18,40,0.08)',
-      }}
-    >
-      <div className="text-[11px] text-ink-3 mb-[10px] uppercase tracking-[0.1em] font-mono font-medium">
-        {label}
-      </div>
-      <div className="font-serif text-[34px] font-normal tracking-[-0.02em] text-ink-0 leading-none">
-        {value}
-      </div>
-      <div
-        className={cn(
-          'inline-flex items-center gap-1 text-[11px] font-semibold mt-[10px] px-[9px] py-[3px] rounded-[6px] font-mono tracking-[0.02em]',
-          changeType === 'up'
-            ? 'bg-green-l text-green border border-[oklch(0.72_0.17_150/0.3)]'
-            : 'bg-red-l text-red border border-[oklch(0.68_0.22_20/0.3)]'
-        )}
-      >
-        {changeType === 'up' ? '↑' : '↓'} {change}
-      </div>
-    </div>
-  );
-}
-
-/* ─── Activity Item ─── */
-function ActivityItem({
-  iconBg,
-  iconColor,
-  iconPath,
-  title,
-  desc,
-  amount,
-}: {
-  iconBg: string;
-  iconColor: string;
-  iconPath: string;
-  title: string;
-  desc: string;
-  amount?: string;
-}) {
-  return (
-    <div className="flex items-center gap-[14px] px-[14px] py-3 rounded-[10px] hover:bg-[oklch(0.97_0.02_260)] transition-colors duration-[280ms]">
-      <div
-        className="w-[38px] h-[38px] rounded-[10px] flex items-center justify-center shrink-0 border border-line"
-        style={{ background: iconBg, color: iconColor }}
-      >
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-4 h-4">
-          <path d={iconPath} />
-        </svg>
-      </div>
-      <div className="flex-1 min-w-0">
-        <div className="text-[13px] font-semibold text-ink-0">{title}</div>
-        <div className="text-[11px] text-ink-3 mt-[3px]">{desc}</div>
-      </div>
-      {amount && (
-        <div className="font-mono text-[13px] font-semibold text-green">{amount}</div>
-      )}
-    </div>
-  );
-}
-
-/* ─── Position Card ─── */
-function PositionCard({
-  initials_,
-  gradient,
-  name,
-  strategy,
-  status,
-  statusColor,
-  invested,
-  pl,
-  plPositive,
-  winRate,
-  followers,
-  action,
-}: {
-  initials_: string;
-  gradient: string;
-  name: string;
-  strategy: string;
-  status: string;
-  statusColor: string;
-  invested: string;
-  pl: string;
-  plPositive: boolean;
-  winRate: string;
-  followers: string;
-  action: string;
-}) {
-  return (
-    <div className="bg-bg-1 border border-line rounded-[14px] p-[18px] transition-all duration-[280ms]"
-      style={{ boxShadow: '0 1px 2px rgba(11,18,40,0.04)' }}
-    >
-      <div className="flex items-center justify-between mb-3">
-        <div className="flex items-center gap-2">
-          <div
-            className="w-7 h-7 rounded-[7px] flex items-center justify-center text-white font-bold text-[10px] font-mono"
-            style={{ background: `linear-gradient(135deg,${gradient})` }}
-          >
-            {initials_}
-          </div>
-          <div>
-            <div className="font-semibold text-[12px] text-ink-0">{name}</div>
-            <div className="text-[11px] text-ink-3">{strategy}</div>
-          </div>
-        </div>
-        <span
-          className={cn(
-            'inline-flex items-center gap-[5px] px-[9px] py-[3px] rounded-[6px] text-[10px] font-semibold font-mono uppercase tracking-[0.04em] border',
-            statusColor === 'green' && 'bg-green-l text-green border-[oklch(0.72_0.17_150/0.3)]',
-            statusColor === 'yellow' && 'bg-yellow-l text-yellow border-[oklch(0.82_0.15_85/0.3)]'
-          )}
-        >
-          <span
-            className={cn(
-              'w-[7px] h-[7px] rounded-full inline-block',
-              statusColor === 'green' && 'bg-green',
-              statusColor === 'yellow' && 'bg-yellow'
-            )}
-            style={statusColor === 'green' ? { boxShadow: '0 0 6px var(--green)' } : { boxShadow: '0 0 6px var(--yellow)' }}
-          />
-          {status}
-        </span>
-      </div>
-      <div className="grid grid-cols-3 gap-4 mb-3">
-        <div>
-          <div className="text-[11px] text-ink-3 uppercase tracking-[0.08em] font-mono">Invested</div>
-          <div className="font-semibold text-[12px] text-ink-0 mt-2 font-mono">{invested}</div>
-        </div>
-        <div>
-          <div className="text-[11px] text-ink-3 uppercase tracking-[0.08em] font-mono">P/L</div>
-          <div className={cn('font-semibold text-[12px] mt-2 font-mono', plPositive ? 'text-green' : 'text-red')}>
-            {pl}
-          </div>
-        </div>
-        <div>
-          <div className="text-[11px] text-ink-3 uppercase tracking-[0.08em] font-mono">Win</div>
-          <div className="font-semibold text-[12px] text-ink-0 mt-2 font-mono">{winRate}</div>
-        </div>
-      </div>
-      <div className="flex items-center justify-between">
-        <div className="text-[11px] text-ink-3 font-mono">{followers} followers</div>
-        <Button
-          variant="outline"
-          size="sm"
-          className="h-7 text-[11px] bg-bg-1 border-line-2 text-ink-1 hover:border-line-3 hover:text-ink-0 hover:bg-[oklch(0.96_0.03_260)]"
-        >
-          {action}
-        </Button>
-      </div>
-    </div>
-  );
-}
-
-/* ─── Welcome Banner Canvas ─── */
-function WelcomeBanner({ userName }: { userName: string }) {
+  const [collapsed, setCollapsed] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
+  // Force light theme
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', 'light');
+    document.body.style.background = 'var(--bg-0)';
+    document.body.style.color = 'var(--ink-0)';
+    return () => {
+      document.body.style.background = '';
+      document.body.style.color = '';
+    };
+  }, []);
+
+  // Animated stream canvas
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
-
-    let W = 0, H = 0, DPR = Math.min(window.devicePixelRatio || 1, 2);
-    let animationId = 0;
+    const cvs = canvas;
+    const c = ctx;
+    const DPR = Math.min(window.devicePixelRatio || 1, 2);
+    let W = 0;
+    let H = 0;
+    let raf = 0;
 
     function resize() {
-      const rect = canvas!.parentElement!.getBoundingClientRect();
-      W = rect.width; H = rect.height;
-      canvas!.width = W * DPR; canvas!.height = H * DPR;
-      canvas!.style.width = W + 'px'; canvas!.style.height = H + 'px';
-      ctx!.setTransform(DPR, 0, 0, DPR, 0, 0);
+      const parent = cvs.parentElement;
+      if (!parent) return;
+      const r = parent.getBoundingClientRect();
+      W = r.width;
+      H = r.height;
+      cvs.width = W * DPR;
+      cvs.height = H * DPR;
+      cvs.style.width = W + 'px';
+      cvs.style.height = H + 'px';
+      c.setTransform(DPR, 0, 0, DPR, 0, 0);
     }
 
-    const particles: { u: number; progress: number; speed: number; size: number; hueShift: number; flicker: number }[] = [];
-    function spawnParticles() {
+    const particles: {
+      u: number;
+      progress: number;
+      speed: number;
+      size: number;
+      flicker: number;
+    }[] = [];
+    function newP(life: number) {
+      return {
+        u: Math.random() * 2 - 1,
+        progress: life,
+        speed: 0.15 + Math.random() * 0.45,
+        size: 0.5 + Math.random() * 1.4,
+        flicker: Math.random() * Math.PI * 2,
+      };
+    }
+    function spawn() {
       particles.length = 0;
-      for (let i = 0; i < 180; i++) {
-        particles.push({
-          u: Math.random() * 2 - 1,
-          progress: Math.random(),
-          speed: 0.12 + Math.random() * 0.35,
-          size: 0.6 + Math.random() * 1.6,
-          hueShift: (Math.random() - 0.5) * 20,
-          flicker: Math.random() * Math.PI * 2,
-        });
-      }
-    }
-
-    const stars: { x: number; y: number; s: number; tw: number }[] = [];
-    function spawnStars() {
-      stars.length = 0;
-      for (let i = 0; i < 120; i++) {
-        stars.push({
-          x: Math.random() * W,
-          y: Math.random() * (H * 0.5),
-          s: Math.random() * 1.1 + 0.2,
-          tw: Math.random() * Math.PI * 2,
-        });
-      }
-    }
-
-    function drawStars(t: number) {
-      ctx!.save();
-      for (const s of stars) {
-        const a = 0.3 + 0.5 * Math.sin(t * 0.002 + s.tw);
-        ctx!.fillStyle = `rgba(200,220,255,${a * 0.6})`;
-        ctx!.beginPath(); ctx!.arc(s.x, s.y, s.s, 0, Math.PI * 2); ctx!.fill();
-      }
-      ctx!.restore();
-    }
-
-    function drawGrid(t: number) {
-      const vpY = H * 0.36;
-      const floorTop = H * 0.38;
-      const cx = W / 2;
-      ctx!.save();
-      const rays = 30;
-      for (let i = 0; i <= rays; i++) {
-        const k = i / rays;
-        const spread = (k - 0.5) * 2.2;
-        const xEnd = cx + spread * W * 0.75;
-        const alpha = 0.14 * (1 - Math.abs(spread) * 0.4);
-        const hue = 255 + Math.abs(spread) * 10;
-        ctx!.strokeStyle = `oklch(0.75 0.18 ${hue} / ${alpha})`;
-        ctx!.lineWidth = 1;
-        ctx!.beginPath();
-        ctx!.moveTo(cx, vpY);
-        ctx!.lineTo(xEnd, H + 20);
-        ctx!.stroke();
-      }
-      const ribs = 18;
-      for (let i = 0; i < ribs; i++) {
-        const phase = ((i / ribs) + (t * 0.00012) % 1) % 1;
-        const eased = Math.pow(phase, 2.4);
-        const y = floorTop + eased * (H - floorTop + 40);
-        const widthFactor = eased * 1.6 + 0.02;
-        const alpha = 0.35 * Math.min(1, eased * 2.2) * (1 - phase * 0.6);
-        ctx!.strokeStyle = `oklch(0.78 0.16 255 / ${alpha})`;
-        ctx!.lineWidth = 1 + eased * 1.2;
-        ctx!.beginPath();
-        ctx!.moveTo(cx - W * 0.55 * widthFactor, y);
-        ctx!.quadraticCurveTo(cx, y - eased * 8, cx + W * 0.55 * widthFactor, y);
-        ctx!.stroke();
-      }
-      ctx!.restore();
-    }
-
-    function drawParticles(t: number) {
-      const vpY = H * 0.36;
-      const cx = W / 2;
-      ctx!.save();
-      ctx!.globalCompositeOperation = 'lighter';
-      for (const p of particles) {
-        p.progress += p.speed * 0.009 * 1.1;
-        if (p.progress > 1) Object.assign(p, { u: Math.random() * 2 - 1, progress: 0, speed: 0.12 + Math.random() * 0.35, size: 0.6 + Math.random() * 1.6, hueShift: (Math.random() - 0.5) * 20, flicker: Math.random() * Math.PI * 2 });
-        const eased = Math.pow(p.progress, 2.2);
-        const y = vpY + eased * (H - vpY + 40);
-        const spread = p.u * eased * W * 0.55;
-        const x = cx + spread;
-        const a = Math.min(1, eased * 2.2) * (0.35 + 0.65 * Math.sin(p.flicker + t * 0.005));
-        const size = p.size * (0.4 + eased * 3.6);
-        const hue = 255 + p.hueShift;
-        const lum = 0.78 + eased * 0.1;
-        const tailX = cx + p.u * Math.pow(Math.max(0, p.progress - 0.04), 2.2) * W * 0.55;
-        const tailY = vpY + Math.pow(Math.max(0, p.progress - 0.04), 2.2) * (H - vpY + 40);
-        const grad = ctx!.createLinearGradient(tailX, tailY, x, y);
-        grad.addColorStop(0, `oklch(${lum} 0.2 ${hue} / 0)`);
-        grad.addColorStop(1, `oklch(${lum} 0.2 ${hue} / ${a * 0.9})`);
-        ctx!.strokeStyle = grad;
-        ctx!.lineWidth = Math.max(0.5, size * 0.6);
-        ctx!.lineCap = 'round';
-        ctx!.beginPath();
-        ctx!.moveTo(tailX, tailY);
-        ctx!.lineTo(x, y);
-        ctx!.stroke();
-        ctx!.fillStyle = `oklch(${lum} 0.2 ${hue} / ${a})`;
-        ctx!.beginPath();
-        ctx!.arc(x, y, size, 0, Math.PI * 2);
-        ctx!.fill();
-      }
-      ctx!.restore();
-    }
-
-    function drawBeamGlow(t: number) {
-      const cx = W / 2;
-      const pulse = 0.85 + 0.15 * Math.sin(t * 0.003);
-      const g = ctx!.createRadialGradient(cx, H * 0.4, 0, cx, H * 0.4, H * 0.8);
-      g.addColorStop(0, `oklch(0.78 0.2 255 / ${0.28 * pulse})`);
-      g.addColorStop(0.4, `oklch(0.55 0.22 255 / ${0.1 * pulse})`);
-      g.addColorStop(1, 'transparent');
-      ctx!.fillStyle = g;
-      ctx!.fillRect(0, 0, W, H);
+      for (let i = 0; i < 120; i++) particles.push(newP(Math.random()));
     }
 
     function frame(t: number) {
-      ctx!.clearRect(0, 0, W, H);
-      const bg = ctx!.createLinearGradient(0, 0, 0, H);
-      bg.addColorStop(0, '#030611');
-      bg.addColorStop(0.5, '#05091a');
-      bg.addColorStop(1, '#07102a');
-      ctx!.fillStyle = bg;
-      ctx!.fillRect(0, 0, W, H);
-      drawStars(t);
-      drawBeamGlow(t);
-      drawGrid(t);
-      drawParticles(t);
-      animationId = requestAnimationFrame(frame);
+      c.clearRect(0, 0, W, H);
+      const vpY = H * 0.45;
+      const zoneStart = W * 0.48;
+      const zoneEnd = W * 1.02;
+      const zoneSpan = zoneEnd - zoneStart;
+
+      for (let i = 0; i < 35; i++) {
+        const x = zoneStart + ((i * 97.3) % zoneSpan);
+        const y = (i * 53.7) % H;
+        const a = 0.2 + 0.4 * Math.sin(t * 0.002 + i);
+        c.fillStyle = 'rgba(200,220,255,' + a * 0.3 + ')';
+        c.fillRect(x, y, 1, 1);
+      }
+
+      c.save();
+      c.beginPath();
+      c.rect(zoneStart, 0, W - zoneStart, H);
+      c.clip();
+
+      for (let i = 0; i < 12; i++) {
+        const phase = (i / 12 + t * 0.00018) % 1;
+        const eased = Math.pow(phase, 2.0);
+        const x = zoneStart + (1 - eased) * zoneSpan * 0.9;
+        const spread = (1 - eased) * H * 0.55;
+        const alpha = 0.22 * Math.min(1, (1 - eased) * 2) * eased;
+        c.strokeStyle = 'oklch(0.78 0.16 255 / ' + alpha + ')';
+        c.lineWidth = 1 + (1 - eased) * 1.2;
+        c.beginPath();
+        c.moveTo(x, vpY - spread);
+        c.lineTo(x, vpY + spread);
+        c.stroke();
+      }
+
+      c.globalCompositeOperation = 'lighter';
+      for (const p of particles) {
+        p.progress += p.speed * 0.008;
+        if (p.progress > 1) Object.assign(p, newP(0));
+        const eased = Math.pow(p.progress, 1.8);
+        const x = zoneStart + eased * zoneSpan;
+        const spreadFactor = 1 - eased;
+        const y = vpY + p.u * spreadFactor * H * 0.55;
+        const leftFade = Math.min(1, eased * 2.5);
+        const a = Math.min(1, eased * 2.2) * (0.35 + 0.65 * Math.sin(p.flicker + t * 0.005)) * leftFade;
+        const size = p.size * (0.4 + eased * 3);
+        const tailProg = Math.max(0, p.progress - 0.05);
+        const tailE = Math.pow(tailProg, 1.8);
+        const tailX = zoneStart + tailE * zoneSpan;
+        const tailSpread = 1 - tailE;
+        const tailY = vpY + p.u * tailSpread * H * 0.55;
+        const grad = c.createLinearGradient(tailX, tailY, x, y);
+        grad.addColorStop(0, 'oklch(0.82 0.18 250 / 0)');
+        grad.addColorStop(1, 'oklch(0.82 0.18 250 / ' + a * 0.85 + ')');
+        c.strokeStyle = grad;
+        c.lineWidth = Math.max(0.5, size * 0.55);
+        c.lineCap = 'round';
+        c.beginPath();
+        c.moveTo(tailX, tailY);
+        c.lineTo(x, y);
+        c.stroke();
+        c.fillStyle = 'oklch(0.85 0.18 250 / ' + a + ')';
+        c.beginPath();
+        c.arc(x, y, size, 0, Math.PI * 2);
+        c.fill();
+      }
+
+      c.globalCompositeOperation = 'lighter';
+      const g = c.createRadialGradient(zoneEnd - W * 0.05, vpY, 0, zoneEnd - W * 0.05, vpY, H * 0.9);
+      g.addColorStop(0, 'oklch(0.78 0.2 250 / 0.35)');
+      g.addColorStop(0.4, 'oklch(0.55 0.22 260 / 0.1)');
+      g.addColorStop(1, 'transparent');
+      c.fillStyle = g;
+      c.fillRect(zoneStart, 0, W - zoneStart, H);
+
+      c.restore();
+      raf = requestAnimationFrame(frame);
     }
 
     resize();
-    spawnStars();
-    spawnParticles();
-    animationId = requestAnimationFrame(frame);
-    window.addEventListener('resize', resize);
-
+    spawn();
+    const onResize = () => {
+      resize();
+      spawn();
+    };
+    window.addEventListener('resize', onResize);
+    raf = requestAnimationFrame(frame);
     return () => {
-      cancelAnimationFrame(animationId);
-      window.removeEventListener('resize', resize);
+      window.removeEventListener('resize', onResize);
+      cancelAnimationFrame(raf);
     };
   }, []);
 
-  return (
-    <div
-      className="relative rounded-[18px] px-[34px] py-[30px] mb-6"
-      style={{
-        border: '1px solid oklch(0.35 0.18 265 / 0.5)',
-        background: 'linear-gradient(140deg, #0f1a45 0%, #0a1230 60%, #15266b 100%)',
-        boxShadow: '0 20px 50px -16px oklch(0.35 0.2 260 / 0.45)',
-      }}
-    >
-      {/* Decorative canvas background */}
-      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" />
-      {/* Vertical beam accent */}
-      <div
-        className="absolute top-[-20px] bottom-[-20px] right-[12%] w-[2px] pointer-events-none"
-        style={{
-          background:
-            'linear-gradient(180deg, transparent, oklch(0.92 0.1 230 / 0.9), transparent)',
-          boxShadow:
-            '0 0 40px 8px oklch(0.7 0.2 240 / 0.35), 0 0 120px 20px oklch(0.55 0.22 255 / 0.25)',
-          mixBlendMode: 'screen',
-        }}
-      />
-      {/* Content — normal flow, stacks above absolute backgrounds via DOM order */}
-      <div className="relative">
-        <div className="inline-flex items-center gap-[10px] px-[14px] py-[5px] pr-[14px] pl-[5px] rounded-full bg-[rgba(255,255,255,0.08)] border border-[rgba(255,255,255,0.15)] text-[11px] text-[rgba(255,255,255,0.9)] mb-4 backdrop-blur-[10px] font-mono tracking-[0.05em]"
-        >
-          <span className="w-[22px] h-[22px] rounded-full grid place-items-center bg-[linear-gradient(135deg,var(--blue),var(--blue-3))] text-[9px] font-bold text-white"
-          >TV</span>
-          Markets open · Low volatility session
-        </div>
-        <h2 className="font-serif text-[38px] font-normal leading-[1.05] tracking-[-0.02em] mb-[10px] text-white">
-          Good morning, {userName}.<br />
-          Your edge is{' '}
-          <em className="italic bg-[linear-gradient(100deg,oklch(0.88_0.12_220),oklch(0.78_0.17_245))] bg-clip-text text-transparent"
-          >compounding.</em>
-        </h2>
-        <p className="text-[14px] text-[rgba(255,255,255,0.75)] max-w-[520px] leading-[1.6]">
-          3 active positions, 2 rewards to claim, and your Trail Mode challenge advances to Level 2 today.
-        </p>
-        <div className="flex gap-10 mt-5">
-          <div>
-            <div className="font-serif text-[28px] font-normal leading-none text-white font-mono">$48,293</div>
-            <div className="text-[10px] text-[rgba(255,255,255,0.6)] uppercase tracking-[0.1em] mt-[5px] font-mono">Balance</div>
-          </div>
-          <div>
-            <div className="font-serif text-[28px] font-normal leading-none text-white font-mono" style={{ color: 'oklch(0.92 0.1 150)' }}>
-              +12.5%
-            </div>
-            <div className="text-[10px] text-[rgba(255,255,255,0.6)] uppercase tracking-[0.1em] mt-[5px] font-mono">This Month</div>
-          </div>
-          <div>
-            <div className="font-serif text-[28px] font-normal leading-none text-white font-mono">03</div>
-            <div className="text-[10px] text-[rgba(255,255,255,0.6)] uppercase tracking-[0.1em] mt-[5px] font-mono">Positions</div>
-          </div>
-          <div>
-            <div className="font-serif text-[28px] font-normal leading-none text-white font-mono">14d</div>
-            <div className="text-[10px] text-[rgba(255,255,255,0.6)] uppercase tracking-[0.1em] mt-[5px] font-mono">Streak</div>
-          </div>
-        </div>
-      </div>
-    </div>
+  /* Generate chart bars matching the reference renderChart() logic */
+  const chartBars = useMemo(
+    () =>
+      Array.from({ length: 36 }, (_, i) => 30 + Math.sin(i * 0.4) * 15 + Math.random() * 35).map((h, i) => (
+        <div key={i} className="chart-b" style={{ height: `${h}%` }} />
+      )),
+    []
   );
-}
 
-export function DashboardPage() {
-  useDocumentTitle('Dashboard');
-  const { user } = useAuth();
+  const sbClass = collapsed ? 'sidebar c' : 'sidebar';
 
   return (
-    <div className="animate-[pgIn_0.35s_ease-out]">
-      {/* Welcome Banner */}
-      <WelcomeBanner userName={user?.displayName?.split(' ')[0] ?? 'John'} />
-
-      {/* Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        <StatCard label="Total Balance" value="$48,293.57" change="$5,340 MTD" changeType="up" />
-        <StatCard label="Broker Account" value="$32,450" change="72% invested" changeType="up" />
-        <StatCard label="Wallet USDT" value="$12,843" change="Available" changeType="up" />
-        <StatCard label="Trial Balance" value="$10,000" change="23 days left" changeType="up" />
-      </div>
-
-      {/* Charts + Activity */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
-        <div className="bg-bg-1 border border-line rounded-[14px] p-5 transition-all duration-[280ms]"
-          style={{ boxShadow: '0 1px 2px rgba(11,18,40,0.04), 0 4px 16px -8px rgba(11,18,40,0.08)' }}
-        >
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <div className="font-serif text-[20px] font-normal tracking-[-0.01em] text-ink-0 leading-[1.1]">Portfolio Performance</div>
-              <div className="text-[11px] text-ink-3 mt-1 uppercase tracking-[0.05em] font-mono">Last 30 days</div>
+    <>
+      {/* SIDEBAR */}
+      <aside className={sbClass} id="sb">
+        <div className="sb-head">
+          <div className="sb-logo">TV</div>
+          <span className="sb-brand">Tradeverse</span>
+        </div>
+        <div className="sb-toggle" onClick={() => setCollapsed((v) => !v)}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
+        </div>
+        <nav className="sb-nav">
+          <div className="nav-sec">
+            <div className="nav-sec-t">Dashboard</div>
+            <div className="nav-i act" data-p="overview">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="3" width="7" height="7" />
+                <rect x="14" y="3" width="7" height="7" />
+                <rect x="14" y="14" width="7" height="7" />
+                <rect x="3" y="14" width="7" height="7" />
+              </svg>
+              <span className="nav-i-t">Overview</span>
             </div>
-            <div className="flex gap-[2px] p-[3px] bg-bg-2 border border-line rounded-[9px] w-fit">
-              {['30D', '90D', '1Y'].map((t, i) => (
-                <div
-                  key={t}
-                  className={cn(
-                    'px-[14px] py-[7px] rounded-[7px] text-[12px] font-medium cursor-pointer transition-all',
-                    i === 0
-                      ? 'bg-bg-1 text-blue-2'
-                      : 'text-ink-2 hover:text-ink-0'
-                  )}
-                  style={i === 0 ? { boxShadow: '0 1px 3px rgba(11,18,40,0.08), inset 0 0 0 1px var(--line-3)' } : undefined}
-                >
-                  {t}
+            <div className="nav-i" data-p="portfolio">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+                <polyline points="17 6 23 6 23 12" />
+              </svg>
+              <span className="nav-i-t">Portfolio</span>
+            </div>
+          </div>
+          <div className="nav-sec">
+            <div className="nav-sec-t">Trading</div>
+            <div className="nav-i" data-p="signals">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+              </svg>
+              <span className="nav-i-t">Signal Plaza</span>
+              <span className="nav-badge">12</span>
+            </div>
+            <div className="nav-i" data-p="trading">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="12" y1="1" x2="12" y2="23" />
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+              </svg>
+              <span className="nav-i-t">Trade</span>
+            </div>
+            <div className="nav-i" data-p="trail">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+              </svg>
+              <span className="nav-i-t">Trail Mode</span>
+            </div>
+          </div>
+          <div className="nav-sec">
+            <div className="nav-sec-t">Finance</div>
+            <div className="nav-i" data-p="wallet">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="1" y="4" width="22" height="16" rx="2" />
+                <line x1="1" y1="10" x2="23" y2="10" />
+              </svg>
+              <span className="nav-i-t">Wallet</span>
+            </div>
+            <div className="nav-i" data-p="history">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <polyline points="12 6 12 12 16 14" />
+              </svg>
+              <span className="nav-i-t">History</span>
+            </div>
+          </div>
+          <div className="nav-sec">
+            <div className="nav-sec-t">Engage</div>
+            <div className="nav-i" data-p="referral">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+              </svg>
+              <span className="nav-i-t">Referrals</span>
+            </div>
+            <div className="nav-i" data-p="activities">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+              <span className="nav-i-t">Activities</span>
+            </div>
+            <div className="nav-i" data-p="community">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+              </svg>
+              <span className="nav-i-t">Community</span>
+            </div>
+          </div>
+          <div className="nav-sec">
+            <div className="nav-sec-t">Account</div>
+            <div className="nav-i" data-p="notifications">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+              </svg>
+              <span className="nav-i-t">Notifications</span>
+              <span className="nav-badge">3</span>
+            </div>
+            <div className="nav-i" data-p="settings">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="3" />
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.26.604.852.997 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+              </svg>
+              <span className="nav-i-t">Settings</span>
+            </div>
+          </div>
+        </nav>
+        <div className="sb-foot">
+          <div className="sb-user">
+            <div className="sb-u-av">{initials}</div>
+            <div className="sb-u-info">
+              <div className="sb-u-nm">{user?.displayName ?? 'John Doe'}</div>
+              <div className="sb-u-rl">Premium</div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      {/* MAIN */}
+      <div className="main" id="main">
+        <header className="topbar">
+          <div className="tb-left">
+            <div>
+              <div className="tb-title" id="pgTitle">
+                Overview
+              </div>
+              <div className="tb-bread">
+                Portal / <span id="pgBread">Overview</span>
+              </div>
+            </div>
+          </div>
+          <div className="tb-right">
+            <div className="tb-search">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+              <input placeholder="Search markets, signals, orders..." />
+              <kbd>⌘K</kbd>
+            </div>
+            <div className="tb-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+              </svg>
+              <span className="dot" />
+            </div>
+            <div className="tb-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="12" cy="12" r="3" />
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.26.604.852.997 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+              </svg>
+            </div>
+          </div>
+        </header>
+        <div className="content" id="contentArea">
+          {/* OVERVIEW */}
+          <div className="pv act" id="pg-overview" data-screen-label="Overview">
+            <div className="welcome">
+              <canvas ref={canvasRef} id="streamCanvas" />
+              <div className="welcome-beam" />
+              <div className="welcome-content">
+                <div className="welcome-pill">
+                  <span className="welcome-pill-badge">TV</span> Markets open · Low volatility session
                 </div>
-              ))}
+                <h2>
+                  Good morning, {firstName}.<br />
+                  Your edge is <em>compounding.</em>
+                </h2>
+                <p>
+                  3 active positions, 2 rewards to claim, and your Trail Mode challenge advances to Level 2 today.
+                </p>
+                <div className="welcome-stats">
+                  <div className="welcome-stat">
+                    <div className="val mono">$48,293</div>
+                    <div className="lbl">Balance</div>
+                  </div>
+                  <div className="welcome-stat">
+                    <div className="val mono" style={{ color: 'oklch(0.92 0.1 150)' }}>
+                      +12.5%
+                    </div>
+                    <div className="lbl">This Month</div>
+                  </div>
+                  <div className="welcome-stat">
+                    <div className="val mono">03</div>
+                    <div className="lbl">Positions</div>
+                  </div>
+                  <div className="welcome-stat">
+                    <div className="val mono">14d</div>
+                    <div className="lbl">Streak</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="g4 mb6">
+              <div className="stat-card">
+                <div className="stat-label">Total Balance</div>
+                <div className="stat-val">
+                  $48,293<span style={{ fontSize: '18px', color: 'var(--ink-3)' }}>.57</span>
+                </div>
+                <div className="stat-chg up">↑ $5,340 MTD</div>
+              </div>
+              <div className="stat-card">
+                <div className="stat-label">Broker Account</div>
+                <div className="stat-val">$32,450</div>
+                <div className="stat-chg up">↑ 72% invested</div>
+              </div>
+              <div className="stat-card">
+                <div className="stat-label">Wallet USDT</div>
+                <div className="stat-val">$12,843</div>
+                <div className="stat-chg up">Available</div>
+              </div>
+              <div className="stat-card">
+                <div className="stat-label">Trial Balance</div>
+                <div className="stat-val">$10,000</div>
+                <div className="stat-chg up">23 days left</div>
+              </div>
+            </div>
+            <div className="g2 mb6">
+              <div className="card">
+                <div className="card-h">
+                  <div>
+                    <div className="card-t">Portfolio Performance</div>
+                    <div className="card-st">Last 30 days</div>
+                  </div>
+                  <div className="tabs">
+                    <div className="tab act">30D</div>
+                    <div className="tab">90D</div>
+                    <div className="tab">1Y</div>
+                  </div>
+                </div>
+                <div className="chart-ph" id="ovChart">
+                  {chartBars}
+                </div>
+              </div>
+              <div className="card">
+                <div className="card-h">
+                  <div>
+                    <div className="card-t">Recent Activity</div>
+                  </div>
+                  <button className="btn btn-ghost btn-sm">View all →</button>
+                </div>
+                <div className="act-i">
+                  <div className="act-ic" style={{ background: 'var(--green-l)', color: 'var(--green)' }}>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                  </div>
+                  <div className="act-info">
+                    <div className="act-t">Position closed — AlphaSignal</div>
+                    <div className="act-d">Profit realized · 2 hours ago</div>
+                  </div>
+                  <div className="act-amt">+$847</div>
+                </div>
+                <div className="act-i">
+                  <div className="act-ic" style={{ background: 'var(--blue-l)', color: 'var(--blue-2)' }}>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <line x1="12" y1="1" x2="12" y2="23" />
+                      <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                    </svg>
+                  </div>
+                  <div className="act-info">
+                    <div className="act-t">Deposit confirmed</div>
+                    <div className="act-d">500 USDT via TRC20 · 5 hours ago</div>
+                  </div>
+                  <div className="act-amt">+$500</div>
+                </div>
+                <div className="act-i">
+                  <div className="act-ic" style={{ background: 'var(--purple-l)', color: 'var(--purple)' }}>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                    </svg>
+                  </div>
+                  <div className="act-info">
+                    <div className="act-t">Daily login reward</div>
+                    <div className="act-d">7-day streak bonus · 1 day ago</div>
+                  </div>
+                  <div className="act-amt">+$5</div>
+                </div>
+              </div>
+            </div>
+            <div className="sec">
+              <div className="sec-h">
+                <div className="sec-t">
+                  Active <em>positions</em>
+                </div>
+                <button className="btn btn-outline btn-sm">View all →</button>
+              </div>
+              <div className="g3">
+                <div className="pos-card">
+                  <div className="flex aic jcb mb3">
+                    <div className="flex aic gap2">
+                      <div
+                        className="av av-sm"
+                        style={{
+                          background: 'linear-gradient(135deg,oklch(0.68 0.19 255),oklch(0.86 0.12 220))',
+                        }}
+                      >
+                        AS
+                      </div>
+                      <div>
+                        <div className="f6 fs12">AlphaSignal</div>
+                        <div className="fs11 t3">Momentum Trading</div>
+                      </div>
+                    </div>
+                    <span className="badge b-green">
+                      <span className="s-dot green" />
+                      Active
+                    </span>
+                  </div>
+                  <div className="g3 mb3">
+                    <div>
+                      <div className="fs11 t3 mono" style={{ letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                        Invested
+                      </div>
+                      <div className="f6 fs12 mono mt2">$5,000</div>
+                    </div>
+                    <div>
+                      <div className="fs11 t3 mono" style={{ letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                        P/L
+                      </div>
+                      <div className="f6 fs12 tg mono mt2">+$847</div>
+                    </div>
+                    <div>
+                      <div className="fs11 t3 mono" style={{ letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                        Win
+                      </div>
+                      <div className="f6 fs12 mono mt2">72%</div>
+                    </div>
+                  </div>
+                  <div className="flex aic jcb">
+                    <div className="fs11 t3 mono">2,400 followers</div>
+                    <button className="btn btn-outline btn-sm">Close</button>
+                  </div>
+                </div>
+                <div className="pos-card">
+                  <div className="flex aic jcb mb3">
+                    <div className="flex aic gap2">
+                      <div
+                        className="av av-sm"
+                        style={{
+                          background: 'linear-gradient(135deg,oklch(0.7 0.2 300),oklch(0.68 0.22 340))',
+                        }}
+                      >
+                        QF
+                      </div>
+                      <div>
+                        <div className="f6 fs12">QuantFlow</div>
+                        <div className="fs11 t3">Mean Reversion</div>
+                      </div>
+                    </div>
+                    <span className="badge b-yellow">
+                      <span className="s-dot yellow" />
+                      Fundraising
+                    </span>
+                  </div>
+                  <div className="g3 mb3">
+                    <div>
+                      <div className="fs11 t3 mono" style={{ letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                        Invested
+                      </div>
+                      <div className="f6 fs12 mono mt2">$3,200</div>
+                    </div>
+                    <div>
+                      <div className="fs11 t3 mono" style={{ letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                        P/L
+                      </div>
+                      <div className="f6 fs12 tg mono mt2">+$234</div>
+                    </div>
+                    <div>
+                      <div className="fs11 t3 mono" style={{ letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                        Win
+                      </div>
+                      <div className="f6 fs12 mono mt2">65%</div>
+                    </div>
+                  </div>
+                  <div className="flex aic jcb">
+                    <div className="fs11 t3 mono">890 followers</div>
+                    <button className="btn btn-green btn-sm">Add Funds</button>
+                  </div>
+                </div>
+                <div className="pos-card">
+                  <div className="flex aic jcb mb3">
+                    <div className="flex aic gap2">
+                      <div
+                        className="av av-sm"
+                        style={{
+                          background: 'linear-gradient(135deg,oklch(0.72 0.17 150),oklch(0.86 0.12 220))',
+                        }}
+                      >
+                        TM
+                      </div>
+                      <div>
+                        <div className="f6 fs12">TrendMaster</div>
+                        <div className="fs11 t3">Scalping Pro</div>
+                      </div>
+                    </div>
+                    <span className="badge b-green">
+                      <span className="s-dot green" />
+                      Active
+                    </span>
+                  </div>
+                  <div className="g3 mb3">
+                    <div>
+                      <div className="fs11 t3 mono" style={{ letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                        Invested
+                      </div>
+                      <div className="f6 fs12 mono mt2">$8,500</div>
+                    </div>
+                    <div>
+                      <div className="fs11 t3 mono" style={{ letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                        P/L
+                      </div>
+                      <div className="f6 fs12 tr mono mt2">-$412</div>
+                    </div>
+                    <div>
+                      <div className="fs11 t3 mono" style={{ letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                        Win
+                      </div>
+                      <div className="f6 fs12 mono mt2">58%</div>
+                    </div>
+                  </div>
+                  <div className="flex aic jcb">
+                    <div className="fs11 t3 mono">5,100 followers</div>
+                    <button className="btn btn-outline btn-sm">Close</button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-          <ChartPlaceholder />
-        </div>
-
-        <div className="bg-bg-1 border border-line rounded-[14px] p-5 transition-all duration-[280ms]"
-          style={{ boxShadow: '0 1px 2px rgba(11,18,40,0.04), 0 4px 16px -8px rgba(11,18,40,0.08)' }}
-        >
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <div className="font-serif text-[20px] font-normal tracking-[-0.01em] text-ink-0 leading-[1.1]">Recent Activity</div>
-            </div>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="h-7 text-[11px] text-ink-2 hover:bg-[oklch(0.95_0.03_260)] hover:text-ink-0"
-            >
-              View all →
-            </Button>
-          </div>
-          <ActivityItem
-            iconBg="var(--green-l)"
-            iconColor="var(--green)"
-            iconPath="M20 6 9 17 4 12"
-            title="Position closed — AlphaSignal"
-            desc="Profit realized · 2 hours ago"
-            amount="+$847"
-          />
-          <ActivityItem
-            iconBg="var(--blue-l)"
-            iconColor="var(--blue-2)"
-            iconPath="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"
-            title="Deposit confirmed"
-            desc="500 USDT via TRC20 · 5 hours ago"
-            amount="+$500"
-          />
-          <ActivityItem
-            iconBg="var(--purple-l)"
-            iconColor="var(--purple)"
-            iconPath="M12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
-            title="Daily login reward"
-            desc="7-day streak bonus · 1 day ago"
-            amount="+$5"
-          />
         </div>
       </div>
-
-      {/* Active Positions */}
-      <div className="mb-6">
-        <div className="flex items-center justify-between mb-4">
-          <div className="font-serif text-[26px] font-normal tracking-[-0.01em]">
-            Active <em className="italic bg-[linear-gradient(100deg,oklch(0.78_0.17_245),oklch(0.62_0.21_260))] bg-clip-text text-transparent">positions</em>
-          </div>
-          <Button
-            variant="outline"
-            size="sm"
-            className="h-7 text-[11px] bg-bg-1 border-line-2 text-ink-1 hover:border-line-3 hover:text-ink-0 hover:bg-[oklch(0.96_0.03_260)]"
-          >
-            View all →
-          </Button>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <PositionCard
-            initials_="AS"
-            gradient="oklch(0.68 0.19 255),oklch(0.86 0.12 220)"
-            name="AlphaSignal"
-            strategy="Momentum Trading"
-            status="Active"
-            statusColor="green"
-            invested="$5,000"
-            pl="+$847"
-            plPositive={true}
-            winRate="72%"
-            followers="2,400"
-            action="Close"
-          />
-          <PositionCard
-            initials_="QF"
-            gradient="oklch(0.7 0.2 300),oklch(0.68 0.22 340)"
-            name="QuantFlow"
-            strategy="Mean Reversion"
-            status="Fundraising"
-            statusColor="yellow"
-            invested="$3,200"
-            pl="+$234"
-            plPositive={true}
-            winRate="65%"
-            followers="890"
-            action="Add Funds"
-          />
-          <PositionCard
-            initials_="TM"
-            gradient="oklch(0.72 0.17 150),oklch(0.86 0.12 220)"
-            name="TrendMaster"
-            strategy="Scalping Pro"
-            status="Active"
-            statusColor="green"
-            invested="$8,500"
-            pl="-$412"
-            plPositive={false}
-            winRate="58%"
-            followers="5,100"
-            action="Close"
-          />
-        </div>
-      </div>
-    </div>
+    </>
   );
 }

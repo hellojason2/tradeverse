@@ -3,18 +3,11 @@ import {
   LayoutDashboard,
   Users,
   Wallet,
-  Bell,
   Settings,
   Shield,
   ChevronLeft,
   ChevronRight,
   BarChart3,
-  Activity,
-  Zap,
-  MessageCircle,
-  ScrollText,
-  Gift,
-  TrendingUp,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useUIStore } from '@/stores/ui-store';
@@ -26,38 +19,139 @@ const clientSections = [
   {
     label: 'Dashboard',
     items: [
-      { to: '/dashboard', icon: LayoutDashboard, label: 'Overview' },
-      { to: '/portfolio', icon: BarChart3, label: 'Portfolio' },
+      {
+        to: '/dashboard',
+        label: 'Overview',
+        icon: (
+          <>
+            <rect x="3" y="3" width="7" height="7" />
+            <rect x="14" y="3" width="7" height="7" />
+            <rect x="14" y="14" width="7" height="7" />
+            <rect x="3" y="14" width="7" height="7" />
+          </>
+        ),
+      },
+      {
+        to: '/portfolio',
+        label: 'My Portfolio',
+        icon: (
+          <>
+            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+            <polyline points="17 6 23 6 23 12" />
+          </>
+        ),
+      },
     ],
   },
   {
     label: 'Trading',
     items: [
-      { to: '/strategies', icon: Zap, label: 'Signal Plaza', badge: '12' },
-      { to: '/copy-trading', icon: TrendingUp, label: 'Trade' },
-      { to: '/atlas-gold', icon: Gift, label: 'Trail Mode' },
+      {
+        to: '/strategies',
+        label: 'Signal Plaza',
+        badge: '12',
+        icon: <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />,
+      },
+      {
+        to: '/copy-trading',
+        label: 'Trade',
+        icon: (
+          <>
+            <line x1="12" y1="1" x2="12" y2="23" />
+            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+          </>
+        ),
+      },
+      {
+        to: '/atlas-gold',
+        label: 'Trail Mode',
+        icon: (
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        ),
+      },
     ],
   },
   {
     label: 'Finance',
     items: [
-      { to: '/wallet', icon: Wallet, label: 'Wallet' },
-      { to: '/history', icon: ScrollText, label: 'History' },
+      {
+        to: '/wallet',
+        label: 'Wallet',
+        icon: (
+          <>
+            <rect x="1" y="4" width="22" height="16" rx="2" />
+            <line x1="1" y1="10" x2="23" y2="10" />
+          </>
+        ),
+      },
+      {
+        to: '/history',
+        label: 'History',
+        icon: (
+          <>
+            <circle cx="12" cy="12" r="10" />
+            <polyline points="12 6 12 12 16 14" />
+          </>
+        ),
+      },
     ],
   },
   {
     label: 'Engage',
     items: [
-      { to: '/referral', icon: Users, label: 'Referrals' },
-      { to: '/activities', icon: Activity, label: 'Activities' },
-      { to: '/community', icon: MessageCircle, label: 'Community' },
+      {
+        to: '/referral',
+        label: 'Referrals',
+        icon: (
+          <>
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+          </>
+        ),
+      },
+      {
+        to: '/activities',
+        label: 'Activities',
+        icon: (
+          <>
+            <circle cx="12" cy="12" r="10" />
+            <polyline points="12 6 12 12 16 14" />
+          </>
+        ),
+      },
+      {
+        to: '/community',
+        label: 'Community',
+        icon: <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />,
+      },
     ],
   },
   {
     label: 'Account',
     items: [
-      { to: '/notifications', icon: Bell, label: 'Notifications', badge: '3' },
-      { to: '/settings', icon: Settings, label: 'Settings' },
+      {
+        to: '/notifications',
+        label: 'Notifications',
+        badge: '3',
+        icon: (
+          <>
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+            <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+          </>
+        ),
+      },
+      {
+        to: '/settings',
+        label: 'Settings',
+        icon: (
+          <>
+            <circle cx="12" cy="12" r="3" />
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.26.604.852.997 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+          </>
+        ),
+      },
     ],
   },
 ];
@@ -96,124 +190,72 @@ export interface SidebarProps {
 export function ClientSidebar({ onNavigate, className }: SidebarProps) {
   const { sidebarCollapsed, toggleCollapsed } = useUIStore();
   const user = useAuthStore((s) => s.user);
-  const location = useLocation();
 
   return (
-    <div className={cn('flex flex-col h-full relative', className)}>
-      {/* Logo */}
-      <div className="flex items-center gap-3 px-[18px] h-[60px] border-b border-line">
-        <div className="w-[34px] h-[34px] rounded-[10px] bg-[linear-gradient(135deg,oklch(0.62_0.22_260),oklch(0.45_0.23_268))] border border-[oklch(0.45_0.23_268/0.4)] flex items-center justify-center text-white font-serif text-[18px] shrink-0"
-          style={{ boxShadow: '0 6px 16px -4px oklch(0.5 0.22 262 / 0.4)' }}
-        >
-          TV
-        </div>
-        {!sidebarCollapsed && (
-          <span className="text-[20px] text-ink-0 font-serif tracking-[0.01em] whitespace-nowrap transition-opacity duration-[280ms]">
-            Tradeverse
-          </span>
-        )}
+    <aside className={cn('sidebar', sidebarCollapsed && 'c', className)}>
+      <div className="sb-head">
+        <div className="sb-logo">TV</div>
+        <span className="sb-brand">Tradeverse</span>
       </div>
 
-      {/* Toggle */}
-      <button
-        onClick={toggleCollapsed}
-        className="absolute -right-3 top-[22px] w-6 h-6 rounded-full bg-bg-1 border border-line-2 flex items-center justify-center text-ink-2 hover:text-blue-2 hover:border-blue transition-all duration-[280ms] z-5"
-        style={{ boxShadow: '0 4px 12px -4px rgba(11,18,40,0.18)' }}
-      >
-        {sidebarCollapsed ? (
-          <ChevronRight className="w-[11px] h-[11px]" />
-        ) : (
-          <ChevronLeft className="w-[11px] h-[11px]" />
-        )}
-      </button>
+      <div className="sb-toggle" onClick={toggleCollapsed} role="button" tabIndex={0}>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="15 18 9 12 15 6" />
+        </svg>
+      </div>
 
-      {/* Navigation */}
-      <nav className="flex-1 overflow-y-auto py-[10px] px-2">
+      <nav className="sb-nav">
         {clientSections.map((section) => (
-          <div key={section.label} className="mb-[6px]">
-            {!sidebarCollapsed && (
-              <div className="px-3 pt-[10px] pb-1 text-[9px] font-semibold uppercase tracking-[0.18em] text-ink-3 whitespace-nowrap transition-opacity duration-[280ms]">
-                {section.label}
-              </div>
-            )}
+          <div className="nav-sec" key={section.label}>
+            <div className="nav-sec-t">{section.label}</div>
             <div>
-              {section.items.map((item) => {
-                const Icon = item.icon;
-                const isActive = location.pathname === item.to;
-                return (
-                  <NavLink
-                    key={item.to}
-                    to={item.to}
-                    onClick={onNavigate}
-                    className={cn(
-                      'flex items-center gap-3 px-3 py-[9px] rounded-[9px] transition-all duration-[280ms] text-[13px] font-medium relative whitespace-nowrap my-[1px]',
-                      isActive
-                        ? 'bg-[linear-gradient(90deg,oklch(0.58_0.22_262/0.12),oklch(0.58_0.22_262/0.02))] text-blue-2'
-                        : 'text-ink-2 hover:bg-[rgba(60,100,220,0.06)] hover:text-ink-0'
-                    )}
-                    style={isActive ? { boxShadow: 'inset 0 0 0 1px oklch(0.58 0.22 262 / 0.2)' } : undefined}
-                  >
-                    {isActive && (
-                      <div className="absolute -left-2 top-1/2 -translate-y-1/2 w-[3px] h-[18px] bg-blue rounded-r-[3px]"
-                        style={{ boxShadow: '0 0 8px oklch(0.58 0.22 262 / 0.6)' }}
-                      />
-                    )}
-                    <Icon className="w-[17px] h-[17px] shrink-0" strokeWidth={1.8} />
-                    {!sidebarCollapsed && (
-                      <span className="transition-opacity duration-[280ms] text-[13px]">{item.label}</span>
-                    )}
-                    {!sidebarCollapsed && item.badge && (
-                      <span className="ml-auto bg-[linear-gradient(135deg,var(--blue),var(--blue-3))] text-white text-[9px] font-bold px-[6px] py-[2px] rounded-[8px] min-w-[18px] text-center font-mono">
-                        {item.badge}
-                      </span>
-                    )}
-                  </NavLink>
-                );
-              })}
+              {section.items.map((item) => (
+                <NavLink
+                  key={item.to}
+                  to={item.to}
+                  onClick={onNavigate}
+                  end
+                  className={({ isActive }) => cn('nav-i', isActive && 'act')}
+                >
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    {item.icon}
+                  </svg>
+                  <span className="nav-i-t">{item.label}</span>
+                  {item.badge && <span className="nav-badge">{item.badge}</span>}
+                </NavLink>
+              ))}
             </div>
           </div>
         ))}
 
         {/* Admin link (conditional) */}
         {user?.role === 'ADMIN' && (
-          <div className="mb-[6px]">
-            {!sidebarCollapsed && (
-              <div className="px-3 pt-[10px] pb-1 text-[9px] font-semibold uppercase tracking-[0.18em] text-ink-3 whitespace-nowrap transition-opacity duration-[280ms]">
-                Admin
-              </div>
-            )}
+          <div className="nav-sec">
+            <div className="nav-sec-t">Admin</div>
             <NavLink
               to="/admin"
               onClick={onNavigate}
-              className={cn(
-                'flex items-center gap-3 px-3 py-[9px] rounded-[9px] transition-all duration-[280ms] text-[13px] font-medium relative whitespace-nowrap my-[1px]',
-                location.pathname === '/admin'
-                  ? 'bg-[linear-gradient(90deg,oklch(0.58_0.22_262/0.12),oklch(0.58_0.22_262/0.02))] text-blue-2'
-                  : 'text-ink-2 hover:bg-[rgba(60,100,220,0.06)] hover:text-ink-0'
-              )}
+              className={({ isActive }) => cn('nav-i', isActive && 'act')}
             >
-              <Shield className="w-[17px] h-[17px] shrink-0" strokeWidth={1.8} />
-              {!sidebarCollapsed && <span className="transition-opacity duration-[280ms] text-[13px]">Admin</span>}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+              </svg>
+              <span className="nav-i-t">Admin</span>
             </NavLink>
           </div>
         )}
       </nav>
 
-      {/* User */}
-      <div className="border-t border-line px-3 py-3">
-        <div className="flex items-center gap-[10px] p-2 rounded-[9px] hover:bg-[rgba(60,100,220,0.06)] transition-colors cursor-pointer">
-          <div className="w-8 h-8 rounded-[9px] bg-[linear-gradient(135deg,oklch(0.7_0.18_300),oklch(0.55_0.22_262))] flex items-center justify-center text-white font-bold text-[12px] shrink-0">
-            {user ? initials(user.displayName ?? '') : '?'}
+      <div className="sb-foot">
+        <div className="sb-user">
+          <div className="sb-u-av">{user ? initials(user.displayName ?? '') : '?'}</div>
+          <div className="sb-u-info">
+            <div className="sb-u-nm">{user?.displayName ?? 'John Doe'}</div>
+            <div className="sb-u-rl">{user?.role ?? 'Premium Member'}</div>
           </div>
-          {!sidebarCollapsed && user && (
-            <div className="min-w-0 overflow-hidden transition-opacity duration-[280ms]">
-              <div className="text-[12px] text-ink-0 font-semibold whitespace-nowrap">{user.displayName}</div>
-              <div className="text-[10px] text-ink-3 whitespace-nowrap uppercase tracking-[0.05em] mt-[2px]">{user.role}</div>
-            </div>
-          )}
         </div>
       </div>
-    </div>
+    </aside>
   );
 }
 
