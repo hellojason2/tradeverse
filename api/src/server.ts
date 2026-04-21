@@ -2,14 +2,12 @@ import Fastify from 'fastify';
 import cors from '@fastify/cors';
 import helmet from '@fastify/helmet';
 import rateLimit from '@fastify/rate-limit';
+import { readdir } from 'node:fs/promises';
+import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { env } from '@config/env.js';
-import { walletRoutes } from '@routes/walletRoutes.js';
-import { atlasGoldRoutes } from '@routes/atlasGoldRoutes.js';
-import { notificationRoutes } from '@routes/notificationRoutes.js';
-import { strategyRoutes } from '@routes/strategyRoutes.js';
-import { subscriptionRoutes } from '@routes/subscriptionRoutes.js';
-import { exportRoutes } from '@routes/exportRoutes.js';
-import { adminRoutes } from '@routes/adminRoutes.js';
+
+const __dirname = fileURLToPath(new URL('.', import.meta.url));
 
 const app = Fastify({
   logger: {
@@ -31,27 +29,39 @@ await app.register(rateLimit, {
   timeWindow: env.RATE_LIMIT_WINDOW_MS,
 });
 
-// ---------------------------------------------------------------------------
-// Health check
-// ---------------------------------------------------------------------------
-
 app.get('/health', async () => ({ status: 'ok' }));
 
-// ---------------------------------------------------------------------------
-// Register Agent 3 route modules
-// ---------------------------------------------------------------------------
+// Auto-discover and register route plugins from src/routes/*.ts
+async function registerRoutes() {
+  const routesDir = join(__dirname, 'routes');
+  let files: string[] = [];
+  try {
+    files = await readdir(routesDir);
+  } catch {
+    app.log.warn('No routes directory found');
+    return;
+  }
 
-await app.register(walletRoutes);
-await app.register(atlasGoldRoutes);
-await app.register(notificationRoutes);
-await app.register(strategyRoutes);
-await app.register(subscriptionRoutes);
-await app.register(exportRoutes);
-await app.register(adminRoutes);
+  for (const file of files) {
+    if (file.endsWith('.ts') && !file.startsWith('_')) {
+      const routePath = join(routesDir, file);
+      try {
+        const routeModule = await import(routePath);
+        const plugin = routeModule.default;
+        if (typeof plugin === 'function') {
+          await app.register(plugin);
+          app.log.info(`Registered routes from ${file}`);
+        } else {
+          app.log.warn(`Skipping ${file}: no default export function`);
+        }
+      } catch (err) {
+        app.log.error({ err }, `Failed to register routes from ${file}`);
+      }
+    }
+  }
+}
 
-// ---------------------------------------------------------------------------
-// Error handlers
-// ---------------------------------------------------------------------------
+await registerRoutes();
 
 app.setErrorHandler((error, request, reply) => {
   request.log.error({ err: error }, 'Unhandled error in setErrorHandler');
@@ -67,10 +77,6 @@ app.setNotFoundHandler((request, reply) => {
     error: { code: 'USER_INPUT', message: 'Route not found' },
   });
 });
-
-// ---------------------------------------------------------------------------
-// Start server
-// ---------------------------------------------------------------------------
 
 const start = async () => {
   try {
