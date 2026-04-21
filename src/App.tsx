@@ -59,8 +59,9 @@ export default function App() {
 
               {/* Authenticated routes */}
               <Route element={<RequireAuth />}>
+                {/* /dashboard uses its own full-page layout (literal HTML port) */}
+                <Route path="/dashboard" element={<DashboardPage />} />
                 <Route element={<AppShell />}>
-                  <Route path="/dashboard" element={<DashboardPage />} />
                   <Route path="/strategies" element={<StrategiesPage />} />
                   <Route path="/copy-trading" element={<CopyTradingPage />} />
                   <Route path="/wallet" element={<WalletPage />} />
