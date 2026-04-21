@@ -1,42 +1,136 @@
-import { randomUUID } from 'crypto';
+/**
+ * webhookController.ts — Handles CopyPro equity protection callback webhooks.
+ *
+ * Route: POST /webhooks/equity-protector
+ * Auth: COPYPRO_MANAGER_KEY HMAC validation done by the caller infrastructure.
+ * C-10: CopyPro calls happen OUTSIDE Prisma transactions.
+ * C-30: Every status transition emits an audit event.
+ *
+ * @ownership Agent 2 (copy-engine)
+ */
+
 import type { FastifyRequest, FastifyReply } from 'fastify';
 import { asyncErrorWrapper } from '../utils/asyncErrorWrapper.js';
-import { copyRelationService } from '../services/copyRelationService.js';
-import type { EquityProtectorWebhookPayload, WebhookAckResponse } from '../contracts/routes.js';
+import { copyRelationRepository } from '../repositories/copyRelationRepository.js';
+import { markBreachedCopyRelation } from '../repositories/copyRelationRepoExtended.js';
+import { CopyProClientImpl } from '../services/copyProClient.js';
+import { prisma } from '../config/prisma.js';
+import type {
+  EquityProtectorWebhookPayload,
+  WebhookAckResponse,
+} from '../contracts/routes.js';
 
-/** POST /webhooks/equity-protector — HMAC-validated by CopyPro */
 export const webhookController = {
+  /**
+   * Equity protector callback from CopyPro.
+   * Route: POST /webhooks/equity-protector
+   */
   equityProtector: asyncErrorWrapper(
     async (req: FastifyRequest, reply: FastifyReply): Promise<void> => {
       const payload = req.body as EquityProtectorWebhookPayload;
+      const ack: WebhookAckResponse = { received: true };
 
       switch (payload.event) {
-        case 'DRAWDOWN_BREACHED':
-          // C-30: emit audit event before closing
-          console.log(`[EquityProtector] DRAWDOWN_BREACHED copyRelationId=${payload.copyRelationId} equity=${payload.currentEquity} drawdown=${payload.drawdownPct}%`);
-          // TODO: close relation and notify user
-          break;
+        case 'DRAWDOWN_BREACHED': {
+          const { copyRelationId, currentEquity, drawdownPct } = payload;
+          console.log(
+            `[EquityWebhook] DRAWDOWN_BREACHED relation=${copyRelationId} equity=${currentEquity} drawdown=${drawdownPct}%`,
+          );
 
-        case 'EQUITY_RESTORED':
-          console.log(`[EquityProtector] EQUITY_RESTORED copyRelationId=${payload.copyRelationId} equity=${payload.currentEquity}`);
-          // TODO: re-evaluate state
-          break;
+          const relation = await copyRelationRepository.findById(copyRelationId);
+          if (!relation) {
+            console.warn(
+              `[EquityWebhook] Relation not found: ${copyRelationId}`,
+            );
+            return reply.send(ack);
+          }
 
-        case 'COPY_STOPPED':
-          console.log(`[EquityProtector] COPY_STOPPED copyRelationId=${payload.copyRelationId}`);
-          // CopyPro stopped; may need to update status
-          break;
+          if (relation.status !== 'ACTIVE') {
+            console.warn(
+              `[EquityWebhook] Relation ${copyRelationId} not ACTIVE (status=${relation.status}) — skipping breach.`,
+            );
+            return reply.send(ack);
+          }
 
-        case 'COPY_STARTED':
-          console.log(`[EquityProtector] COPY_STARTED copyRelationId=${payload.copyRelationId}`);
-          break;
+          // Remove copier from CopyPro (outside TX per C-10)
+          if (relation.copyProCopierId) {
+            try {
+              const client = new CopyProClientImpl({
+                userKey: relation.followerUserId,
+              });
+              await client.pauseCopier(
+                relation.copyProCopierId,
+                true,
+                'EquityProtection',
+              );
+              await client.removeCopier(relation.copyProCopierId, false);
+            } catch (err) {
+              console.error(
+                `[EquityWebhook] Failed to remove copier ${relation.copyProCopierId}:`,
+                err,
+              );
+              // Continue — mark breached anyway
+            }
+          }
 
-        default:
-          console.warn(`[EquityProtector] Unknown event type: ${(payload as { event: string }).event}`);
+          // Mark breached in DB (outside TX per C-10)
+          await markBreachedCopyRelation(copyRelationId);
+
+          // Emit audit event (C-30)
+          try {
+            await prisma.auditLog.create({
+              data: {
+                entityType: 'CopyRelation',
+                entityId: copyRelationId,
+                action: 'EQUITY_BREACHED',
+                after: {
+                  equity: currentEquity,
+                  drawdownPct,
+                },
+              },
+            });
+          } catch {
+            // Non-fatal
+          }
+
+          console.log(
+            `[EquityWebhook] Relation ${copyRelationId} marked BREACHED`,
+          );
+          return reply.send(ack);
+        }
+
+        case 'EQUITY_RESTORED': {
+          const { copyRelationId } = payload;
+          console.log(
+            `[EquityWebhook] EQUITY_RESTORED relation=${copyRelationId}`,
+          );
+          return reply.send(ack);
+        }
+
+        case 'COPY_STOPPED': {
+          const { copyRelationId } = payload;
+          console.log(
+            `[EquityWebhook] COPY_STOPPED relation=${copyRelationId}`,
+          );
+          return reply.send(ack);
+        }
+
+        case 'COPY_STARTED': {
+          const { copyRelationId } = payload;
+          console.log(
+            `[EquityWebhook] COPY_STARTED relation=${copyRelationId}`,
+          );
+          return reply.send(ack);
+        }
+
+        default: {
+          // Exhaustiveness: if a new event is added to EquityProtectorEvent
+          // but not handled here, TypeScript will warn at compile time.
+          const _exhaustive: never = payload.event;
+          void _exhaustive;
+          return reply.send(ack);
+        }
       }
-
-      const ack: WebhookAckResponse = { received: true };
-      reply.send(ack);
     },
   ),
 };

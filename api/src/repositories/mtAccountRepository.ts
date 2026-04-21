@@ -1,4 +1,5 @@
 import { prisma } from '../config/prisma.js';
+import { Decimal } from '@prisma/client/runtime/library';
 import type { MtAccount, Prisma } from '@prisma/client';
 
 export type CreateMtAccountInput = Prisma.MtAccountCreateInput;
@@ -45,6 +46,23 @@ export const mtAccountRepository = {
     if (!strategy) return null;
     return prisma.mtAccount.findUnique({
       where: { id: strategy.masterAccountId },
+    });
+  },
+  async findAllActive(): Promise<MtAccount[]> {
+    return prisma.mtAccount.findMany({
+      where: { status: 'ACTIVE', copyProAccountId: { not: null } },
+    });
+  },
+  async updateBalance(
+    id: string,
+    data: { equity?: number; balance?: number },
+  ): Promise<MtAccount> {
+    return prisma.mtAccount.update({
+      where: { id },
+      data: {
+        equity: data.equity !== undefined ? new Decimal(data.equity.toString()) : undefined,
+        balance: data.balance !== undefined ? new Decimal(data.balance.toString()) : undefined,
+      },
     });
   },
 };

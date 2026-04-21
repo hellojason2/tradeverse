@@ -8,10 +8,12 @@
 
 import type { FastifyInstance } from 'fastify';
 import { copyRelationRoutes } from './copyRelationRoutes.js';
+import { mtAccountRoutes } from './mtAccountRoutes.js';
 import { webhookRoutes } from './webhookRoutes.js';
 
 /** Mounts all copy-engine routes onto the Fastify instance */
 export async function registerCopyEngineRoutes(app: FastifyInstance): Promise<void> {
   await app.register(copyRelationRoutes);
+  await app.register(mtAccountRoutes);
   await app.register(webhookRoutes);
 }

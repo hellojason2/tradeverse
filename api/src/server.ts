@@ -3,6 +3,9 @@ import cors from '@fastify/cors';
 import helmet from '@fastify/helmet';
 import rateLimit from '@fastify/rate-limit';
 import { env } from '@config/env.js';
+import { registerCopyEngineRoutes } from '@routes/index.js';
+import { startBalancePoller } from '@services/balancePollingService.js';
+import { startTradeLogWorker } from '@services/tradeLogWorker.js';
 
 const app = Fastify({
   logger: {
@@ -43,6 +46,13 @@ app.setNotFoundHandler((request, reply) => {
 
 const start = async () => {
   try {
+    // Register copy-engine API routes
+    await registerCopyEngineRoutes(app);
+
+    // Start background workers
+    startBalancePoller();
+    startTradeLogWorker();
+
     await app.listen({ port: env.PORT, host: env.HOST });
     app.log.info(`🚀 Server listening on http://${env.HOST}:${env.PORT}`);
   } catch (err) {
