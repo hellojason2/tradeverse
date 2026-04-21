@@ -1,46 +1,55 @@
 # DONE — Agent 4 (Frontend)
 
-## Round: Client Portal Navigation + Language Switcher
+## Round: Chinese (zh) locale + full Dashboard/Auth i18n coverage
 
 ### Scope (this round)
-- `/dashboard` — sidebar navigation + topbar LanguageSwitcher
-- `/login`, `/register` — LanguageSwitcher in top-right
-- Shared layout components: `LanguageSwitcher`, `ThemeToggle` extracted
+- i18n infra: swap second locale from Vietnamese (vi) to Simplified Chinese (zh)
+- `/dashboard` — every user-facing string keyed through `t()` (dashboard namespace)
+- `/login`, `/register` — every user-facing string keyed through `t()` (auth namespace)
+- LanguageSwitcher: `en` ↔ `zh` (中文)
 
 ### NOT touched this round
-- `/admin` route UI (except unused-import cleanup to unblock build)
-- `/` landing page
-- `/wallet`, `/strategies`, `/copy-trading`, `/atlas-gold`, `/notifications`, `/settings`
+- `/admin` UI (except the inline VI→ZH literal swap on the admin topbar language button)
+- `/`, `/wallet`, `/strategies`, `/copy-trading`, `/atlas-gold`, `/notifications`, `/settings`
 
-### Client portal navigation + language — what was wired
-- **DashboardPage.tsx sidebar**: every item uses `<NavLink>` from react-router-dom. Active class is `act` (matches `.nav-i.act` rule in `src/styles/reference.css`). Overview uses `end` prop. No hardcoded active classes.
-- **Route mapping**: Overview→/dashboard, Signal Plaza→/strategies, Trade→/copy-trading, Trail Mode→/atlas-gold, Wallet→/wallet, Notifications→/notifications, Settings→/settings. Placeholder items (Portfolio, History, Referrals, Activities, Community) point at `/dashboard` with `// TODO:` comments until their routes exist.
-- **Topbar (client shell)**: `<LanguageSwitcher />` injected before the bell icon. All ported classNames preserved verbatim.
-- **LanguageSwitcher** lives at `src/components/layout/LanguageSwitcher.tsx` as a named export; consumed by Dashboard, Auth pages, AppShell, Admin.
-- **ThemeToggle** extracted to `src/components/layout/ThemeToggle.tsx`.
+### i18n infrastructure
+- Deleted `src/i18n/locales/vi/`; created `src/i18n/locales/zh/` (common.json translated to Simplified Chinese)
+- `src/i18n/index.ts`:
+  - `supportedLngs: ['en', 'zh']`, `fallbackLng: 'en'`
+  - Registered new namespaces: `ns: ['common', 'dashboard', 'auth']`
+  - Imported `{en,zh}/dashboard.json` and `{en,zh}/auth.json` into `resources`
+- `LanguageSwitcher`: ZH option uses `{ code: 'zh', label: '中文', short: 'ZH' }`; uses `i18n.resolvedLanguage` for active-state; persists to `localStorage['tv-lang']`
 
-### Auth pages — LanguageSwitcher added
-- `src/pages/Auth/LoginPage.tsx`: `<LanguageSwitcher />` absolutely positioned `top-4 right-4` inside the outer `relative` wrapper.
-- `src/pages/Auth/RegisterPage.tsx`: same pattern.
+### Dashboard i18n coverage (DashboardPage.tsx)
+58+ `t()` calls across: sidebar sections + nav + footer, topbar title/breadcrumb/searchPlaceholder, hero (sessionStatus/greeting/tagline/taglineAccent/summary/stats.*), KPI labels + badges (mtd/invested/available/daysLeft with interpolation + Intl formatters), Portfolio performance (title/subtitle/ranges), Recent activity (title/viewAll + 6 item types with interpolation), Active positions (title/accent/viewAll/labels/actions/status/followers for all three cards).
+Currency rendered via `formatCurrency()`, percent via `formatPercent()` from `src/lib/format.ts`.
 
-### Build unblock (minimal, no behavior change)
-- `src/components/layout/Topbar.tsx`: removed unused imports (`useTranslation`, `cn`, `ThemeToggle`).
-- `src/pages/Admin/AdminPage.tsx`: added missing `useLocation`, `useNavigate` from react-router-dom; dropped unused imports and an unread `location` local.
+### Auth i18n coverage
+- LoginPage: 11 t() calls — title, subtitle, email/password labels + placeholders, forgot, submit, divider, noAccount + signUpLink
+- RegisterPage: 13 t() calls — title, subtitle, name/email/password/confirmPassword labels + placeholders, submit, divider, haveAccount + signInLink
+- New keys added symmetrically in en + zh: `login.signUpLink`, `register.signInLink`, `login.noAccount`, `register.haveAccount`
 
 ### Verification
-- `npm run build` — PASS, 0 errors (tsc -b clean, vite build ~522 ms)
-- Playwright @ 1440x900:
-  - Login as `trader@tradeverse.io / password` → lands on `/dashboard`
-  - Sidebar click→URL change + active class: 6/12 items hit real routes (Signal Plaza, Trade, Trail Mode, Wallet, Notifications, Settings); 6 items (Overview, Portfolio, History, Referrals, Activities, Community) intentionally point at `/dashboard` pending route implementation
-  - LanguageSwitcher visible and toggles active state on `/dashboard`, `/login`, `/register`
-  - 0 console errors across the session
-- Follow-up (not this round): hardcoded strings in DashboardPage / LoginPage / RegisterPage are not yet wired to `t()`, so the VI toggle flips state but does not translate those surfaces. Per spec, ported markup was preserved verbatim this round.
+- `npm run build` — PASS, 0 errors (tsc -b clean, vite build ~500 ms)
+- Playwright @ 1440x900 (after namespace registration fix):
+  - Login: EN ↔ ZH toggles render correctly (欢迎回来 / 邮箱 / 密码 / 登录 / 忘记密码？/ 或使用以下方式 / 还没有账户？/ 注册)
+  - Dashboard: every targeted surface renders ZH correctly — sidebar sections + all 12 nav items, 高级会员 footer, 概览/门户 breadcrumb, 搜索市场、信号、订单…… placeholder, hero greeting + summary, all 4 KPI labels + 4 badges, 投资组合表现/最近 30 天/30天·90天·1年, 最近动态 + 6 activity item types, 活跃 仓位 + INVESTED/P/L/WIN + 关闭/追加资金 + 活跃/筹资中 + `{count} 位关注者` for all three position cards
+  - Console: 0 errors, 0 missingKey warnings
+- Screenshots (not committed):
+  - `.playwright-mcp/login-en.png`, `.playwright-mcp/login-zh.png`
+  - `.playwright-mcp/dashboard-en.png`, `.playwright-mcp/dashboard-zh.png`
+
+### Known follow-ups (not this round)
+- Relative time strings ("2 hours ago", "5 hours ago", "Yesterday") are still English because they live in mock data, not in DashboardPage JSX. Localize alongside a real data source.
+- Live language-switch click persists to localStorage but may require a reload in some environments; `i18n.resolvedLanguage` is now the source of truth for active state.
+- Remaining routes (wallet, strategies, copy-trading, etc.) have `useTranslation()` imports from a prior round but still carry English literals.
 
 ### Commits (this round)
-- `refactor(layout): extract LanguageSwitcher + ThemeToggle to shared components`
-- `feat(dashboard): NavLink sidebar + LanguageSwitcher in topbar`
-- `feat(auth): LanguageSwitcher on login + register pages`
-- `fix(admin): restore router imports, drop unused imports to unblock build`
+- `refactor(i18n): rename vi locale to zh (Simplified Chinese)`
+- `feat(i18n): seed dashboard + auth namespaces in en + zh`
+- `feat(dashboard): wire every string through t() with Intl formatters`
+- `feat(auth): wire login + register strings through t()`
+- `docs: update DONE-agent4.md with zh + Dashboard/Auth coverage`
 
 Branch: `feat/frontend` — pushed to origin.
 
@@ -48,24 +57,20 @@ Branch: `feat/frontend` — pushed to origin.
 
 ## Prior rounds (archived)
 
+### Client portal nav + language (previous round)
+- NavLink sidebar on DashboardPage + LanguageSwitcher in client topbar
+- LanguageSwitcher on Login + Register
+- LanguageSwitcher + ThemeToggle extracted to shared components
+- Admin build fix (router imports)
+
 ### Admin Page — Self-Contained
-- Rewrote `src/pages/Admin/AdminPage.tsx` as standalone layout (no AppShell)
-- Collapsible sidebar + admin topbar with search, language switcher, notifications bell, back-to-client button
-- Route moved out of AppShell in `App.tsx`, still role-guarded via `RequireRole({ role: ['ADMIN', 'MANAGER'] })`
-- MSW: admin login credentials added
+- Standalone layout (no AppShell), collapsible sidebar, admin topbar, role-guarded, MSW admin creds
 
 ### Landing Page — Public with Dashboard CTA
-- Route `/` remains public (no GuestGuard)
-- Authenticated users see "Go to Dashboard" CTA instead of "Sign in"
+- Public route `/`, authed-user Dashboard CTA
 
-### i18n Infrastructure
-- `i18next`, `react-i18next`, `i18next-browser-languagedetector`
-- Config: `src/i18n/index.ts` (localStorage key `tv-lang`)
-- Locales: `src/i18n/locales/{en,vi}/common.json`
-- Format helpers: `src/lib/format.ts` (locale-aware Intl)
+### i18n Infrastructure (initial)
+- i18next + react-i18next + browser-languagedetector
+- `src/i18n/index.ts`, locales directory, format helpers
 
 ### design.md §25 Internationalization
-- Documents stack, key conventions, format helpers, detection order, language switcher locations
-
-### Remaining Pages i18n Wired
-- `useTranslation()` added to Strategies, CopyTrading, Wallet, Notifications, Settings, AtlasGold
