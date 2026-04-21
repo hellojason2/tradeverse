@@ -27,16 +27,16 @@ export function ClientTopbar() {
 
   return (
     <header
-      className="sticky top-0 h-[60px] z-[100] flex items-center justify-between px-7"
+      className="sticky top-0 h-[60px] z-[100] flex items-center justify-between px-7 gap-4"
       style={{
         background: 'rgba(255,255,255,0.82)',
         backdropFilter: 'blur(24px)',
         borderBottom: '1px solid var(--line)',
       }}
     >
-      <div className="flex items-center gap-3">
-        <div>
-          <div className="font-serif text-[22px] leading-none tracking-[-0.01em] text-ink-0">
+      <div className="flex items-center gap-3 min-w-0">
+        <div className="min-w-0">
+          <div className="font-serif text-[22px] leading-none tracking-[-0.01em] text-ink-0 truncate">
             {pageTitle}
           </div>
           <div className="text-[11px] text-ink-3 uppercase tracking-[0.08em] font-mono mt-[3px]">
@@ -45,7 +45,7 @@ export function ClientTopbar() {
         </div>
       </div>
 
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 flex-shrink-0">
         {/* Search */}
         <div
           className="hidden md:flex items-center gap-2 bg-bg-1 border border-line rounded-[9px] px-3 py-[7px] w-[260px] transition-all duration-[280ms]"
@@ -119,18 +119,18 @@ export function AdminTopbar() {
 
   return (
     <header
-      className="sticky top-0 h-16 z-[50] flex items-center justify-between px-6"
+      className="sticky top-0 h-16 z-[50] flex items-center justify-between px-6 gap-4"
       style={{
         background: 'var(--ad-bg-primary)',
         borderBottom: '1px solid var(--ad-border-color)',
       }}
     >
-      <div className="flex items-center gap-4">
-        <h1 className="text-[18px] font-semibold text-[var(--ad-text-primary)] tracking-tight">
+      <div className="flex items-center gap-4 min-w-0">
+        <h1 className="text-[18px] font-semibold text-[var(--ad-text-primary)] tracking-tight truncate">
           {pageTitle}
         </h1>
         <div
-          className="hidden md:flex items-center gap-2 bg-[var(--ad-bg-tertiary)] border border-[var(--ad-border-color)] rounded-[8px] px-3 py-2 w-[280px] transition-all duration-150"
+          className="hidden md:flex items-center gap-2 bg-[var(--ad-bg-tertiary)] border border-[var(--ad-border-color)] rounded-[8px] px-3 py-2 w-[280px] flex-shrink-0 transition-all duration-150"
           onFocus={(e) => {
             const target = e.currentTarget;
             target.style.borderColor = 'var(--ad-accent-primary)';
@@ -142,7 +142,7 @@ export function AdminTopbar() {
             target.style.boxShadow = 'none';
           }}
         >
-          <Search className="w-4 h-4 text-[var(--ad-text-tertiary)]" />
+          <Search className="w-4 h-4 text-[var(--ad-text-tertiary)] flex-shrink-0" />
           <input
             placeholder="Search users, transactions..."
             className="bg-transparent border-none outline-none text-[var(--ad-text-primary)] text-sm w-full font-sans placeholder:text-[var(--ad-text-tertiary)]"
@@ -150,7 +150,7 @@ export function AdminTopbar() {
         </div>
       </div>
 
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3 flex-shrink-0">
         {/* Theme Toggle */}
         <button
           onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
