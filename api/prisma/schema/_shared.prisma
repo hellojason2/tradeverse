@@ -10,8 +10,10 @@ enum UserRole {
 }
 
 enum UserStatus {
+  NOT_VERIFIED
   ACTIVE
   SUSPENDED
+  BANNED
   DELETED
 }
 
@@ -55,4 +57,11 @@ enum StrategyStatus {
   ACTIVE
   PAUSED
   CLOSED
+}
+
+enum KycStatus {
+  NOT_STARTED
+  PENDING
+  VERIFIED
+  REJECTED
 }
