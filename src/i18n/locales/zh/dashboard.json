@@ -1,0 +1,96 @@
+{
+  "sidebar": {
+    "sections": {
+      "dashboard": "仪表盘",
+      "trading": "交易",
+      "finance": "财务",
+      "engage": "互动",
+      "account": "账户"
+    },
+    "nav": {
+      "overview": "概览",
+      "portfolio": "投资组合",
+      "signalPlaza": "信号广场",
+      "trade": "交易",
+      "trailMode": "试用模式",
+      "wallet": "钱包",
+      "history": "历史",
+      "referrals": "推荐",
+      "activities": "活动",
+      "community": "社区",
+      "notifications": "通知",
+      "settings": "设置"
+    },
+    "footer": {
+      "premium": "高级会员"
+    }
+  },
+  "topbar": {
+    "title": "概览",
+    "breadcrumb": "门户 / 概览",
+    "searchPlaceholder": "搜索市场、信号、订单……"
+  },
+  "hero": {
+    "sessionStatus": "市场开盘 · 低波动时段",
+    "greeting": "早上好，{{name}}。",
+    "tagline": "你的优势正在",
+    "taglineAccent": "复利增长。",
+    "summary": "{{activePositions}} 个活跃仓位，{{rewards}} 项奖励待领取，今天你的试用模式挑战将升至 {{level}} 级。",
+    "stats": {
+      "balance": "余额",
+      "thisMonth": "本月",
+      "positions": "仓位",
+      "streak": "连续"
+    }
+  },
+  "kpis": {
+    "totalBalance": "总余额",
+    "brokerAccount": "券商账户",
+    "walletUsdt": "钱包 USDT",
+    "trialBalance": "试用余额",
+    "badges": {
+      "mtd": "↑ {{amount}} 本月至今",
+      "invested": "↑ 已投入 {{percent}}",
+      "available": "可用",
+      "daysLeft": "剩余 {{count}} 天"
+    }
+  },
+  "performance": {
+    "title": "投资组合表现",
+    "subtitle": "最近 30 天",
+    "ranges": {
+      "30d": "30天",
+      "90d": "90天",
+      "1y": "1年"
+    }
+  },
+  "activity": {
+    "title": "最近动态",
+    "viewAll": "查看全部 →",
+    "positionClosed": "仓位已关闭 — {{name}}",
+    "profitRealized": "利润已实现 · {{time}}",
+    "depositConfirmed": "充值已确认",
+    "depositVia": "{{amount}} {{asset}} 通过 {{network}} · {{time}}",
+    "loginReward": "每日登录奖励",
+    "streakBonus": "连续 {{days}} 天奖励 · {{time}}"
+  },
+  "positions": {
+    "title": "活跃",
+    "titleAccent": "仓位",
+    "viewAll": "查看全部 →",
+    "labels": {
+      "invested": "已投入",
+      "pl": "盈亏",
+      "win": "胜率"
+    },
+    "actions": {
+      "close": "关闭",
+      "addFunds": "追加资金"
+    },
+    "status": {
+      "active": "活跃",
+      "fundraising": "筹资中"
+    },
+    "followers": "{{count}} 位关注者"
+  }
+}

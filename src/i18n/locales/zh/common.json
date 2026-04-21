@@ -1,0 +1,194 @@
+{
+  "app": {
+    "name": "TradeVerse",
+    "tagline": "受保障",
+    "loading": "加载中..."
+  },
+  "nav": {
+    "overview": "概览",
+    "portfolio": "投资组合",
+    "strategies": "信号广场",
+    "copyTrading": "交易",
+    "atlasGold": "试用模式",
+    "wallet": "钱包",
+    "history": "历史",
+    "referral": "推荐",
+    "activities": "活动",
+    "community": "社区",
+    "notifications": "通知",
+    "settings": "设置",
+    "search": "搜索..."
+  },
+  "topbar": {
+    "portal": "门户",
+    "notifications": "通知",
+    "settings": "设置",
+    "profile": "个人资料",
+    "logout": "退出登录"
+  },
+  "auth": {
+    "signIn": "登录",
+    "signUp": "注册",
+    "login": "登录",
+    "register": "注册",
+    "logout": "退出登录",
+    "email": "邮箱",
+    "password": "密码",
+    "forgotPassword": "忘记密码？",
+    "noAccount": "还没有账户？",
+    "hasAccount": "已有账户？"
+  },
+  "landing": {
+    "hero": {
+      "badge": "每笔交易开仓即受保障",
+      "title": "交易，让",
+      "titleHighlight": "每个仓位",
+      "titleEnd": "都受保障",
+      "description": "TradeVerse 在交易开仓的瞬间，将你的实时盈亏通过链上保护层路由——让利润和回撤从始至终都受到保护。连接你的券商，设置保障范围，实时见证每笔交易通过保护层。",
+      "cta": "为交易投保",
+      "ctaLive": "实时查看",
+      "works": "支持 MT4、MT5 和 cTrader",
+      "payouts": "24小时内赔付",
+      "trial": "14天免费试用",
+      "goToDashboard": "前往仪表盘"
+    },
+    "nav": {
+      "tracks": "曲目",
+      "soundscapes": "音景",
+      "spotlight": "聚焦",
+      "forCreators": "创作者专区",
+      "pricing": "定价",
+      "searchLibrary": "搜索库"
+    },
+    "drops": {
+      "title": "精选发布",
+      "subtitle": "为创作者、主播和讲故事者精心挑选的器乐和氛围音效。",
+      "viewAll": "查看全部"
+    },
+    "phone": {
+      "livePl": "实时盈亏流",
+      "insuring": "保障中",
+      "securedPL": "已保障盈亏",
+      "tradesShielded": "笔受保护交易",
+      "rawPL": "原始盈亏",
+      "insuredBy": "由 TradeVerse 承保"
+    }
+  },
+  "dashboard": {
+    "title": "概览",
+    "welcome": "欢迎回来",
+    "portfolio": "投资组合价值",
+    "todayPL": "今日盈亏",
+    "activeTrades": "活跃交易",
+    "winRate": "胜率",
+    "recentActivity": "最近动态",
+    "performance": "表现",
+    "openPositions": "活跃仓位",
+    "viewAll": "查看全部"
+  },
+  "admin": {
+    "title": "管理员仪表盘",
+    "totalUsers": "总用户数",
+    "tradingVolume": "交易量",
+    "activeSignals": "活跃信号",
+    "openTickets": "待处理工单",
+    "volumeOverview": "交易量概览",
+    "userDistribution": "用户分布",
+    "recentUsers": "最近用户",
+    "recentTransactions": "最近交易",
+    "viewAll": "查看全部",
+    "users": "用户",
+    "type": "类型",
+    "status": "状态",
+    "action": "操作",
+    "amount": "金额",
+    "search": "搜索用户、交易...",
+    "period24h": "24小时",
+    "period7d": "7天",
+    "period30d": "30天",
+    "nav": {
+      "dashboard": "仪表盘",
+      "analytics": "分析",
+      "users": "用户",
+      "transactions": "交易",
+      "kyc": "KYC审核",
+      "settings": "设置",
+      "security": "安全",
+      "overview": "主页"
+    }
+  },
+  "wallet": {
+    "title": "钱包",
+    "available": "可用",
+    "locked": "锁定",
+    "total": "总计",
+    "deposit": "充值",
+    "withdraw": "提现",
+    "history": "历史",
+    "recentTransactions": "最近交易"
+  },
+  "strategies": {
+    "title": "信号广场",
+    "active": "活跃",
+    "paused": "暂停",
+    "all": "全部",
+    "followers": "位关注者",
+    "aum": "管理资产",
+    "winRate": "胜率",
+    "maxDrawdown": "最大回撤",
+    "profitShare": "利润分成",
+    "follow": "关注",
+    "unfollow": "取消关注"
+  },
+  "copyTrading": {
+    "title": "交易",
+    "activePositions": "活跃仓位",
+    "closedPositions": "已关闭仓位",
+    "riskCapital": "风险资金",
+    "status": "状态",
+    "pnl": "盈亏"
+  },
+  "atlasGold": {
+    "title": "试用模式",
+    "startTrail": "开始试用",
+    "checkpoints": "检查点",
+    "completed": "已完成",
+    "locked": "已锁定",
+    "current": "当前",
+    "reward": "奖励"
+  },
+  "notifications": {
+    "title": "通知",
+    "markAllRead": "全部标为已读",
+    "unread": "未读",
+    "all": "全部",
+    "noNotifications": "暂无通知"
+  },
+  "settings": {
+    "title": "设置",
+    "profile": "个人资料",
+    "security": "安全",
+    "preferences": "偏好设置",
+    "language": "语言",
+    "theme": "主题",
+    "notifications": "通知",
+    "save": "保存更改"
+  },
+  "common": {
+    "save": "保存",
+    "cancel": "取消",
+    "delete": "删除",
+    "edit": "编辑",
+    "create": "创建",
+    "close": "关闭",
+    "confirm": "确认",
+    "back": "返回",
+    "next": "下一步",
+    "yes": "是",
+    "no": "否",
+    "loading": "加载中...",
+    "error": "出现错误",
+    "retry": "重试",
+    "noData": "暂无数据"
+  }
+}

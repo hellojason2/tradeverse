@@ -167,7 +167,7 @@ function AdminTopbar() {
         </div>
       </div>
       <div className="flex items-center gap-3 shrink-0">
-        {[{code:'en',label:'EN'},{code:'vi',label:'VI'}].map((l) => (
+        {[{code:'en',label:'EN'},{code:'zh',label:'中文'}].map((l) => (
           <button key={l.code} onClick={() => i18n.changeLanguage(l.code)} className={cn('px-2 py-1 text-[11px] font-semibold rounded-md transition-all cursor-pointer', i18n.language?.startsWith(l.code) ? 'bg-[var(--ad-accent-primary)] text-white' : 'text-[var(--ad-text-tertiary)] hover:text-[var(--ad-text-primary)]')}>{l.label}</button>
         ))}
         <button className="w-10 h-10 border border-[var(--ad-border-color)] bg-[var(--ad-bg-primary)] rounded-lg flex items-center justify-center text-[var(--ad-text-secondary)] hover:bg-[var(--ad-bg-tertiary)] transition-all relative">
