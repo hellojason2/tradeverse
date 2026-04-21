@@ -9,9 +9,11 @@ import { Button } from '@/components/ui/button';
 
 export function AppShell() {
   const location = useLocation();
-  const isAdmin = location.pathname === '/admin';
+  const isAdmin = location.pathname.startsWith('/admin');
   const sidebarCollapsed = useUIStore((s) => s.sidebarCollapsed);
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  const sidebarWidth = sidebarCollapsed ? (isAdmin ? 72 : 64) : (isAdmin ? 260 : 240);
 
   return (
     <div className="flex min-h-dvh bg-bg-0 text-ink-0">
@@ -19,7 +21,7 @@ export function AppShell() {
       <aside
         className="hidden md:flex flex-col h-dvh shrink-0 transition-all duration-[280ms]"
         style={{
-          width: sidebarCollapsed ? (isAdmin ? 72 : 64) : (isAdmin ? 260 : 240),
+          width: sidebarWidth,
           ...(isAdmin
             ? {
                 background: 'var(--ad-bg-primary)',
@@ -32,19 +34,11 @@ export function AppShell() {
               }),
         }}
       >
-        {isAdmin ? (
-          <AdminSidebar />
-        ) : (
-          <ClientSidebar />
-        )}
+        {isAdmin ? <AdminSidebar /> : <ClientSidebar />}
       </aside>
 
-      <div
-        className="flex-1 flex flex-col min-w-0 transition-all duration-[280ms]"
-        style={{
-          marginLeft: sidebarCollapsed ? (isAdmin ? 72 : 64) : (isAdmin ? 260 : 240),
-        }}
-      >
+      {/* Content area — no margin-left; flexbox places it adjacent to sidebar */}
+      <div className="flex-1 flex flex-col min-w-0 transition-all duration-[280ms]">
         {/* Mobile header */}
         <header
           className="md:hidden flex items-center justify-between px-4 h-[60px] shrink-0"
