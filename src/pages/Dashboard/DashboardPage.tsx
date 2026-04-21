@@ -1,5 +1,7 @@
+import { useAuth } from '@/hooks/useAuth';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 import { useDashboard } from '@/hooks/useApi';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Badge } from '@/components/ui/badge';
 import { formatCurrency, formatPercent } from '@/lib/utils';
@@ -29,27 +31,23 @@ function StatCard({
 }) {
   const isPositive = change !== undefined && change >= 0;
   return (
-    <Card className="relative overflow-hidden bg-[linear-gradient(180deg,rgba(14,20,44,0.55),rgba(8,12,28,0.55))] backdrop-blur-[20px] border-white/[0.08] rounded-[14px] hover:border-white/[0.14] transition-colors">
-      <div className="absolute top-0 right-0 w-32 h-32 bg-[radial-gradient(circle,oklch(0.55_0.22_260/0.12),transparent_70%)] pointer-events-none" />
-      <CardContent className="p-5">
-        <div className="flex items-center justify-between mb-3">
-          <span className="text-[11px] font-mono font-semibold uppercase tracking-[0.08em] text-[#545d78]">
-            {label}
-          </span>
+    <Card className="shadow-sm">
+      <CardHeader className="pb-2">
+        <div className="flex items-center justify-between">
+          <CardDescription className="text-[11px] font-mono font-semibold uppercase tracking-[0.08em] text-[#545d78]">{label}</CardDescription>
           <Icon className="w-4 h-4 text-[#545d78]" />
         </div>
-        <div className="text-[28px] font-mono font-medium text-[#f5f7ff] tracking-tight leading-none mb-2">
-          {value}
-        </div>
+        <CardTitle className="text-[28px] font-mono font-medium text-[#f5f7ff] tracking-tight leading-none">{value}</CardTitle>
+      </CardHeader>
+      <CardContent className="pt-0">
         {change !== undefined && (
           <Badge
             variant="outline"
-            className={cn(
-              'text-[11px] font-mono gap-1 px-2 py-0.5',
+            className={
               isPositive
-                ? 'bg-[rgba(61,220,132,0.14)] text-[#3ddc84] border-[oklch(0.72_0.17_150/0.3)]'
-                : 'bg-[rgba(255,85,85,0.14)] text-[#ff5555] border-[oklch(0.68_0.22_20/0.3)]'
-            )}
+                ? 'bg-[rgba(61,220,132,0.14)] text-[#3ddc84] border-[oklch(0.72_0.17_150/0.3)] text-[11px] font-mono gap-1 px-2 py-0.5'
+                : 'bg-[rgba(255,85,85,0.14)] text-[#ff5555] border-[oklch(0.68_0.22_20/0.3)] text-[11px] font-mono gap-1 px-2 py-0.5'
+            }
           >
             {isPositive ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3" />}
             {formatPercent(change)} {changeLabel}
@@ -63,6 +61,8 @@ function StatCard({
 import { cn } from '@/lib/utils';
 
 export function DashboardPage() {
+  useDocumentTitle('Dashboard');
+  const { user } = useAuth();
   const { data, isLoading, error } = useDashboard();
 
   if (error) {
@@ -78,7 +78,7 @@ export function DashboardPage() {
   }
 
   return (
-    <div className="p-6 pb-16 animate-[pgIn_0.35s_ease-out]">
+    <div className="animate-[pgIn_0.35s_ease-out]">
       {/* Welcome Banner */}
       <div className="relative rounded-[18px] p-8 mb-6 border border-white/[0.14] bg-[linear-gradient(140deg,#0a1230_0%,#050a1e_60%,#0a1a38_100%)] overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_0%,oklch(0.3_0.15_260/0.35),transparent)] pointer-events-none" />
@@ -88,7 +88,10 @@ export function DashboardPage() {
             Trading Dashboard
           </Badge>
           <h2 className="text-[clamp(28px,3vw,38px)] text-[#f5f7ff] font-serif leading-[0.98] mb-3">
-            Welcome back, <em className="bg-gradient-to-r from-[#7aadff] to-[#c77dff] bg-clip-text text-transparent">Trader</em>
+            Welcome back,{' '}
+            <em className="bg-gradient-to-r from-[#7aadff] to-[#c77dff] bg-clip-text text-transparent not-italic">
+              {user?.displayName ?? 'Trader'}
+            </em>
           </h2>
           <p className="text-[14px] text-[#8892b0] max-w-lg">
             Your portfolio is performing well. Here's your market overview for today.
@@ -100,7 +103,7 @@ export function DashboardPage() {
       {isLoading ? (
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           {Array.from({ length: 4 }).map((_, i) => (
-            <Card key={i} className="rounded-[14px] border-white/[0.08]">
+            <Card key={i} className="shadow-sm">
               <CardContent className="p-5">
                 <Skeleton className="h-3 w-20 mb-3" />
                 <Skeleton className="h-8 w-32 mb-2" />
@@ -141,7 +144,7 @@ export function DashboardPage() {
       {/* Charts + Activity Row */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
         {/* Equity Chart */}
-        <Card className="lg:col-span-2 bg-[linear-gradient(180deg,rgba(14,20,44,0.55),rgba(8,12,28,0.55))] backdrop-blur-[20px] border-white/[0.08] rounded-[14px]">
+        <Card className="lg:col-span-2 shadow-sm">
           <CardHeader className="pb-2">
             <CardTitle className="text-[20px] text-[#f5f7ff] font-serif">Equity Curve</CardTitle>
           </CardHeader>
@@ -174,7 +177,7 @@ export function DashboardPage() {
         </Card>
 
         {/* Portfolio Allocation */}
-        <Card className="bg-[linear-gradient(180deg,rgba(14,20,44,0.55),rgba(8,12,28,0.55))] backdrop-blur-[20px] border-white/[0.08] rounded-[14px]">
+        <Card className="shadow-sm">
           <CardHeader className="pb-2">
             <CardTitle className="text-[20px] text-[#f5f7ff] font-serif">Allocation</CardTitle>
           </CardHeader>
@@ -208,7 +211,7 @@ export function DashboardPage() {
       </div>
 
       {/* Recent Activity */}
-      <Card className="bg-[linear-gradient(180deg,rgba(14,20,44,0.55),rgba(8,12,28,0.55))] backdrop-blur-[20px] border-white/[0.08] rounded-[14px]">
+      <Card className="shadow-sm">
         <CardHeader>
           <div className="flex items-center justify-between">
             <CardTitle className="text-[20px] text-[#f5f7ff] font-serif">Recent Activity</CardTitle>
