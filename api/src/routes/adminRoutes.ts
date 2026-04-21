@@ -4,23 +4,18 @@
  * Admin endpoints. Delegates to adminController.
  */
 
-import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import type { FastifyInstance } from 'fastify';
 import { asyncErrorWrapper } from '@utils/asyncErrorWrapper.js';
+import { authMiddleware } from '@middleware/auth.js';
 import * as ctrl from '@controllers/adminController.js';
 
-function requireRole(...roles: string[]) {
-  return async (req: FastifyRequest, reply: FastifyReply) => {
-    if (!req.user) {
-      return reply.status(401).send({ error: { code: 'UNAUTHORIZED', message: 'Authentication required' } });
-    }
-    if (!roles.includes(req.user.role)) {
+export default async function adminRoutes(app: FastifyInstance): Promise<void> {
+  app.addHook('preHandler', authMiddleware);
+  app.addHook('preHandler', async (req, reply) => {
+    if (req.user?.role !== 'ADMIN') {
       return reply.status(403).send({ error: { code: 'FORBIDDEN', message: 'Insufficient permissions' } });
     }
-  };
-}
-
-export default async function adminRoutes(app: FastifyInstance): Promise<void> {
-  app.addHook('preHandler', requireRole('ADMIN'));
+  });
 
   // Config
   app.get('/api/admin/config', asyncErrorWrapper(ctrl.getConfig));

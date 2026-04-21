@@ -6,14 +6,11 @@
 
 import type { FastifyInstance } from 'fastify';
 import { asyncErrorWrapper } from '@utils/asyncErrorWrapper.js';
+import { authMiddleware } from '@middleware/auth.js';
 import * as ctrl from '@controllers/atlasGoldController.js';
 
 export default async function atlasGoldRoutes(app: FastifyInstance): Promise<void> {
-  app.addHook('preHandler', async (req, _reply) => {
-    if (!req.user) {
-      return _reply.status(401).send({ error: { code: 'UNAUTHORIZED', message: 'Authentication required' } });
-    }
-  });
+  app.addHook('preHandler', authMiddleware);
 
   app.get('/api/atlas-gold/balance', asyncErrorWrapper(ctrl.getBalance));
   app.post('/api/atlas-gold/buy', asyncErrorWrapper(ctrl.buy));

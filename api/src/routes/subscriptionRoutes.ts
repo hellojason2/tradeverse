@@ -6,14 +6,11 @@
 
 import type { FastifyInstance } from 'fastify';
 import { asyncErrorWrapper } from '@utils/asyncErrorWrapper.js';
+import { authMiddleware } from '@middleware/auth.js';
 import * as ctrl from '@controllers/subscriptionController.js';
 
 export default async function subscriptionRoutes(app: FastifyInstance): Promise<void> {
-  app.addHook('preHandler', async (req, _reply) => {
-    if (!req.user) {
-      return _reply.status(401).send({ error: { code: 'UNAUTHORIZED', message: 'Authentication required' } });
-    }
-  });
+  app.addHook('preHandler', authMiddleware);
 
   app.post('/api/subscriptions', asyncErrorWrapper(ctrl.subscribe));
   app.get('/api/subscriptions', asyncErrorWrapper(ctrl.listSubscriptions));
