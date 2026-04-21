@@ -1,14 +1,17 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 import { useAuth } from '@/hooks/useAuth';
 import { LanguageSwitcher } from '@/components/layout/LanguageSwitcher';
 import { ThemeToggle } from '@/components/layout/ThemeToggle';
+import { formatCurrency, formatPercent } from '@/lib/format';
 
 export function DashboardPage() {
   useDocumentTitle('Overview');
+  const { t } = useTranslation('dashboard');
   const { user } = useAuth();
-  const firstName = user?.displayName?.split(' ')[0] ?? 'John';
+  const displayName = user?.displayName?.split(' ')[0] ?? 'Alex';
   const initials = user?.displayName
     ?.split(' ')
     .map((n) => n[0])
@@ -194,7 +197,7 @@ export function DashboardPage() {
         </div>
         <nav className="sb-nav">
           <div className="nav-sec">
-            <div className="nav-sec-t">Dashboard</div>
+            <div className="nav-sec-t">{t('sidebar.sections.dashboard')}</div>
             <NavLink to="/dashboard" end className={({ isActive }) => `nav-i${isActive ? ' act' : ''}`}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
                 <rect x="3" y="3" width="7" height="7" />
@@ -202,7 +205,7 @@ export function DashboardPage() {
                 <rect x="14" y="14" width="7" height="7" />
                 <rect x="3" y="14" width="7" height="7" />
               </svg>
-              <span className="nav-i-t">Overview</span>
+              <span className="nav-i-t">{t('sidebar.nav.overview')}</span>
             </NavLink>
             {/* TODO: /portfolio route not yet registered in App.tsx */}
             <NavLink to="/dashboard" className={({ isActive }) => `nav-i${isActive ? ' act' : ''}`}>
@@ -210,17 +213,17 @@ export function DashboardPage() {
                 <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
                 <polyline points="17 6 23 6 23 12" />
               </svg>
-              <span className="nav-i-t">Portfolio</span>
+              <span className="nav-i-t">{t('sidebar.nav.portfolio')}</span>
             </NavLink>
           </div>
           <div className="nav-sec">
-            <div className="nav-sec-t">Trading</div>
+            <div className="nav-sec-t">{t('sidebar.sections.trading')}</div>
             {/* TODO: /signal-plaza route not yet registered */}
             <NavLink to="/strategies" className={({ isActive }) => `nav-i${isActive ? ' act' : ''}`}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
               </svg>
-              <span className="nav-i-t">Signal Plaza</span>
+              <span className="nav-i-t">{t('sidebar.nav.signalPlaza')}</span>
               <span className="nav-badge">12</span>
             </NavLink>
             <NavLink to="/copy-trading" className={({ isActive }) => `nav-i${isActive ? ' act' : ''}`}>
@@ -228,24 +231,24 @@ export function DashboardPage() {
                 <line x1="12" y1="1" x2="12" y2="23" />
                 <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
               </svg>
-              <span className="nav-i-t">Trade</span>
+              <span className="nav-i-t">{t('sidebar.nav.trade')}</span>
             </NavLink>
             {/* TODO: /trail-mode route not yet registered */}
             <NavLink to="/atlas-gold" className={({ isActive }) => `nav-i${isActive ? ' act' : ''}`}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
                 <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
               </svg>
-              <span className="nav-i-t">Trail Mode</span>
+              <span className="nav-i-t">{t('sidebar.nav.trailMode')}</span>
             </NavLink>
           </div>
           <div className="nav-sec">
-            <div className="nav-sec-t">Finance</div>
+            <div className="nav-sec-t">{t('sidebar.sections.finance')}</div>
             <NavLink to="/wallet" className={({ isActive }) => `nav-i${isActive ? ' act' : ''}`}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
                 <rect x="1" y="4" width="22" height="16" rx="2" />
                 <line x1="1" y1="10" x2="23" y2="10" />
               </svg>
-              <span className="nav-i-t">Wallet</span>
+              <span className="nav-i-t">{t('sidebar.nav.wallet')}</span>
             </NavLink>
             {/* TODO: /history route not yet registered */}
             <NavLink to="/dashboard" className={({ isActive }) => `nav-i${isActive ? ' act' : ''}`}>
@@ -253,11 +256,11 @@ export function DashboardPage() {
                 <circle cx="12" cy="12" r="10" />
                 <polyline points="12 6 12 12 16 14" />
               </svg>
-              <span className="nav-i-t">History</span>
+              <span className="nav-i-t">{t('sidebar.nav.history')}</span>
             </NavLink>
           </div>
           <div className="nav-sec">
-            <div className="nav-sec-t">Engage</div>
+            <div className="nav-sec-t">{t('sidebar.sections.engage')}</div>
             {/* TODO: /referrals route not yet registered */}
             <NavLink to="/dashboard" className={({ isActive }) => `nav-i${isActive ? ' act' : ''}`}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
@@ -266,31 +269,31 @@ export function DashboardPage() {
                 <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
                 <path d="M16 3.13a4 4 0 0 1 0 7.75" />
               </svg>
-              <span className="nav-i-t">Referrals</span>
+              <span className="nav-i-t">{t('sidebar.nav.referrals')}</span>
             </NavLink>
             {/* TODO: /activities route not yet registered */}
             <NavLink to="/dashboard" className={({ isActive }) => `nav-i${isActive ? ' act' : ''}`}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="20 6 9 17 4 12" />
               </svg>
-              <span className="nav-i-t">Activities</span>
+              <span className="nav-i-t">{t('sidebar.nav.activities')}</span>
             </NavLink>
             {/* TODO: /community route not yet registered */}
             <NavLink to="/dashboard" className={({ isActive }) => `nav-i${isActive ? ' act' : ''}`}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
               </svg>
-              <span className="nav-i-t">Community</span>
+              <span className="nav-i-t">{t('sidebar.nav.community')}</span>
             </NavLink>
           </div>
           <div className="nav-sec">
-            <div className="nav-sec-t">Account</div>
+            <div className="nav-sec-t">{t('sidebar.sections.account')}</div>
             <NavLink to="/notifications" className={({ isActive }) => `nav-i${isActive ? ' act' : ''}`}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
                 <path d="M13.73 21a2 2 0 0 1-3.46 0" />
               </svg>
-              <span className="nav-i-t">Notifications</span>
+              <span className="nav-i-t">{t('sidebar.nav.notifications')}</span>
               <span className="nav-badge">3</span>
             </NavLink>
             <NavLink to="/settings" className={({ isActive }) => `nav-i${isActive ? ' act' : ''}`}>
@@ -298,7 +301,7 @@ export function DashboardPage() {
                 <circle cx="12" cy="12" r="3" />
                 <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.26.604.852.997 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
               </svg>
-              <span className="nav-i-t">Settings</span>
+              <span className="nav-i-t">{t('sidebar.nav.settings')}</span>
             </NavLink>
           </div>
         </nav>
@@ -307,7 +310,7 @@ export function DashboardPage() {
             <div className="sb-u-av">{initials}</div>
             <div className="sb-u-info">
               <div className="sb-u-nm">{user?.displayName ?? 'John Doe'}</div>
-              <div className="sb-u-rl">Premium</div>
+              <div className="sb-u-rl">{t('sidebar.footer.premium')}</div>
             </div>
           </div>
         </div>
@@ -319,10 +322,10 @@ export function DashboardPage() {
           <div className="tb-left">
             <div>
               <div className="tb-title" id="pgTitle">
-                Overview
+                {t('topbar.title')}
               </div>
               <div className="tb-bread">
-                Portal / <span id="pgBread">Overview</span>
+                {t('topbar.breadcrumb')}
               </div>
             </div>
           </div>
@@ -332,7 +335,7 @@ export function DashboardPage() {
                 <circle cx="11" cy="11" r="8" />
                 <line x1="21" y1="21" x2="16.65" y2="16.65" />
               </svg>
-              <input placeholder="Search markets, signals, orders..." />
+              <input placeholder={t('topbar.searchPlaceholder')} />
               <kbd>⌘K</kbd>
             </div>
             <LanguageSwitcher />
@@ -360,72 +363,72 @@ export function DashboardPage() {
               <div className="welcome-beam" />
               <div className="welcome-content">
                 <div className="welcome-pill">
-                  <span className="welcome-pill-badge">TV</span> Markets open · Low volatility session
+                  <span className="welcome-pill-badge">TV</span> {t('hero.sessionStatus')}
                 </div>
                 <h2>
-                  Good morning, {firstName}.<br />
-                  Your edge is <em>compounding.</em>
+                  {t('hero.greeting', { name: displayName })}<br />
+                  {t('hero.tagline')} <em>{t('hero.taglineAccent')}</em>
                 </h2>
                 <p>
-                  3 active positions, 2 rewards to claim, and your Trail Mode challenge advances to Level 2 today.
+                  {t('hero.summary', { activePositions: 3, rewards: 2, level: 2 })}
                 </p>
                 <div className="welcome-stats">
                   <div className="welcome-stat">
-                    <div className="val mono">$48,293</div>
-                    <div className="lbl">Balance</div>
+                    <div className="val mono">{formatCurrency(48293)}</div>
+                    <div className="lbl">{t('hero.stats.balance')}</div>
                   </div>
                   <div className="welcome-stat">
                     <div className="val mono" style={{ color: 'oklch(0.92 0.1 150)' }}>
-                      +12.5%
+                      {formatPercent(12.5)}
                     </div>
-                    <div className="lbl">This Month</div>
+                    <div className="lbl">{t('hero.stats.thisMonth')}</div>
                   </div>
                   <div className="welcome-stat">
                     <div className="val mono">03</div>
-                    <div className="lbl">Positions</div>
+                    <div className="lbl">{t('hero.stats.positions')}</div>
                   </div>
                   <div className="welcome-stat">
                     <div className="val mono">14d</div>
-                    <div className="lbl">Streak</div>
+                    <div className="lbl">{t('hero.stats.streak')}</div>
                   </div>
                 </div>
               </div>
             </div>
             <div className="g4 mb6">
               <div className="stat-card">
-                <div className="stat-label">Total Balance</div>
+                <div className="stat-label">{t('kpis.totalBalance')}</div>
                 <div className="stat-val">
-                  $48,293<span style={{ fontSize: '18px', color: 'var(--ink-3)' }}>.57</span>
+                  {formatCurrency(48293.57)}
                 </div>
-                <div className="stat-chg up">↑ $5,340 MTD</div>
+                <div className="stat-chg up">{t('kpis.badges.mtd', { amount: formatCurrency(5340) })}</div>
               </div>
               <div className="stat-card">
-                <div className="stat-label">Broker Account</div>
-                <div className="stat-val">$32,450</div>
-                <div className="stat-chg up">↑ 72% invested</div>
+                <div className="stat-label">{t('kpis.brokerAccount')}</div>
+                <div className="stat-val">{formatCurrency(32450)}</div>
+                <div className="stat-chg up">{t('kpis.badges.invested', { percent: formatPercent(72) })}</div>
               </div>
               <div className="stat-card">
-                <div className="stat-label">Wallet USDT</div>
-                <div className="stat-val">$12,843</div>
-                <div className="stat-chg up">Available</div>
+                <div className="stat-label">{t('kpis.walletUsdt')}</div>
+                <div className="stat-val">{formatCurrency(12843)}</div>
+                <div className="stat-chg up">{t('kpis.badges.available')}</div>
               </div>
               <div className="stat-card">
-                <div className="stat-label">Trial Balance</div>
-                <div className="stat-val">$10,000</div>
-                <div className="stat-chg up">23 days left</div>
+                <div className="stat-label">{t('kpis.trialBalance')}</div>
+                <div className="stat-val">{formatCurrency(10000)}</div>
+                <div className="stat-chg up">{t('kpis.badges.daysLeft', { count: 23 })}</div>
               </div>
             </div>
             <div className="g2 mb6">
               <div className="card">
                 <div className="card-h">
                   <div>
-                    <div className="card-t">Portfolio Performance</div>
-                    <div className="card-st">Last 30 days</div>
+                    <div className="card-t">{t('performance.title')}</div>
+                    <div className="card-st">{t('performance.subtitle')}</div>
                   </div>
                   <div className="tabs">
-                    <div className="tab act">30D</div>
-                    <div className="tab">90D</div>
-                    <div className="tab">1Y</div>
+                    <div className="tab act">{t('performance.ranges.30d')}</div>
+                    <div className="tab">{t('performance.ranges.90d')}</div>
+                    <div className="tab">{t('performance.ranges.1y')}</div>
                   </div>
                 </div>
                 <div className="chart-ph" id="ovChart">
@@ -435,9 +438,9 @@ export function DashboardPage() {
               <div className="card">
                 <div className="card-h">
                   <div>
-                    <div className="card-t">Recent Activity</div>
+                    <div className="card-t">{t('activity.title')}</div>
                   </div>
-                  <button className="btn btn-ghost btn-sm">View all →</button>
+                  <button className="btn btn-ghost btn-sm">{t('activity.viewAll')}</button>
                 </div>
                 <div className="act-i">
                   <div className="act-ic" style={{ background: 'var(--green-l)', color: 'var(--green)' }}>
@@ -446,8 +449,8 @@ export function DashboardPage() {
                     </svg>
                   </div>
                   <div className="act-info">
-                    <div className="act-t">Position closed — AlphaSignal</div>
-                    <div className="act-d">Profit realized · 2 hours ago</div>
+                    <div className="act-t">{t('activity.positionClosed', { name: 'BTC/USD Momentum' })}</div>
+                    <div className="act-d">{t('activity.profitRealized', { time: '2 hours ago' })}</div>
                   </div>
                   <div className="act-amt">+$847</div>
                 </div>
@@ -459,8 +462,8 @@ export function DashboardPage() {
                     </svg>
                   </div>
                   <div className="act-info">
-                    <div className="act-t">Deposit confirmed</div>
-                    <div className="act-d">500 USDT via TRC20 · 5 hours ago</div>
+                    <div className="act-t">{t('activity.depositConfirmed')}</div>
+                    <div className="act-d">{t('activity.depositVia', { amount: 500, asset: 'USDT', network: 'TRC-20', time: '5 hours ago' })}</div>
                   </div>
                   <div className="act-amt">+$500</div>
                 </div>
@@ -471,8 +474,8 @@ export function DashboardPage() {
                     </svg>
                   </div>
                   <div className="act-info">
-                    <div className="act-t">Daily login reward</div>
-                    <div className="act-d">7-day streak bonus · 1 day ago</div>
+                    <div className="act-t">{t('activity.loginReward')}</div>
+                    <div className="act-d">{t('activity.streakBonus', { days: 7, time: 'Yesterday' })}</div>
                   </div>
                   <div className="act-amt">+$5</div>
                 </div>
@@ -481,9 +484,9 @@ export function DashboardPage() {
             <div className="sec">
               <div className="sec-h">
                 <div className="sec-t">
-                  Active <em>positions</em>
+                  {t('positions.title')} <em>{t('positions.titleAccent')}</em>
                 </div>
-                <button className="btn btn-outline btn-sm">View all →</button>
+                <button className="btn btn-outline btn-sm">{t('positions.viewAll')}</button>
               </div>
               <div className="g3">
                 <div className="pos-card">
@@ -504,32 +507,32 @@ export function DashboardPage() {
                     </div>
                     <span className="badge b-green">
                       <span className="s-dot green" />
-                      Active
+                      {t('positions.status.active')}
                     </span>
                   </div>
                   <div className="g3 mb3">
                     <div>
                       <div className="fs11 t3 mono" style={{ letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-                        Invested
+                        {t('positions.labels.invested')}
                       </div>
                       <div className="f6 fs12 mono mt2">$5,000</div>
                     </div>
                     <div>
                       <div className="fs11 t3 mono" style={{ letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-                        P/L
+                        {t('positions.labels.pl')}
                       </div>
                       <div className="f6 fs12 tg mono mt2">+$847</div>
                     </div>
                     <div>
                       <div className="fs11 t3 mono" style={{ letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-                        Win
+                        {t('positions.labels.win')}
                       </div>
                       <div className="f6 fs12 mono mt2">72%</div>
                     </div>
                   </div>
                   <div className="flex aic jcb">
-                    <div className="fs11 t3 mono">2,400 followers</div>
-                    <button className="btn btn-outline btn-sm">Close</button>
+                    <div className="fs11 t3 mono">{t('positions.followers', { count: 2400 })}</div>
+                    <button className="btn btn-outline btn-sm">{t('positions.actions.close')}</button>
                   </div>
                 </div>
                 <div className="pos-card">
@@ -550,32 +553,32 @@ export function DashboardPage() {
                     </div>
                     <span className="badge b-yellow">
                       <span className="s-dot yellow" />
-                      Fundraising
+                      {t('positions.status.fundraising')}
                     </span>
                   </div>
                   <div className="g3 mb3">
                     <div>
                       <div className="fs11 t3 mono" style={{ letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-                        Invested
+                        {t('positions.labels.invested')}
                       </div>
                       <div className="f6 fs12 mono mt2">$3,200</div>
                     </div>
                     <div>
                       <div className="fs11 t3 mono" style={{ letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-                        P/L
+                        {t('positions.labels.pl')}
                       </div>
                       <div className="f6 fs12 tg mono mt2">+$234</div>
                     </div>
                     <div>
                       <div className="fs11 t3 mono" style={{ letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-                        Win
+                        {t('positions.labels.win')}
                       </div>
                       <div className="f6 fs12 mono mt2">65%</div>
                     </div>
                   </div>
                   <div className="flex aic jcb">
-                    <div className="fs11 t3 mono">890 followers</div>
-                    <button className="btn btn-green btn-sm">Add Funds</button>
+                    <div className="fs11 t3 mono">{t('positions.followers', { count: 890 })}</div>
+                    <button className="btn btn-green btn-sm">{t('positions.actions.addFunds')}</button>
                   </div>
                 </div>
                 <div className="pos-card">
@@ -596,32 +599,32 @@ export function DashboardPage() {
                     </div>
                     <span className="badge b-green">
                       <span className="s-dot green" />
-                      Active
+                      {t('positions.status.active')}
                     </span>
                   </div>
                   <div className="g3 mb3">
                     <div>
                       <div className="fs11 t3 mono" style={{ letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-                        Invested
+                        {t('positions.labels.invested')}
                       </div>
                       <div className="f6 fs12 mono mt2">$8,500</div>
                     </div>
                     <div>
                       <div className="fs11 t3 mono" style={{ letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-                        P/L
+                        {t('positions.labels.pl')}
                       </div>
                       <div className="f6 fs12 tr mono mt2">-$412</div>
                     </div>
                     <div>
                       <div className="fs11 t3 mono" style={{ letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-                        Win
+                        {t('positions.labels.win')}
                       </div>
                       <div className="f6 fs12 mono mt2">58%</div>
                     </div>
                   </div>
                   <div className="flex aic jcb">
-                    <div className="fs11 t3 mono">5,100 followers</div>
-                    <button className="btn btn-outline btn-sm">Close</button>
+                    <div className="fs11 t3 mono">{t('positions.followers', { count: 5100 })}</div>
+                    <button className="btn btn-outline btn-sm">{t('positions.actions.close')}</button>
                   </div>
                 </div>
               </div>
