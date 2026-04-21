@@ -1,0 +1,96 @@
+{
+  "sidebar": {
+    "sections": {
+      "dashboard": "Dashboard",
+      "trading": "Trading",
+      "finance": "Finance",
+      "engage": "Engage",
+      "account": "Account"
+    },
+    "nav": {
+      "overview": "Overview",
+      "portfolio": "Portfolio",
+      "signalPlaza": "Signal Plaza",
+      "trade": "Trade",
+      "trailMode": "Trail Mode",
+      "wallet": "Wallet",
+      "history": "History",
+      "referrals": "Referrals",
+      "activities": "Activities",
+      "community": "Community",
+      "notifications": "Notifications",
+      "settings": "Settings"
+    },
+    "footer": {
+      "premium": "Premium"
+    }
+  },
+  "topbar": {
+    "title": "Overview",
+    "breadcrumb": "Portal / Overview",
+    "searchPlaceholder": "Search markets, signals, orders…"
+  },
+  "hero": {
+    "sessionStatus": "Market open · Low volatility session",
+    "greeting": "Good morning, {{name}}.",
+    "tagline": "Your edge is",
+    "taglineAccent": "compounding.",
+    "summary": "{{activePositions}} active positions, {{rewards}} rewards ready to claim, and your Trail Mode challenge levels up to Level {{level}} today.",
+    "stats": {
+      "balance": "Balance",
+      "thisMonth": "This month",
+      "positions": "Positions",
+      "streak": "Streak"
+    }
+  },
+  "kpis": {
+    "totalBalance": "Total Balance",
+    "brokerAccount": "Broker Account",
+    "walletUsdt": "Wallet USDT",
+    "trialBalance": "Trial Balance",
+    "badges": {
+      "mtd": "↑ {{amount}} MTD",
+      "invested": "↑ {{percent}} invested",
+      "available": "Available",
+      "daysLeft": "{{count}} days left"
+    }
+  },
+  "performance": {
+    "title": "Portfolio Performance",
+    "subtitle": "Last 30 days",
+    "ranges": {
+      "30d": "30D",
+      "90d": "90D",
+      "1y": "1Y"
+    }
+  },
+  "activity": {
+    "title": "Recent activity",
+    "viewAll": "View all →",
+    "positionClosed": "Position closed — {{name}}",
+    "profitRealized": "Profit realized · {{time}}",
+    "depositConfirmed": "Deposit confirmed",
+    "depositVia": "{{amount}} {{asset}} via {{network}} · {{time}}",
+    "loginReward": "Daily login reward",
+    "streakBonus": "{{days}}-day streak bonus · {{time}}"
+  },
+  "positions": {
+    "title": "Active",
+    "titleAccent": "positions",
+    "viewAll": "View all →",
+    "labels": {
+      "invested": "INVESTED",
+      "pl": "P/L",
+      "win": "WIN"
+    },
+    "actions": {
+      "close": "Close",
+      "addFunds": "Add Funds"
+    },
+    "status": {
+      "active": "ACTIVE",
+      "fundraising": "FUNDRAISING"
+    },
+    "followers": "{{count}} followers"
+  }
+}
