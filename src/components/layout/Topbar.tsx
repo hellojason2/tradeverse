@@ -4,6 +4,7 @@ import { useUIStore } from '@/stores/ui-store';
 import { useAuthStore } from '@/stores/auth-store';
 import { initials } from '@/lib/utils';
 import { LanguageSwitcher } from '@/components/layout/LanguageSwitcher';
+import { ThemeToggle } from '@/components/layout/ThemeToggle';
 
 const clientPageTitles: Record<string, string> = {
   '/dashboard': 'Overview',
@@ -13,7 +14,7 @@ const clientPageTitles: Record<string, string> = {
   '/atlas-gold': 'Trail Mode',
   '/wallet': 'Wallet',
   '/history': 'History',
-  '/referral': 'Referrals',
+  '/referrals': 'Referrals',
   '/activities': 'Activities',
   '/community': 'Community',
   '/notifications': 'Notifications',
@@ -48,6 +49,9 @@ export function ClientTopbar() {
           <input placeholder="Search..." />
           <kbd>⌘K</kbd>
         </div>
+
+        <LanguageSwitcher />
+        <ThemeToggle className="tb-btn" />
 
         <div className="tb-btn">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

@@ -21,12 +21,17 @@ export function DashboardPage() {
   const [collapsed, setCollapsed] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  // Force light theme
+  // Force light theme for ported overview layout
   useEffect(() => {
+    const prev = document.documentElement.getAttribute('data-theme');
     document.documentElement.setAttribute('data-theme', 'light');
     document.body.style.background = 'var(--bg-0)';
     document.body.style.color = 'var(--ink-0)';
     return () => {
+      // Restore previous theme on unmount
+      if (prev) {
+        document.documentElement.setAttribute('data-theme', prev);
+      }
       document.body.style.background = '';
       document.body.style.color = '';
     };
@@ -207,8 +212,7 @@ export function DashboardPage() {
               </svg>
               <span className="nav-i-t">{t('sidebar.nav.overview')}</span>
             </NavLink>
-            {/* TODO: /portfolio route not yet registered in App.tsx */}
-            <NavLink to="/dashboard" className={({ isActive }) => `nav-i${isActive ? ' act' : ''}`}>
+            <NavLink to="/portfolio" className={({ isActive }) => `nav-i${isActive ? ' act' : ''}`}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
                 <polyline points="17 6 23 6 23 12" />
@@ -218,7 +222,6 @@ export function DashboardPage() {
           </div>
           <div className="nav-sec">
             <div className="nav-sec-t">{t('sidebar.sections.trading')}</div>
-            {/* TODO: /signal-plaza route not yet registered */}
             <NavLink to="/strategies" className={({ isActive }) => `nav-i${isActive ? ' act' : ''}`}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
@@ -233,7 +236,6 @@ export function DashboardPage() {
               </svg>
               <span className="nav-i-t">{t('sidebar.nav.trade')}</span>
             </NavLink>
-            {/* TODO: /trail-mode route not yet registered */}
             <NavLink to="/atlas-gold" className={({ isActive }) => `nav-i${isActive ? ' act' : ''}`}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
                 <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
@@ -250,8 +252,7 @@ export function DashboardPage() {
               </svg>
               <span className="nav-i-t">{t('sidebar.nav.wallet')}</span>
             </NavLink>
-            {/* TODO: /history route not yet registered */}
-            <NavLink to="/dashboard" className={({ isActive }) => `nav-i${isActive ? ' act' : ''}`}>
+            <NavLink to="/history" className={({ isActive }) => `nav-i${isActive ? ' act' : ''}`}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="12" cy="12" r="10" />
                 <polyline points="12 6 12 12 16 14" />
@@ -261,8 +262,7 @@ export function DashboardPage() {
           </div>
           <div className="nav-sec">
             <div className="nav-sec-t">{t('sidebar.sections.engage')}</div>
-            {/* TODO: /referrals route not yet registered */}
-            <NavLink to="/dashboard" className={({ isActive }) => `nav-i${isActive ? ' act' : ''}`}>
+            <NavLink to="/referrals" className={({ isActive }) => `nav-i${isActive ? ' act' : ''}`}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
                 <circle cx="9" cy="7" r="4" />
@@ -271,15 +271,13 @@ export function DashboardPage() {
               </svg>
               <span className="nav-i-t">{t('sidebar.nav.referrals')}</span>
             </NavLink>
-            {/* TODO: /activities route not yet registered */}
-            <NavLink to="/dashboard" className={({ isActive }) => `nav-i${isActive ? ' act' : ''}`}>
+            <NavLink to="/activities" className={({ isActive }) => `nav-i${isActive ? ' act' : ''}`}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="20 6 9 17 4 12" />
               </svg>
               <span className="nav-i-t">{t('sidebar.nav.activities')}</span>
             </NavLink>
-            {/* TODO: /community route not yet registered */}
-            <NavLink to="/dashboard" className={({ isActive }) => `nav-i${isActive ? ' act' : ''}`}>
+            <NavLink to="/community" className={({ isActive }) => `nav-i${isActive ? ' act' : ''}`}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
               </svg>

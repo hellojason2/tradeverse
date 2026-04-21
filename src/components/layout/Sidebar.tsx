@@ -100,7 +100,7 @@ const clientSections = [
     label: 'Engage',
     items: [
       {
-        to: '/referral',
+        to: '/referrals',
         label: 'Referrals',
         icon: (
           <>
