@@ -1,0 +1,12 @@
+export { DashboardPage } from './Dashboard/DashboardPage';
+export { StrategiesPage } from './Strategy/StrategiesPage';
+export { CopyTradingPage } from './CopyTrading/CopyTradingPage';
+export { WalletPage } from './Wallet/WalletPage';
+export { NotificationsPage } from './Notifications/NotificationsPage';
+export { SettingsPage } from './Settings/SettingsPage';
+export { LoginPage } from './Auth/LoginPage';
+export { RegisterPage } from './Auth/RegisterPage';
+export { OAuthCallbackPage } from './Auth/OAuthCallbackPage';
+export { AdminPage } from './Admin/AdminPage';
+export { AtlasGoldPage } from './AtlasGold/AtlasGoldPage';
+export { NotFoundPage } from './NotFoundPage';
