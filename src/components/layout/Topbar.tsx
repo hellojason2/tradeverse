@@ -1,9 +1,9 @@
 import { useLocation } from 'react-router-dom';
 import { Search, Bell, Sun, Moon } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
 import { useUIStore } from '@/stores/ui-store';
 import { useAuthStore } from '@/stores/auth-store';
-import { initials, cn } from '@/lib/utils';
+import { initials } from '@/lib/utils';
+import { LanguageSwitcher } from '@/components/layout/LanguageSwitcher';
 
 const clientPageTitles: Record<string, string> = {
   '/dashboard': 'Overview',
@@ -20,28 +20,9 @@ const clientPageTitles: Record<string, string> = {
   '/settings': 'Settings',
 };
 
-export function LanguageSwitcher() {
-  const { i18n } = useTranslation();
-  const langs = [{ code: 'en', label: 'EN' }, { code: 'vi', label: 'VI' }];
-  return (
-    <div className="flex items-center gap-[2px] bg-[var(--bg-2,rgba(255,255,255,0.05))] border border-[var(--line-2,rgba(255,255,255,0.1))] rounded-lg p-[2px]">
-      {langs.map((l) => (
-        <button
-          key={l.code}
-          onClick={() => i18n.changeLanguage(l.code)}
-          className={cn(
-            'px-2 py-1 text-[11px] font-semibold rounded-md transition-all cursor-pointer',
-            i18n.language?.startsWith(l.code)
-              ? 'bg-[var(--accent,#4f8eff)] text-white'
-              : 'text-[var(--ink-3,#5a607a)] hover:text-[var(--ink-0,#f5f7ff)]'
-          )}
-        >
-          {l.label}
-        </button>
-      ))}
-    </div>
-  );
-}
+// LanguageSwitcher extracted to src/components/layout/LanguageSwitcher.tsx
+// Re-export for backward compatibility
+export { LanguageSwitcher } from '@/components/layout/LanguageSwitcher';
 
 export function ClientTopbar() {
   const location = useLocation();
