@@ -1058,3 +1058,40 @@ Before marking any UI task as done, verify:
 ---
 
 *Every agent MUST reference this file before writing any UI code. This is the single source of truth. If a pattern is not explicitly covered here, use the Design Decision Framework (§13) to derive it. Never invent arbitrary colors, fonts, spacing, or animations.*
+
+---
+
+## 25. Internationalization (i18n)
+
+### Stack
+- **react-i18next** + **i18next** + **i18next-browser-languagedetector**
+- Locale files: `src/i18n/locales/{en,vi}/common.json`
+- Config: `src/i18n/index.ts` (imported in `App.tsx`)
+
+### Rules
+- **ALL** user-visible strings must use `t('key')` from `useTranslation()`
+- Keys follow dot-notation: `section.subsection.label` (e.g., `admin.totalUsers`)
+- Never hardcode English text in JSX — always use translation keys
+- Use `src/lib/format.ts` for locale-aware number/date/currency formatting
+- Language detection order: `localStorage` (key: `tv-lang`) → `navigator` → `htmlTag`
+- Supported locales: **en** (English), **vi** (Vietnamese)
+- Default fallback: **en**
+
+### Adding New Strings
+1. Add key to both `src/i18n/locales/en/common.json` and `src/i18n/locales/vi/common.json`
+2. Use in component: `const { t } = useTranslation(); ... t('section.key')`
+
+### Language Switcher
+- `LanguageSwitcher` component in `src/components/layout/Topbar.tsx`
+- Also embedded in `AdminTopbar` within `AdminPage.tsx`
+- Persisted to localStorage automatically
+
+### Format Helpers (`src/lib/format.ts`)
+| Function | Purpose |
+|----------|---------|
+| `formatCurrency(value)` | Locale-aware USD formatting |
+| `formatPercent(value)` | +/- percentage with sign |
+| `formatNumber(value)` | Locale-aware number formatting |
+| `formatCompact(value)` | Compact notation (1.2M, 45K) |
+| `formatDate(date)` | Locale-aware date formatting |
+| `formatRelativeTime(date)` | Relative time ("2 hours ago") |
