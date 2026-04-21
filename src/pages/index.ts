@@ -14,3 +14,8 @@ export { ForgotPasswordPage } from './Legal/ForgotPassword';
 export { TermsPage } from './Legal/Terms';
 export { PrivacyPage } from './Legal/Privacy';
 export { default as LandingPage } from './Landing/LandingPage';
+export { PortfolioPage } from './Portfolio/PortfolioPage';
+export { HistoryPage } from './History/HistoryPage';
+export { ReferralsPage } from './Referrals/ReferralsPage';
+export { ActivitiesPage } from './Activities/ActivitiesPage';
+export { CommunityPage } from './Community/CommunityPage';

@@ -1,0 +1,8 @@
+{
+  "portfolio": { "title": "我的投资组合", "subtitle": "查看您的持仓和资产分配概览。" },
+  "history": { "title": "历史记录", "subtitle": "您过去的活动和交易历史。" },
+  "referrals": { "title": "推荐计划", "subtitle": "邀请好友并赚取奖励。" },
+  "activities": { "title": "活动任务", "subtitle": "追踪任务、连续签到和成就。" },
+  "community": { "title": "社区", "subtitle": "与其他交易者交流并分享信号。" },
+  "stubs": { "comingSoon": "即将推出。" }
+}

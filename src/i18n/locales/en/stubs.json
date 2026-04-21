@@ -1,0 +1,8 @@
+{
+  "portfolio": { "title": "My Portfolio", "subtitle": "Overview of your holdings and allocations." },
+  "history": { "title": "History", "subtitle": "Your past activity and transaction history." },
+  "referrals": { "title": "Referrals", "subtitle": "Invite friends and earn rewards." },
+  "activities": { "title": "Activities", "subtitle": "Track quests, streaks, and achievements." },
+  "community": { "title": "Community", "subtitle": "Connect with other traders and share signals." },
+  "stubs": { "comingSoon": "Coming soon." }
+}

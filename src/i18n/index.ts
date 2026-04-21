@@ -8,18 +8,20 @@ import enDashboard from './locales/en/dashboard.json';
 import zhDashboard from './locales/zh/dashboard.json';
 import enAuth from './locales/en/auth.json';
 import zhAuth from './locales/zh/auth.json';
+import enStubs from './locales/en/stubs.json';
+import zhStubs from './locales/zh/stubs.json';
 
 i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
     resources: {
-      en: { common: enCommon, dashboard: enDashboard, auth: enAuth },
-      zh: { common: zhCommon, dashboard: zhDashboard, auth: zhAuth },
+      en: { common: enCommon, dashboard: enDashboard, auth: enAuth, stubs: enStubs },
+      zh: { common: zhCommon, dashboard: zhDashboard, auth: zhAuth, stubs: zhStubs },
     },
     fallbackLng: "en",
     defaultNS: "common",
-    ns: ["common", "dashboard", "auth"],
+    ns: ["common", "dashboard", "auth", "stubs"],
     interpolation: {
       escapeValue: false,
     },

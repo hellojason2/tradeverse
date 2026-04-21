@@ -1,0 +1,14 @@
+import { useTranslation } from 'react-i18next';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
+
+export function ReferralsPage() {
+  const { t } = useTranslation('stubs');
+  useDocumentTitle(t('referrals.title'));
+  return (
+    <div className="max-w-3xl mx-auto px-6 py-16">
+      <h1 className="text-3xl font-semibold mb-2">{t('referrals.title')}</h1>
+      <p className="text-muted-foreground mb-8">{t('referrals.subtitle')}</p>
+      <p className="text-sm text-muted-foreground">{t('stubs.comingSoon')}</p>
+    </div>
+  );
+}
