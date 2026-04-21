@@ -18,6 +18,9 @@ const LoginPage = lazy(() => import('@/pages').then((m) => ({ default: m.LoginPa
 const RegisterPage = lazy(() => import('@/pages').then((m) => ({ default: m.RegisterPage })));
 const OAuthCallbackPage = lazy(() => import('@/pages').then((m) => ({ default: m.OAuthCallbackPage })));
 const NotFoundPage = lazy(() => import('@/pages').then((m) => ({ default: m.NotFoundPage })));
+const ForgotPasswordPage = lazy(() => import('@/pages').then((m) => ({ default: m.ForgotPasswordPage })));
+const TermsPage = lazy(() => import('@/pages').then((m) => ({ default: m.TermsPage })));
+const PrivacyPage = lazy(() => import('@/pages').then((m) => ({ default: m.PrivacyPage })));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -40,13 +43,17 @@ export default function App() {
         <BrowserRouter>
           <Suspense fallback={<PageSpinner />}>
             <Routes>
+              {/* Public routes */}
+              <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+              <Route path="/terms" element={<TermsPage />} />
+              <Route path="/privacy" element={<PrivacyPage />} />
+              <Route path="/oauth/callback" element={<OAuthCallbackPage />} />
+
               {/* Guest routes */}
               <Route element={<GuestGuard />}>
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/register" element={<RegisterPage />} />
               </Route>
-
-              <Route path="/oauth/callback" element={<OAuthCallbackPage />} />
 
               {/* Authenticated routes */}
               <Route element={<RequireAuth />}>
