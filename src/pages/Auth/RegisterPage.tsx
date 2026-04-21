@@ -13,6 +13,7 @@ import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Loader2, Mail, Lock, User, Globe, Apple, Send, AlertCircle } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { LanguageSwitcher } from '@/components/layout/LanguageSwitcher';
 
 const schema = z.object({
   name: z.string().min(1, 'Name is required'),
@@ -95,7 +96,8 @@ export function RegisterPage() {
   ];
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#030611] p-4">
+    <div className="relative min-h-screen flex items-center justify-center bg-[#030611] p-4">
+      <div className="absolute top-4 right-4"><LanguageSwitcher /></div>
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <div className="w-14 h-14 rounded-xl bg-[linear-gradient(135deg,oklch(0.7_0.2_255),oklch(0.5_0.22_262))] mx-auto flex items-center justify-center text-white font-mono font-bold text-lg mb-4">TV</div>
