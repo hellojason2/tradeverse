@@ -23,6 +23,11 @@ const NotFoundPage = lazy(() => import('@/pages').then((m) => ({ default: m.NotF
 const ForgotPasswordPage = lazy(() => import('@/pages').then((m) => ({ default: m.ForgotPasswordPage })));
 const TermsPage = lazy(() => import('@/pages').then((m) => ({ default: m.TermsPage })));
 const PrivacyPage = lazy(() => import('@/pages').then((m) => ({ default: m.PrivacyPage })));
+const PortfolioPage = lazy(() => import('@/pages').then((m) => ({ default: m.PortfolioPage })));
+const HistoryPage = lazy(() => import('@/pages').then((m) => ({ default: m.HistoryPage })));
+const ReferralsPage = lazy(() => import('@/pages').then((m) => ({ default: m.ReferralsPage })));
+const ActivitiesPage = lazy(() => import('@/pages').then((m) => ({ default: m.ActivitiesPage })));
+const CommunityPage = lazy(() => import('@/pages').then((m) => ({ default: m.CommunityPage })));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -74,6 +79,11 @@ export default function App() {
                   <Route path="/notifications" element={<NotificationsPage />} />
                   <Route path="/settings" element={<SettingsPage />} />
                   <Route path="/atlas-gold" element={<AtlasGoldPage />} />
+                  <Route path="/portfolio" element={<PortfolioPage />} />
+                  <Route path="/history" element={<HistoryPage />} />
+                  <Route path="/referrals" element={<ReferralsPage />} />
+                  <Route path="/activities" element={<ActivitiesPage />} />
+                  <Route path="/community" element={<CommunityPage />} />
                 </Route>
               </Route>
 
