@@ -13,9 +13,19 @@ export default defineConfig({
   server: {
     port: 4801,
     strictPort: true,
+    headers: {
+      'Cache-Control': 'no-store, no-cache, must-revalidate',
+      Pragma: 'no-cache',
+      Expires: '0',
+    },
   },
   preview: {
     port: 4801,
     strictPort: true,
+    headers: {
+      'Cache-Control': 'no-store, no-cache, must-revalidate',
+      Pragma: 'no-cache',
+      Expires: '0',
+    },
   },
 })
