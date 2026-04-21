@@ -6,6 +6,7 @@ import { Toaster } from '@/components/ui/sonner';
 import { AppShell } from '@/components/layout/AppShell';
 import { RequireAuth, RequireRole, GuestGuard } from '@/routes/guards';
 
+const LandingPage = lazy(() => import('@/pages').then((m) => ({ default: m.LandingPage })));
 const DashboardPage = lazy(() => import('@/pages').then((m) => ({ default: m.DashboardPage })));
 const StrategiesPage = lazy(() => import('@/pages').then((m) => ({ default: m.StrategiesPage })));
 const CopyTradingPage = lazy(() => import('@/pages').then((m) => ({ default: m.CopyTradingPage })));
@@ -44,6 +45,7 @@ export default function App() {
           <Suspense fallback={<PageSpinner />}>
             <Routes>
               {/* Public routes */}
+              <Route path="/" element={<LandingPage />} />
               <Route path="/forgot-password" element={<ForgotPasswordPage />} />
               <Route path="/terms" element={<TermsPage />} />
               <Route path="/privacy" element={<PrivacyPage />} />
@@ -58,7 +60,7 @@ export default function App() {
               {/* Authenticated routes */}
               <Route element={<RequireAuth />}>
                 <Route element={<AppShell />}>
-                  <Route path="/" element={<DashboardPage />} />
+                  <Route path="/dashboard" element={<DashboardPage />} />
                   <Route path="/strategies" element={<StrategiesPage />} />
                   <Route path="/copy-trading" element={<CopyTradingPage />} />
                   <Route path="/wallet" element={<WalletPage />} />

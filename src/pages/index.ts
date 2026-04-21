@@ -13,3 +13,4 @@ export { NotFoundPage } from './NotFoundPage';
 export { ForgotPasswordPage } from './Legal/ForgotPassword';
 export { TermsPage } from './Legal/Terms';
 export { PrivacyPage } from './Legal/Privacy';
+export { default as LandingPage } from './Landing/LandingPage';
