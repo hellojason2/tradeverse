@@ -5,6 +5,7 @@
  */
 
 import { prisma } from '@config/prisma.js';
+import { Prisma } from '@prisma/client';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -123,7 +124,7 @@ export async function createNotification(
   payload: Record<string, unknown>,
 ): Promise<NotificationRow> {
   const notification = await prisma.notification.create({
-    data: { userId, type, payload: payload as any },
+    data: { userId, type, payload: payload as Prisma.InputJsonValue },
   });
 
   return {

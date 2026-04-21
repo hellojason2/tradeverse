@@ -7,6 +7,7 @@
 
 import { prisma } from '@config/prisma.js';
 import { Decimal } from '@prisma/client/runtime/library.js';
+import { Prisma } from '@prisma/client';
 import { DomainError } from '../types/errors.js';
 
 // ---------------------------------------------------------------------------
@@ -126,7 +127,7 @@ export async function createDeposit(
         amount: amountD,
         type: 'DEPOSIT',
         reference: reference ?? null,
-        metadata: (metadata ?? {}) as any,
+        metadata: (metadata ?? {}) as Prisma.InputJsonValue,
       },
     });
 
