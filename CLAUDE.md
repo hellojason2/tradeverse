@@ -25,7 +25,8 @@ You may read but NEVER write to:
 3. `.claude/ralph-spec-prompt.md` — how the Ralph Loop works
 4. `design.md` — only if you need to understand frontend-facing API shapes
 5. `docs/blueprint/CONFIG_CATALOG.md` — config schema
-6. `docs/blueprint/BEHAVIOR.md` — error taxonomy
+6. `docs/blueprint/BEHAVIOR.md` — error taxonomy (note: UI interaction rules are in `BEHAVIOR.md` at repo root)
+7. `BEHAVIOR.md` — interaction authority (clickable elements, external refs, dismissibility, back nav, copy-to-clipboard)
 
 ## Your Deliverables (Wave 1 → Wave 2)
 
