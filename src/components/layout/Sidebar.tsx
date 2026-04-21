@@ -41,21 +41,18 @@ const navSections = [
   },
 ];
 
-export function Sidebar() {
+export interface SidebarContentProps {
+  onNavigate?: () => void;
+  className?: string;
+}
+
+export function SidebarContent({ onNavigate, className }: SidebarContentProps) {
   const { sidebarCollapsed, toggleCollapsed } = useUIStore();
   const user = useAuthStore((s) => s.user);
   const location = useLocation();
 
   return (
-    <aside
-      className={cn(
-        'fixed left-0 top-0 h-full z-[100] flex flex-col transition-all duration-[280ms]',
-        'border-r border-white/[0.08]',
-        'bg-[linear-gradient(180deg,rgba(10,15,30,0.85),rgba(6,10,24,0.85))]',
-        'backdrop-blur-[24px]',
-        sidebarCollapsed ? 'w-16' : 'w-60'
-      )}
-    >
+    <div className={cn('flex flex-col h-full', className)}>
       {/* Logo */}
       <div className="flex items-center gap-3 px-4 h-16 border-b border-white/[0.08]">
         <div className="w-[34px] h-[34px] rounded-[9px] bg-[linear-gradient(135deg,oklch(0.7_0.2_255),oklch(0.5_0.22_262))] border border-white/20 flex items-center justify-center text-white font-mono font-bold text-sm shrink-0">
@@ -85,8 +82,9 @@ export function Sidebar() {
                   <NavLink
                     key={item.to}
                     to={item.to}
+                    onClick={onNavigate}
                     className={cn(
-                      'flex items-center gap-3 px-3 py-2 rounded-[9px] transition-all duration-[280ms] text-[13px] font-medium',
+                      'flex items-center gap-3 px-3 py-2 rounded-[9px] transition-all duration-[280ms] text-[13px] font-medium relative',
                       isActive
                         ? 'bg-[linear-gradient(90deg,oklch(0.55_0.22_260/0.22),oklch(0.55_0.22_260/0.05))] text-[#f5f7ff] shadow-[inset_0_0_0_1px_rgba(120,160,255,0.18)]'
                         : 'text-[#8892b0] hover:bg-white/[0.06] hover:text-[#f5f7ff]'
@@ -114,8 +112,9 @@ export function Sidebar() {
             )}
             <NavLink
               to="/admin"
+              onClick={onNavigate}
               className={cn(
-                'flex items-center gap-3 px-3 py-2 rounded-[9px] transition-all duration-[280ms] text-[13px] font-medium',
+                'flex items-center gap-3 px-3 py-2 rounded-[9px] transition-all duration-[280ms] text-[13px] font-medium relative',
                 location.pathname === '/admin'
                   ? 'bg-[linear-gradient(90deg,oklch(0.55_0.22_260/0.22),oklch(0.55_0.22_260/0.05))] text-[#f5f7ff]'
                   : 'text-[#8892b0] hover:bg-white/[0.06] hover:text-[#f5f7ff]'
@@ -150,6 +149,24 @@ export function Sidebar() {
       >
         {sidebarCollapsed ? <ChevronRight className="w-3 h-3" /> : <ChevronLeft className="w-3 h-3" />}
       </button>
+    </div>
+  );
+}
+
+export function Sidebar() {
+  const { sidebarCollapsed } = useUIStore();
+
+  return (
+    <aside
+      className={cn(
+        'fixed left-0 top-0 h-full z-[100] transition-all duration-[280ms]',
+        'border-r border-white/[0.08]',
+        'bg-[linear-gradient(180deg,rgba(10,15,30,0.85),rgba(6,10,24,0.85))]',
+        'backdrop-blur-[24px]',
+        sidebarCollapsed ? 'w-16' : 'w-60'
+      )}
+    >
+      <SidebarContent />
     </aside>
   );
 }
