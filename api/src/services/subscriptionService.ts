@@ -5,6 +5,7 @@
  */
 
 import { prisma } from '@config/prisma.js';
+import { DomainError } from '../types/errors.js';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -39,7 +40,7 @@ export async function subscribe(
   });
 
   if (existing) {
-    throw new Error('Already subscribed to this strategy');
+    throw new DomainError('BUSINESS_RULE', 'Already subscribed to this strategy');
   }
 
   const subscription = await prisma.subscription.create({

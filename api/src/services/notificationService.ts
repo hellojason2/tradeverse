@@ -6,6 +6,7 @@
 
 import { prisma } from '@config/prisma.js';
 import { Prisma } from '@prisma/client';
+import { DomainError } from '../types/errors.js';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -83,7 +84,7 @@ export async function markRead(userId: string, notificationId: string): Promise<
   });
 
   if (!notification) {
-    throw new Error('Notification not found');
+    throw new DomainError('USER_INPUT', 'Notification not found');
   }
 
   const updated = await prisma.notification.update({
