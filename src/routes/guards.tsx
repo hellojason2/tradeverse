@@ -23,7 +23,7 @@ export function RequireRole({ role }: { role: UserRole | UserRole[] }) {
   }
 
   if (!user || !roles.includes(user.role)) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/dashboard" replace />;
   }
 
   return <Outlet />;
@@ -33,7 +33,7 @@ export function GuestGuard() {
   const { isAuthenticated } = useAuth();
 
   if (isAuthenticated) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/dashboard" replace />;
   }
 
   return <Outlet />;

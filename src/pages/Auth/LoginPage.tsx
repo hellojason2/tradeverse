@@ -10,7 +10,8 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Loader2, Mail, Lock, Globe, Apple, Send } from 'lucide-react';
+import { Loader2, Mail, Lock, Globe, Apple, Send, AlertCircle } from 'lucide-react';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 const schema = z.object({
   identifier: z.string().min(1, 'Email is required').email('Invalid email'),
@@ -35,9 +36,18 @@ export function LoginPage() {
     try {
       const res = await loginApi(data);
       login(res.user, res.accessToken, res.refreshToken);
-      navigate('/');
+      navigate('/dashboard');
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : 'Invalid credentials. Please try again.';
+      let message = 'Invalid credentials. Please try again.';
+      if (err && typeof err === 'object') {
+        const e = err as Record<string, unknown>;
+        if (typeof e.message === 'string') message = e.message;
+        else if (typeof e.response === 'object' && e.response !== null) {
+          const d = (e.response as Record<string, unknown>).data as Record<string, unknown> | undefined;
+          const em = d?.error as Record<string, unknown> | undefined;
+          if (typeof em?.message === 'string') message = em.message;
+        }
+      }
       setApiError(message);
     }
   };
@@ -47,9 +57,13 @@ export function LoginPage() {
     try {
       const res = await oauthLoginApi(provider);
       login(res.user, res.accessToken, res.refreshToken);
-      navigate('/');
+      navigate('/dashboard');
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : `Failed to sign in with ${provider}.`;
+      let message = `Failed to sign in with ${provider}.`;
+      if (err && typeof err === 'object') {
+        const e = err as Record<string, unknown>;
+        if (typeof e.message === 'string') message = e.message;
+      }
       setApiError(message);
     }
   };
@@ -112,9 +126,10 @@ export function LoginPage() {
               </div>
 
               {apiError && (
-                <div className="text-[12px] text-[#ff5555] bg-[rgba(255,85,85,0.08)] border border-[oklch(0.68_0.22_20/0.3)] rounded-lg p-3">
-                  {apiError}
-                </div>
+                <Alert variant="destructive" className="text-[12px] bg-[rgba(255,85,85,0.08)] border-[oklch(0.68_0.22_20/0.3)] text-[#ff5555]">
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertDescription>{apiError}</AlertDescription>
+                </Alert>
               )}
 
               <Button
