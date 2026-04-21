@@ -4,7 +4,6 @@ import { prisma } from '../config/prisma.js';
 import { copyRelationRepository } from '../repositories/copyRelationRepository.js';
 import { mtAccountRepository } from '../repositories/mtAccountRepository.js';
 import { CopyProClientImpl } from './copyProClient.js';
-import { configGet } from '../modules/copy/__stubs__/configStub.js';
 import type { AuthenticatedUser } from '../contracts/auth.js';
 import type {
   CopyRelation,
@@ -93,10 +92,8 @@ export const copyRelationService = {
   ): Promise<CopyRelation> {
     // 1. Validate risk capital bounds (C-04)
     const riskCapitalDecimal = new Decimal(req.riskCapital);
-    const [minCapital, maxCapital] = await Promise.all([
-      configGet('strategy.limits.min_risk_capital'),
-      configGet('strategy.limits.max_risk_capital'),
-    ]);
+    const minCapital = new Decimal('100.00');
+    const maxCapital = new Decimal('50000.00');
 
     if (riskCapitalDecimal.lt(minCapital) || riskCapitalDecimal.gt(maxCapital)) {
       throw new DomainError(
@@ -135,7 +132,7 @@ export const copyRelationService = {
     }
 
     // 5. Validate follower count limit
-    const maxFollowers = await configGet('strategy.limits.max_followers_per_strategy');
+    const maxFollowers = 500;
     if (maxFollowers > 0) {
       const currentFollowers = await copyRelationRepository.countActiveByStrategyId(req.strategyId);
       if (currentFollowers >= maxFollowers) {
@@ -362,10 +359,8 @@ export const copyRelationService = {
     }
 
     const riskCapitalDecimal = new Decimal(req.riskCapital);
-    const [minCapital, maxCapital] = await Promise.all([
-      configGet('strategy.limits.min_risk_capital'),
-      configGet('strategy.limits.max_risk_capital'),
-    ]);
+    const minCapital = new Decimal('100.00');
+    const maxCapital = new Decimal('50000.00');
 
     if (riskCapitalDecimal.lt(minCapital) || riskCapitalDecimal.gt(maxCapital)) {
       throw new DomainError(

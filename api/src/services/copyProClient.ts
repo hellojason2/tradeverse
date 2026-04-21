@@ -131,21 +131,87 @@ export class CopyProClientImpl implements CopyProClient {
     this.circuit = new CircuitBreaker(cbThreshold, 30_000);
   }
 
+  private async fetchWithRetry<T>(fn: () => Promise<{ ok: boolean; status: number; body: unknown }>): Promise<T> {
+    let lastError: CopyProError | undefined;
+    for (let attempt = 0; attempt < 2; attempt++) {
+      try {
+        const res = await fn();
+        return res as unknown as T;
+      } catch (err) {
+        lastError = err as CopyProError;
+        const isRetryable = (
+          err: CopyProError,
+        ): boolean =>
+          err.kind === 'NETWORK_TIMEOUT' ||
+          err.kind === 'UPSTREAM_5XX' ||
+          ('status' in err && err.status === 429);
+        if (!isRetryable(lastError) || attempt === 1) throw lastError;
+        await new Promise((resolve) => setTimeout(resolve, 500));
+      }
+    }
+    throw lastError!;
+  }
+
   private async fetchJson<T>(path: string, params?: Record<string, string | number | boolean | undefined>): Promise<T> {
     if (!this.circuit.canExecute()) {
       throw { kind: 'CIRCUIT_OPEN', message: 'CopyPro circuit breaker is open' } as CopyProError;
     }
 
-    const url = buildUrl(this.baseUrl, path, params);
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), this.timeoutMs);
+    const doFetch = async (): Promise<{ ok: boolean; status: number; body: unknown }> => {
+      const url = buildUrl(this.baseUrl, path, params);
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), this.timeoutMs);
 
-    try {
-      const response = await fetch(url, {
-        method: 'GET',
-        signal: controller.signal,
-      });
-      clearTimeout(timeout);
+      let response: Response;
+      try {
+        response = await fetch(url, {
+          method: 'GET',
+          signal: controller.signal,
+        });
+        clearTimeout(timeout);
+      } catch (err) {
+        clearTimeout(timeout);
+        if (err instanceof Error && err.name === 'AbortError') {
+          this.circuit.recordFailure();
+          throw { kind: 'NETWORK_TIMEOUT', message: 'CopyPro request timed out' } as CopyProError;
+        }
+        this.circuit.recordFailure();
+        throw {
+          kind: 'NETWORK_TIMEOUT',
+          message: err instanceof Error ? err.message : 'Unknown network error',
+          status: 0,
+        } as CopyProError;
+      }
+
+      const body = await response.json().catch(() => null);
+      return { ok: response.ok, status: response.status, body };
+    };
+
+    const wrapped = async (): Promise<{ ok: boolean; status: number; body: unknown }> => {
+      const url = buildUrl(this.baseUrl, path, params);
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), this.timeoutMs);
+
+      let response: Response;
+      try {
+        response = await fetch(url, {
+          method: 'GET',
+          signal: controller.signal,
+        });
+        clearTimeout(timeout);
+      } catch (err) {
+        clearTimeout(timeout);
+        if (err instanceof Error && err.name === 'AbortError') {
+          this.circuit.recordFailure();
+          throw { kind: 'NETWORK_TIMEOUT', message: 'CopyPro request timed out' } as CopyProError;
+        }
+        this.circuit.recordFailure();
+        throw {
+          kind: 'NETWORK_TIMEOUT',
+          message: err instanceof Error ? err.message : 'Unknown network error',
+          status: 0,
+        } as CopyProError;
+      }
 
       const body = await response.json().catch(() => null);
 
@@ -156,23 +222,11 @@ export class CopyProClientImpl implements CopyProClient {
       }
 
       this.circuit.recordSuccess();
-      return body as T;
-    } catch (err) {
-      clearTimeout(timeout);
-      if (err && typeof err === 'object' && 'kind' in err) {
-        throw err;
-      }
-      if (err instanceof Error && err.name === 'AbortError') {
-        this.circuit.recordFailure();
-        throw { kind: 'NETWORK_TIMEOUT', message: 'CopyPro request timed out', cause: err } as CopyProError;
-      }
-      this.circuit.recordFailure();
-      throw {
-        kind: 'UPSTREAM_5XX',
-        message: err instanceof Error ? err.message : 'Unknown network error',
-        status: 0,
-      } as CopyProError;
-    }
+      return { ok: response.ok, status: response.status, body } as { ok: boolean; status: number; body: unknown };
+    };
+
+    const res = await this.fetchWithRetry(wrapped);
+    return res as T;
   }
 
   // -------------------------------------------------------------------------

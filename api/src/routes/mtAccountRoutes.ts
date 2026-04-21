@@ -1,4 +1,5 @@
 import type { FastifyInstance } from 'fastify';
+import { authMiddleware } from '../middleware/auth.js';
 import { mtAccountController } from '../controllers/mtAccountController.js';
 import {
   POST_ACCOUNTS,
@@ -9,6 +10,7 @@ import {
 } from '../contracts/routes.js';
 
 export const mtAccountRoutes = async (app: FastifyInstance) => {
+  app.addHook('preHandler', authMiddleware);
   app.post(POST_ACCOUNTS, mtAccountController.create);
   app.get(GET_ACCOUNTS, mtAccountController.list);
   app.get(GET_ACCOUNT_BY_ID, mtAccountController.getById);

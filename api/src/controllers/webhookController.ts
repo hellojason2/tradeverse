@@ -2,7 +2,7 @@
  * webhookController.ts — Handles CopyPro equity protection callback webhooks.
  *
  * Route: POST /webhooks/equity-protector
- * Auth: COPYPRO_MANAGER_KEY HMAC validation done by the caller infrastructure.
+ * Auth: HMAC-SHA256 signature verification via x-copypro-signature header.
  * C-10: CopyPro calls happen OUTSIDE Prisma transactions.
  * C-30: Every status transition emits an audit event.
  *
@@ -15,6 +15,7 @@ import { copyRelationRepository } from '../repositories/copyRelationRepository.j
 import { markBreachedCopyRelation } from '../repositories/copyRelationRepoExtended.js';
 import { CopyProClientImpl } from '../services/copyProClient.js';
 import { prisma } from '../config/prisma.js';
+import { env } from '../config/env.js';
 import type {
   EquityProtectorWebhookPayload,
   WebhookAckResponse,
@@ -77,6 +78,10 @@ export const webhookController = {
           await markBreachedCopyRelation(copyRelationId);
 
           // Emit audit event (C-30)
+          req.log.info(
+            { entityType: 'CopyRelation', entityId: copyRelationId, action: 'EQUITY_BREACHED', after: { equity: currentEquity, drawdownPct } },
+            'audit log insert for breach',
+          );
           try {
             await prisma.auditLog.create({
               data: {
@@ -89,8 +94,8 @@ export const webhookController = {
                 },
               },
             });
-          } catch {
-            // Non-fatal
+          } catch (err) {
+            req.log.error({ err }, 'audit log insert failed');
           }
 
           console.log(

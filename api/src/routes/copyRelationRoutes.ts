@@ -1,8 +1,10 @@
 import type { FastifyInstance } from 'fastify';
+import { authMiddleware } from '../middleware/auth.js';
 import { copyRelationController } from '../controllers/copyRelationController.js';
 import { POST_COPY_RELATIONS_SUBSCRIBE, POST_COPY_RELATION_ACTIVATE, POST_COPY_RELATION_PAUSE, POST_COPY_RELATION_RESUME, POST_COPY_RELATION_CLOSE, GET_COPY_RELATIONS, GET_COPY_RELATION_BY_ID, PATCH_COPY_RELATION_RISK_CAPITAL } from '../contracts/routes.js';
 
 export const copyRelationRoutes = async (app: FastifyInstance) => {
+  app.addHook('preHandler', authMiddleware);
   // Subscribe — user auth required
   app.post(POST_COPY_RELATIONS_SUBSCRIBE, copyRelationController.subscribe);
 
