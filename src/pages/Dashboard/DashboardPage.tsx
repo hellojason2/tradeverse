@@ -45,33 +45,27 @@ function StatCard({
   changeType?: 'up' | 'dn';
 }) {
   return (
-    <div className="relative bg-bg-1 border border-line rounded-[14px] p-5 transition-all duration-[280ms] overflow-hidden"
+    <div
+      className="bg-bg-1 border border-line rounded-[14px] p-5 transition-all duration-[280ms]"
       style={{
         boxShadow: '0 1px 2px rgba(11,18,40,0.04), 0 4px 16px -8px rgba(11,18,40,0.08)',
       }}
     >
-      <div className="absolute inset-0 rounded-[inherit] pointer-events-none"
-        style={{
-          background: 'radial-gradient(ellipse at top right, oklch(0.58 0.22 262 / 0.06), transparent 60%)',
-        }}
-      />
-      <div className="relative">
-        <div className="text-[11px] text-ink-3 mb-[10px] uppercase tracking-[0.1em] font-mono font-medium">
-          {label}
-        </div>
-        <div className="font-serif text-[34px] font-normal tracking-[-0.02em] text-ink-0 leading-none">
-          {value}
-        </div>
-        <div
-          className={cn(
-            'inline-flex items-center gap-1 text-[11px] font-semibold mt-[10px] px-[9px] py-[3px] rounded-[6px] font-mono tracking-[0.02em]',
-            changeType === 'up'
-              ? 'bg-green-l text-green border border-[oklch(0.72_0.17_150/0.3)]'
-              : 'bg-red-l text-red border border-[oklch(0.68_0.22_20/0.3)]'
-          )}
-        >
-          {changeType === 'up' ? '↑' : '↓'} {change}
-        </div>
+      <div className="text-[11px] text-ink-3 mb-[10px] uppercase tracking-[0.1em] font-mono font-medium">
+        {label}
+      </div>
+      <div className="font-serif text-[34px] font-normal tracking-[-0.02em] text-ink-0 leading-none">
+        {value}
+      </div>
+      <div
+        className={cn(
+          'inline-flex items-center gap-1 text-[11px] font-semibold mt-[10px] px-[9px] py-[3px] rounded-[6px] font-mono tracking-[0.02em]',
+          changeType === 'up'
+            ? 'bg-green-l text-green border border-[oklch(0.72_0.17_150/0.3)]'
+            : 'bg-red-l text-red border border-[oklch(0.68_0.22_20/0.3)]'
+        )}
+      >
+        {changeType === 'up' ? '↑' : '↓'} {change}
       </div>
     </div>
   );
@@ -378,16 +372,18 @@ function WelcomeBanner({ userName }: { userName: string }) {
 
   return (
     <div
-      className="relative rounded-[18px] px-[34px] py-[30px] overflow-hidden mb-6 min-h-[200px]"
+      className="relative rounded-[18px] px-[34px] py-[30px] mb-6"
       style={{
         border: '1px solid oklch(0.35 0.18 265 / 0.5)',
         background: 'linear-gradient(140deg, #0f1a45 0%, #0a1230 60%, #15266b 100%)',
         boxShadow: '0 20px 50px -16px oklch(0.35 0.2 260 / 0.45)',
       }}
     >
-      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
+      {/* Decorative canvas background */}
+      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" />
+      {/* Vertical beam accent */}
       <div
-        className="absolute top-[-20px] bottom-[-20px] right-[12%] w-[2px]"
+        className="absolute top-[-20px] bottom-[-20px] right-[12%] w-[2px] pointer-events-none"
         style={{
           background:
             'linear-gradient(180deg, transparent, oklch(0.92 0.1 230 / 0.9), transparent)',
@@ -396,7 +392,8 @@ function WelcomeBanner({ userName }: { userName: string }) {
           mixBlendMode: 'screen',
         }}
       />
-      <div className="relative z-[2]">
+      {/* Content — normal flow, stacks above absolute backgrounds via DOM order */}
+      <div className="relative">
         <div className="inline-flex items-center gap-[10px] px-[14px] py-[5px] pr-[14px] pl-[5px] rounded-full bg-[rgba(255,255,255,0.08)] border border-[rgba(255,255,255,0.15)] text-[11px] text-[rgba(255,255,255,0.9)] mb-4 backdrop-blur-[10px] font-mono tracking-[0.05em]"
         >
           <span className="w-[22px] h-[22px] rounded-full grid place-items-center bg-[linear-gradient(135deg,var(--blue),var(--blue-3))] text-[9px] font-bold text-white"
