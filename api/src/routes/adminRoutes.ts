@@ -19,7 +19,7 @@ function requireRole(...roles: string[]) {
   };
 }
 
-export async function adminRoutes(app: FastifyInstance): Promise<void> {
+export default async function adminRoutes(app: FastifyInstance): Promise<void> {
   app.addHook('preHandler', requireRole('ADMIN'));
 
   // Config

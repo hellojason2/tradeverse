@@ -8,7 +8,7 @@ import type { FastifyInstance } from 'fastify';
 import { asyncErrorWrapper } from '@utils/asyncErrorWrapper.js';
 import * as ctrl from '@controllers/strategyController.js';
 
-export async function strategyRoutes(app: FastifyInstance): Promise<void> {
+export default async function strategyRoutes(app: FastifyInstance): Promise<void> {
   // Public routes — no auth required
 
   app.get('/api/strategies', asyncErrorWrapper(ctrl.listStrategies));
