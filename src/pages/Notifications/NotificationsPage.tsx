@@ -1,4 +1,5 @@
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
+import { useTranslation } from 'react-i18next';
 import { useNotifications, useMarkNotificationRead, useMarkAllNotificationsRead } from '@/hooks/useNotifications';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -33,7 +34,8 @@ function categoryBg(category: NotificationCategory) {
 }
 
 export function NotificationsPage() {
-  useDocumentTitle('Notifications');
+  const { t } = useTranslation();
+  useDocumentTitle(t('notifications.title') + ' — TradeVerse');
   const { data, isLoading } = useNotifications();
   const markRead = useMarkNotificationRead();
   const markAll = useMarkAllNotificationsRead();

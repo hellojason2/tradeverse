@@ -1,4 +1,5 @@
 import { useAuth } from '@/hooks/useAuth';
+import { useTranslation } from 'react-i18next';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -11,7 +12,8 @@ import { initials } from '@/lib/utils';
 import { User, Shield, Bell, Palette, Save, LogOut } from 'lucide-react';
 
 export function SettingsPage() {
-  useDocumentTitle('Settings');
+  const { t } = useTranslation();
+  useDocumentTitle(t('settings.title') + ' — TradeVerse');
   const { user, logout } = useAuth();
 
   return (

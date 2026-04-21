@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
+import { useTranslation } from 'react-i18next';
 import { useAtlasGoldBalance, useAtlasGoldHistory, useBuyAtlasGold, useRedeemAtlasGold } from '@/hooks/useAtlasGold';
 import { useWalletBalance } from '@/hooks/useWallet';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -14,7 +15,8 @@ import { Scale, ArrowUpRight, ArrowDownRight } from 'lucide-react';
 import type { AtlasGoldTransaction } from '@contracts/routes';
 
 export function AtlasGoldPage() {
-  useDocumentTitle('Atlas Gold');
+  const { t } = useTranslation();
+  useDocumentTitle(t('atlasGold.title') + ' — TradeVerse');
   const { data: balanceData, isLoading: balanceLoading } = useAtlasGoldBalance();
   const { data: historyData, isLoading: historyLoading } = useAtlasGoldHistory();
   const { data: walletData } = useWalletBalance();

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
+import { useTranslation } from 'react-i18next';
 import { useStrategies } from '@/hooks/useStrategies';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -14,7 +15,8 @@ import type { Strategy, StrategyStatus } from '@contracts/routes';
 const statusFilters: Array<StrategyStatus | 'ALL'> = ['ALL', 'ACTIVE', 'PAUSED', 'CLOSED', 'FUNDRAISING'];
 
 export function StrategiesPage() {
-  useDocumentTitle('Strategies');
+  const { t } = useTranslation();
+  useDocumentTitle(t('strategies.title') + ' — TradeVerse');
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState<StrategyStatus | 'ALL'>('ALL');
   const { data, isLoading } = useStrategies(
