@@ -1,67 +1,71 @@
-# DONE — Agent 4 (i18n + Admin + Landing + Restyle)
+# DONE — Agent 4 (Frontend)
 
-## Completed Tasks
+## Round: Client Portal Navigation + Language Switcher
 
-### TASK 1: Admin Page — Self-Contained ✅
-- **Rewrote** `src/pages/Admin/AdminPage.tsx` as standalone layout (no AppShell)
-- **Added** collapsible sidebar with 7 nav items (Dashboard, Analytics, Users, Transactions, KYC, Settings, Security)
-- **Added** admin topbar with search, language switcher (EN/VI), notifications bell, back-to-client button
-- **Components**: StatCard, StatusBadge, UserCell, ActionBtn, LineChartPlaceholder, DonutChart
-- **Layout**: Full sidebar + topbar + content area with responsive grid
-- **i18n**: All strings keyed via `t('admin.*')`
-- **Route**: Moved out of AppShell in `App.tsx`, still role-guarded via `RequireRole({ role: ['ADMIN', 'MANAGER'] })`
-- **MSW**: Added admin login credentials (`admin@tradeverse.io` / `password`)
+### Scope (this round)
+- `/dashboard` — sidebar navigation + topbar LanguageSwitcher
+- `/login`, `/register` — LanguageSwitcher in top-right
+- Shared layout components: `LanguageSwitcher`, `ThemeToggle` extracted
 
-### TASK 2: Landing Page — Public with Dashboard CTA ✅
-- Landing route `/` remains PUBLIC (no GuestGuard)
-- **Added** `useAuth()` + `useTranslation()` imports
-- **Authenticated users** see "Go to Dashboard" CTA instead of "Sign in" in nav
-- **Hero CTA** shows "Go to Dashboard" for authed users, "Insure your trades" for guests
-- Both nav and hero buttons navigate to `/dashboard` for authed users
+### NOT touched this round
+- `/admin` route UI (except unused-import cleanup to unblock build)
+- `/` landing page
+- `/wallet`, `/strategies`, `/copy-trading`, `/atlas-gold`, `/notifications`, `/settings`
 
-### TASK 3: i18n Infrastructure ✅
-- **Installed**: `i18next`, `react-i18next`, `i18next-browser-languagedetector`
-- **Config**: `src/i18n/index.ts` with localStorage detection (key: `tv-lang`)
-- **Locales**: `src/i18n/locales/en/common.json` + `src/i18n/locales/vi/common.json`
-- **Namespaces**: `common` (default) covering all sections
-- **Format helpers**: `src/lib/format.ts` with locale-aware Intl functions
-- **Language switcher**: `LanguageSwitcher` component in Topbar + AdminTopbar
-- **String keys**: ~100+ keys across admin, landing, dashboard, wallet, strategies, copy-trading, atlas-gold, notifications, settings, common
+### Client portal navigation + language — what was wired
+- **DashboardPage.tsx sidebar**: every item uses `<NavLink>` from react-router-dom. Active class is `act` (matches `.nav-i.act` rule in `src/styles/reference.css`). Overview uses `end` prop. No hardcoded active classes.
+- **Route mapping**: Overview→/dashboard, Signal Plaza→/strategies, Trade→/copy-trading, Trail Mode→/atlas-gold, Wallet→/wallet, Notifications→/notifications, Settings→/settings. Placeholder items (Portfolio, History, Referrals, Activities, Community) point at `/dashboard` with `// TODO:` comments until their routes exist.
+- **Topbar (client shell)**: `<LanguageSwitcher />` injected before the bell icon. All ported classNames preserved verbatim.
+- **LanguageSwitcher** lives at `src/components/layout/LanguageSwitcher.tsx` as a named export; consumed by Dashboard, Auth pages, AppShell, Admin.
+- **ThemeToggle** extracted to `src/components/layout/ThemeToggle.tsx`.
 
-### TASK 4: design.md Updated ✅
-- Added §25 Internationalization (i18n) section
+### Auth pages — LanguageSwitcher added
+- `src/pages/Auth/LoginPage.tsx`: `<LanguageSwitcher />` absolutely positioned `top-4 right-4` inside the outer `relative` wrapper.
+- `src/pages/Auth/RegisterPage.tsx`: same pattern.
+
+### Build unblock (minimal, no behavior change)
+- `src/components/layout/Topbar.tsx`: removed unused imports (`useTranslation`, `cn`, `ThemeToggle`).
+- `src/pages/Admin/AdminPage.tsx`: added missing `useLocation`, `useNavigate` from react-router-dom; dropped unused imports and an unread `location` local.
+
+### Verification
+- `npm run build` — PASS, 0 errors (tsc -b clean, vite build ~522 ms)
+- Playwright @ 1440x900:
+  - Login as `trader@tradeverse.io / password` → lands on `/dashboard`
+  - Sidebar click→URL change + active class: 6/12 items hit real routes (Signal Plaza, Trade, Trail Mode, Wallet, Notifications, Settings); 6 items (Overview, Portfolio, History, Referrals, Activities, Community) intentionally point at `/dashboard` pending route implementation
+  - LanguageSwitcher visible and toggles active state on `/dashboard`, `/login`, `/register`
+  - 0 console errors across the session
+- Follow-up (not this round): hardcoded strings in DashboardPage / LoginPage / RegisterPage are not yet wired to `t()`, so the VI toggle flips state but does not translate those surfaces. Per spec, ported markup was preserved verbatim this round.
+
+### Commits (this round)
+- `refactor(layout): extract LanguageSwitcher + ThemeToggle to shared components`
+- `feat(dashboard): NavLink sidebar + LanguageSwitcher in topbar`
+- `feat(auth): LanguageSwitcher on login + register pages`
+- `fix(admin): restore router imports, drop unused imports to unblock build`
+
+Branch: `feat/frontend` — pushed to origin.
+
+---
+
+## Prior rounds (archived)
+
+### Admin Page — Self-Contained
+- Rewrote `src/pages/Admin/AdminPage.tsx` as standalone layout (no AppShell)
+- Collapsible sidebar + admin topbar with search, language switcher, notifications bell, back-to-client button
+- Route moved out of AppShell in `App.tsx`, still role-guarded via `RequireRole({ role: ['ADMIN', 'MANAGER'] })`
+- MSW: admin login credentials added
+
+### Landing Page — Public with Dashboard CTA
+- Route `/` remains public (no GuestGuard)
+- Authenticated users see "Go to Dashboard" CTA instead of "Sign in"
+
+### i18n Infrastructure
+- `i18next`, `react-i18next`, `i18next-browser-languagedetector`
+- Config: `src/i18n/index.ts` (localStorage key `tv-lang`)
+- Locales: `src/i18n/locales/{en,vi}/common.json`
+- Format helpers: `src/lib/format.ts` (locale-aware Intl)
+
+### design.md §25 Internationalization
 - Documents stack, key conventions, format helpers, detection order, language switcher locations
 
-### TASK 5: Remaining Pages i18n Wired ✅
-- Added `useTranslation()` to: StrategiesPage, CopyTradingPage, WalletPage, NotificationsPage, SettingsPage, AtlasGoldPage
-- Document titles now use i18n keys instead of hardcoded strings
-- Ready for full string keying in follow-up pass
-
-### TASK 7: Commits & Push ✅
-- 7 atomic commits on `feat/frontend` branch
-- All builds pass (`npm run build` succeeds)
-- Pushed to remote: `feat/frontend`
-
-## Files Created
-- `src/i18n/index.ts` — i18n configuration
-- `src/i18n/locales/en/common.json` — English translations
-- `src/i18n/locales/vi/common.json` — Vietnamese translations
-- `src/lib/format.ts` — Locale-aware Intl format helpers
-
-## Files Modified
-- `src/App.tsx` — Admin routes moved out of AppShell, i18n import added
-- `src/pages/Admin/AdminPage.tsx` — Full rewrite with self-contained layout
-- `src/pages/Landing/LandingPage.tsx` — Auth-aware CTA, i18n imports
-- `src/components/layout/Topbar.tsx` — LanguageSwitcher component added
-- `src/mocks/handlers.ts` — Admin login credentials added
-- `design.md` — §25 i18n rules appended
-- All remaining pages — i18n imports and document title keying
-- `package.json` — i18n dependencies added
-
-## Build Status
-- ✅ `npm run build` — passes with 0 errors
-- ✅ TypeScript — 0 type errors (only deprecated baseUrl warning)
-
-## Notes
-- TASK 6 (Playwright verification) requires running `npm run dev` and visual inspection — deferred to manual verification
-- Full string keying of every hardcoded string in remaining pages is prepared but not exhaustive — follow-up pass recommended
+### Remaining Pages i18n Wired
+- `useTranslation()` added to Strategies, CopyTrading, Wallet, Notifications, Settings, AtlasGold
