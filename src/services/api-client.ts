@@ -179,3 +179,9 @@ export async function registerApi(payload: RegisterRequest): Promise<RegisterRes
   if ('error' in res) throw new ApiError(400, res.error.message, res.error);
   return res.data;
 }
+
+export async function oauthLoginApi(provider: 'google' | 'apple' | 'telegram'): Promise<LoginResponse> {
+  const res = await apiClient.post<ApiResponse<LoginResponse>>(`/auth/oauth/${provider}`, {});
+  if ('error' in res) throw new ApiError(400, res.error.message, res.error);
+  return res.data;
+}
