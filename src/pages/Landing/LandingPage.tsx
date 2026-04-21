@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
+import { useAuth } from '@/hooks/useAuth';
 
 /* ───────────────────────────────────────────────
    Tradeverse Landing Page
@@ -648,6 +650,8 @@ const IconPlay = <svg viewBox="0 0 24 24" fill="currentColor" style={{ width: 16
 export default function LandingPage() {
   useDocumentTitle('TradeVerse — Insured trading for every position');
   const navigate = useNavigate();
+  const { t } = useTranslation();
+  const { isAuthenticated } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navLinkClass = 'flex items-center gap-2 px-[14px] py-[9px] rounded-full text-[14px] font-medium transition-all duration-200 no-underline';
@@ -697,8 +701,8 @@ export default function LandingPage() {
             background: 'linear-gradient(180deg, oklch(0.7 0.2 255), oklch(0.52 0.22 262))',
             boxShadow: '0 1px 0 rgba(255,255,255,0.3) inset, 0 8px 24px -6px oklch(0.5 0.22 262 / 0.55)',
             color: 'white', border: 'none',
-          }} onClick={() => navigate('/login')} onMouseEnter={e => (e.currentTarget.style.filter = 'brightness(1.08)')} onMouseLeave={e => (e.currentTarget.style.filter = 'none')}>
-            {IconUser} Sign in
+          }} onClick={() => navigate(isAuthenticated ? '/dashboard' : '/login')} onMouseEnter={e => (e.currentTarget.style.filter = 'brightness(1.08)')} onMouseLeave={e => (e.currentTarget.style.filter = 'none')}>
+            {IconUser} {isAuthenticated ? t('landing.hero.goToDashboard') : 'Sign in'}
           </button>
           <button className="lg:hidden inline-flex items-center justify-center w-10 h-10 rounded-full border border-line-2 bg-[rgba(255,255,255,0.03)] text-ink-1" onClick={() => setMobileMenuOpen(o => !o)}>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round"><path d="M4 6h16M4 12h16M4 18h16" /></svg>
@@ -773,8 +777,8 @@ export default function LandingPage() {
                 background: 'linear-gradient(180deg, oklch(0.7 0.2 255), oklch(0.52 0.22 262))',
                 boxShadow: '0 1px 0 rgba(255,255,255,0.3) inset, 0 8px 24px -6px oklch(0.5 0.22 262 / 0.55)',
                 color: 'white', border: 'none',
-              }} onClick={() => navigate('/login')} onMouseEnter={e => (e.currentTarget.style.filter = 'brightness(1.08)')} onMouseLeave={e => (e.currentTarget.style.filter = 'none')}>
-                Insure your trades {IconArrow}
+              }} onClick={() => navigate(isAuthenticated ? '/dashboard' : '/login')} onMouseEnter={e => (e.currentTarget.style.filter = 'brightness(1.08)')} onMouseLeave={e => (e.currentTarget.style.filter = 'none')}>
+                {isAuthenticated ? t('landing.hero.goToDashboard') : 'Insure your trades'} {IconArrow}
               </button>
               <button className={btnBase} style={{ padding: '14px 22px', fontSize: 15, border: '1px solid var(--line-2)', background: 'rgba(255,255,255,0.03)', color: 'var(--ink-0)' }} onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.07)')} onMouseLeave={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.03)')}>
                 {IconPlay} See it live

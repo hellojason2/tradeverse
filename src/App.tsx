@@ -1,6 +1,7 @@
 import { Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import '@/i18n';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { Toaster } from '@/components/ui/sonner';
 import { AppShell } from '@/components/layout/AppShell';
@@ -61,6 +62,11 @@ export default function App() {
               <Route element={<RequireAuth />}>
                 {/* /dashboard uses its own full-page layout (literal HTML port) */}
                 <Route path="/dashboard" element={<DashboardPage />} />
+                {/* /admin uses its own full-page layout with sidebar — no AppShell */}
+                <Route element={<RequireRole role={['ADMIN', 'MANAGER']} />}>
+                  <Route path="/admin" element={<AdminPage />} />
+                  <Route path="/admin/*" element={<AdminPage />} />
+                </Route>
                 <Route element={<AppShell />}>
                   <Route path="/strategies" element={<StrategiesPage />} />
                   <Route path="/copy-trading" element={<CopyTradingPage />} />
@@ -68,9 +74,6 @@ export default function App() {
                   <Route path="/notifications" element={<NotificationsPage />} />
                   <Route path="/settings" element={<SettingsPage />} />
                   <Route path="/atlas-gold" element={<AtlasGoldPage />} />
-                  <Route element={<RequireRole role={['ADMIN', 'MANAGER']} />}>
-                    <Route path="/admin" element={<AdminPage />} />
-                  </Route>
                 </Route>
               </Route>
 
