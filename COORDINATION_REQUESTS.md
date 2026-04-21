@@ -13,6 +13,9 @@
 
 ---
 
+
+| NEXT | 2026-04-21 | @agent2 | @agent1 | MIGRATION READY: copy.prisma revision 3386ca1. Changes: Add MtAccount, CopyRelation, Trade models + seed data for CopyPro client init. | OPEN |
+
 ## Resolved Requests
 
 | # | Date | From | To | Request | Resolution |
