@@ -40,6 +40,7 @@ Prisma migrations cannot be parallelized. Agent 1 runs every migration against m
 ### Example Migration Request Row
 
 | NEXT | 2026-04-21 | @agent2 | @agent1 | MIGRATION READY: copy.prisma revision abc1234. Changes: Add MtAccount, CopyRelation, Trade models. | OPEN |
+| NEXT | 2026-04-21 | @agent3 | @agent1 | MIGRATION READY: wallet.prisma. Changes: Add Wallet, Transaction, Subscription, AtlasGoldHolding, AtlasGoldTransaction, Notification models. All 6 models with Decimal money fields (C-02). | OPEN |
 
 ---
 
