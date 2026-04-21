@@ -1,63 +1,61 @@
-# Tradeverse 2.0 — Project Instructions
+# Tradeverse 2.0 — Session 4: Frontend
 
-## Commands
+## Your Identity
+You are **Agent 4 — Frontend**. You build the React UI that consumes the backend API.
 
-```bash
-npm run dev      # start dev server (run from app/ or features/*/)
-npm run build    # tsc -b && vite build
-npm run lint     # ESLint
-npm run preview  # preview production build
-```
+## Your Scope
+You own these paths:
+- `app/src/pages/*.tsx`
+- `app/src/components/**/*.tsx`
+- `app/src/stores/*.ts`
+- `app/src/services/*.ts`
+- `app/src/lib/api.ts`
+- `app/src/hooks/*.ts`
+- `app/tailwind.config.ts`
+- `app/src/index.css`
 
-No typecheck script — type errors surface via `npm run build` (tsc -b).
+You may read but NEVER write to:
+- `api/` (backend code — reference API contracts only)
+- `design.md` (reference only)
+- Any file owned by Agent 1, 2, or 3.
 
-## Architecture
+## Required Reading (in this order)
+1. `design.md` — **READ THE ENTIRE THING.** Every token, every component, every rule.
+2. `.claude/TASKS.md` — find your units (G1-G7)
+3. `docs/external/copypro-integration-architecture.md` — understand the data flow
+4. `.claude/ralph-spec-prompt.md` — how the Ralph Loop works
 
-Worktree layout — all real code lives in worktrees, never root:
+## Your Deliverables
 
-```
-TV 2.0/              # detached HEAD — infrastructure only
-├── app/             # core branch — main application code
-├── features/
-│   ├── auth/        # feature/auth branch
-│   ├── dashboard/   # feature/dashboard branch
-│   └── trading/     # feature/trading branch
-├── design.md        # visual design system — DO NOT EDIT
-├── AGENTS.md        # legacy agent-orientation doc (retained, read-only)
-└── WORKSPACE.md     # worktree workflow reference
-```
+### Wave 3 (G1-G2)
+- [ ] G1: Real API client (replace mock authService)
+- [ ] G2: Auth store real integration (Zustand, handles refresh token)
 
-Stack: React 19 + TypeScript (strict) + Vite 8. Tailwind CSS, shadcn/ui, Zustand, React Router v7, TanStack Query — to be installed per AGENTS.md.
+### Wave 4 (G3-G5)
+- [ ] G3: MT Account UI (add account form, list, poll balance)
+- [ ] G4: Strategy Discovery UI (Signal Plaza, strategy cards, subscribe modal)
+- [ ] G5: Copy Trading Dashboard (my copy relations, active trades, P&L)
 
-`src/` layout inside each worktree: `components/ui/`, `components/common/`, `pages/`, `hooks/`, `stores/`, `lib/`, `types/`, `styles/`, `assets/`.
+### Wave 5 (G6-G7)
+- [ ] G6: Wallet UI (deposit/withdraw modals, transaction history)
+- [ ] G7: Trade History UI (paginated trade logs with filters)
 
-## Key Decisions
+## Critical Rules
+1. **Follow `design.md` exactly.** Colors, typography, spacing, components. Dark mode first.
+2. **Use `cn()` for class merging.** Never concatenate Tailwind classes with template strings.
+3. **Monospace for numbers:** JetBrains Mono for all prices, balances, percentages.
+4. **Serif for headlines:** Instrument Serif for page titles, card titles.
+5. **Handle all 4 states:** Loading (skeleton), Empty, Error, Populated (§15 of design.md).
 
-- **design.md is the sole visual authority.** Colors, typography (Geist/Geist Mono), spacing scale, border radius, shadows — all defined there. Never guess or hardcode visual values.
-- **AGENTS.md dictates HOW to build** (conventions, patterns, state management). Never mix design.md and AGENTS.md concerns in a single prompt.
-- **Worktree-based parallel feature dev.** Each feature gets an isolated branch + directory. Merge into `app/` (core branch) when ready; clean up worktree after merge.
-- JWT stored in localStorage; token refresh + auth guards required. OAuth: Google, Apple, Telegram.
-- Zustand for client state; TanStack Query for server state — do not duplicate server state into stores.
+## Verification Gates
+- `npm run build` passes with zero errors
+- All pages render without console errors
+- Login flow stores JWT, subsequent requests include Bearer header
+- Dark mode toggle works, preference persists in localStorage
+- Responsive: sidebar collapses on mobile, grids adapt
 
-## Domain Knowledge
+## If Blocked
+Write to `COORDINATION_REQUESTS.md` in the main repo (`TV 2.0/`). Do not modify files outside your ownership.
 
-- Tradeverse = web-based trading + copy-trading platform.
-- `core` branch = main app (`app/` worktree). `feature/*` branches = feature worktrees under `features/*/`.
-- `design.md` uses a Vercel-inspired system: #171717 black, #ffffff white, #0a72ef blue accent, #de1d8d pink, #ff5b4f red.
-
-## Workflow
-
-- Always `cd app/` or `cd features/<name>/` before running commands or committing.
-- Run `npm run build` after a series of changes to catch type errors.
-- New feature: `./scripts/new-feature.sh <name>` from root. Remove after merge: `./scripts/remove-feature.sh <name>`.
-- Keep features in sync with core: `git rebase core` from inside the feature worktree.
-- Reference `design.md` for every visual decision before writing CSS or Tailwind classes.
-
-## Don'ts
-
-- Never commit from the root directory — it is in detached HEAD state.
-- Never mix design.md concerns (visuals) and AGENTS.md concerns (architecture/patterns) in one prompt.
-- Don't modify `design.md` — it is the read-only visual source of truth.
-- Don't modify generated files (`*.gen.ts`, `*.generated.*`).
-- Don't use `any` — use `unknown` when type is uncertain.
-- Don't inline styles when Tailwind classes exist.
+## Branch
+`feat/frontend` — commit and push regularly.
