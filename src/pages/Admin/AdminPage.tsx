@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 import { cn } from '@/lib/utils';
@@ -119,8 +119,6 @@ const NAV_ITEMS = [
 
 function AdminSidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => void }) {
   const { t } = useTranslation();
-  const navigate = useNavigate();
-  const location = useLocation();
   return (
     <aside className={cn('fixed left-0 top-0 bottom-0 bg-[var(--ad-bg-primary)] border-r border-[var(--ad-border-color)] flex flex-col z-[100] transition-[width] duration-200', collapsed ? 'w-[72px]' : 'w-[260px]')}>
       <div className="h-16 flex items-center gap-3 px-5 border-b border-[var(--ad-border-color)] shrink-0">
@@ -129,15 +127,17 @@ function AdminSidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle: (
       </div>
       <nav className="flex-1 overflow-y-auto py-3 px-3">
         <div className={cn('text-[11px] font-semibold uppercase tracking-[0.05em] text-[var(--ad-text-tertiary)] px-3 py-2 mb-1', collapsed && 'opacity-0')}>{t('admin.nav.overview')}</div>
-        {NAV_ITEMS.map((item) => {
-          const active = location.pathname === item.path;
-          return (
-            <button key={item.key} onClick={() => navigate(item.path)} className={cn('w-full flex items-center gap-3 px-3 py-[10px] rounded-lg text-[13px] font-medium mb-[2px] transition-all cursor-pointer', active ? 'bg-[var(--ad-accent-secondary)] text-[var(--ad-accent-primary)]' : 'text-[var(--ad-text-secondary)] hover:bg-[var(--ad-bg-tertiary)] hover:text-[var(--ad-text-primary)]')}>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="w-5 h-5 shrink-0"><path d={item.icon} /></svg>
-              {!collapsed && <span className="whitespace-nowrap">{t('admin.nav.' + item.key)}</span>}
-            </button>
-          );
-        })}
+        {NAV_ITEMS.map((item) => (
+          <NavLink
+            key={item.key}
+            to={item.path}
+            end={item.path === '/admin'}
+            className={({ isActive }) => cn('w-full flex items-center gap-3 px-3 py-[10px] rounded-lg text-[13px] font-medium mb-[2px] transition-all', isActive ? 'bg-[var(--ad-accent-secondary)] text-[var(--ad-accent-primary)]' : 'text-[var(--ad-text-secondary)] hover:bg-[var(--ad-bg-tertiary)] hover:text-[var(--ad-text-primary)]')}
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="w-5 h-5 shrink-0"><path d={item.icon} /></svg>
+            {!collapsed && <span className="whitespace-nowrap">{t('admin.nav.' + item.key)}</span>}
+          </NavLink>
+        ))}
       </nav>
       <div className={cn('py-3 px-5 border-t border-[var(--ad-border-color)] flex', collapsed ? 'justify-center' : 'justify-end')}>
         <button onClick={onToggle} className="w-8 h-8 border border-[var(--ad-border-color)] bg-[var(--ad-bg-primary)] rounded-lg flex items-center justify-center cursor-pointer hover:bg-[var(--ad-bg-tertiary)] transition-all">
