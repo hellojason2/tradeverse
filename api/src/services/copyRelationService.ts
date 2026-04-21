@@ -13,6 +13,14 @@ import type {
 import type { CopierPauseReason } from '../contracts/copyPro.js';
 import { env } from '../config/env.js';
 
+// Temporary defaults until Agent 1 provides ConfigService reading from prisma.config model.
+// Tracked in COORDINATION_REQUESTS.md as "Provide ConfigService for catalog defaults".
+const CATALOG_DEFAULTS = {
+  minCopyBalance: '100.00',
+  maxCopyBalance: '50000.00',
+  maxCopyRelations: 500,
+} as const;
+
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
@@ -92,8 +100,8 @@ export const copyRelationService = {
   ): Promise<CopyRelation> {
     // 1. Validate risk capital bounds (C-04)
     const riskCapitalDecimal = new Decimal(req.riskCapital);
-    const minCapital = new Decimal('100.00');
-    const maxCapital = new Decimal('50000.00');
+    const minCapital = new Decimal(CATALOG_DEFAULTS.minCopyBalance);
+    const maxCapital = new Decimal(CATALOG_DEFAULTS.maxCopyBalance);
 
     if (riskCapitalDecimal.lt(minCapital) || riskCapitalDecimal.gt(maxCapital)) {
       throw new DomainError(
@@ -132,7 +140,7 @@ export const copyRelationService = {
     }
 
     // 5. Validate follower count limit
-    const maxFollowers = 500;
+    const maxFollowers = CATALOG_DEFAULTS.maxCopyRelations;
     if (maxFollowers > 0) {
       const currentFollowers = await copyRelationRepository.countActiveByStrategyId(req.strategyId);
       if (currentFollowers >= maxFollowers) {
@@ -359,8 +367,8 @@ export const copyRelationService = {
     }
 
     const riskCapitalDecimal = new Decimal(req.riskCapital);
-    const minCapital = new Decimal('100.00');
-    const maxCapital = new Decimal('50000.00');
+    const minCapital = new Decimal(CATALOG_DEFAULTS.minCopyBalance);
+    const maxCapital = new Decimal(CATALOG_DEFAULTS.maxCopyBalance);
 
     if (riskCapitalDecimal.lt(minCapital) || riskCapitalDecimal.gt(maxCapital)) {
       throw new DomainError(

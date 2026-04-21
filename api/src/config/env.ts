@@ -30,4 +30,10 @@ if (!parsed.success) {
   process.exit(1);
 }
 
+// Production guard: COPYPRO_WEBHOOK_SECRET is required in production.
+if (parsed.data.NODE_ENV === 'production' && !parsed.data.COPYPRO_WEBHOOK_SECRET) {
+  console.error('❌ COPYPRO_WEBHOOK_SECRET is required in production');
+  process.exit(1);
+}
+
 export const env = parsed.data;

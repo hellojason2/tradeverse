@@ -15,6 +15,7 @@
 
 
 | NEXT | 2026-04-21 | @agent2 | @agent1 | MIGRATION READY: copy.prisma revision 3386ca1. Changes: Add MtAccount, CopyRelation, Trade models + seed data for CopyPro client init. | OPEN |
+| NEXT | 2026-04-21 | @agent2 | @agent1 | Provide ConfigService reading Prisma config model (or export catalog defaults from @contracts/config-catalog) so Agent 2 can replace CATALOG_DEFAULTS with real DB-backed source. | OPEN |
 
 ## Resolved Requests
 
