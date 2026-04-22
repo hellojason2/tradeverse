@@ -32,3 +32,17 @@ CLAUDE.local.md
 
 # Responsive audit screenshots (generated)
 .responsive-audit/
+
+# Playwright MCP artifacts
+.playwright-mcp/
+
+# OMC runtime state (not project source)
+.omc/sessions/
+.omc/state/agent-replay-*.jsonl
+.omc/state/checkpoints/
+.omc/state/idle-notif-cooldown.json
+
+# Root-level generated screenshots and CI snapshots
+/*.png
+/*.yml
+design/.omc/
