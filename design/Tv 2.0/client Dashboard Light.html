@@ -1067,49 +1067,70 @@ document.addEventListener('keydown',e=>{
 
   function frame(t){
     ctx.clearRect(0,0,W,H);
-    const vpX=W*0.88, vpY=H*0.45;
+    const vpY=H*0.45;
+    // Active animation zone: right half of the banner only.
+    // Particles enter from the middle of the banner and flow RIGHT toward a vanishing point.
+    const zoneStart = W*0.48;     // left edge of animation zone
+    const zoneEnd   = W*1.02;     // particles exit just past right edge
+    const zoneSpan  = zoneEnd - zoneStart;
 
-    // ambient stars
+    // ambient stars — only in right zone
     for(let i=0;i<35;i++){
-      const x=(i*97.3)%W;
+      const x=zoneStart + ((i*97.3)%zoneSpan);
       const y=(i*53.7)%H;
       const a=0.2+0.4*Math.sin(t*0.002+i);
       ctx.fillStyle='rgba(200,220,255,'+(a*0.3)+')';
       ctx.fillRect(x,y,1,1);
     }
 
-    // grid ribs
+    // Clip everything below to the right zone so nothing bleeds onto text
     ctx.save();
-    for(let i=0;i<14;i++){
-      const phase=((i/14)+(t*0.00018))%1;
-      const eased=Math.pow(phase,2.2);
-      const x=vpX - eased*(W*1.2);
-      const alpha=0.28*Math.min(1,eased*2)*(1-phase*0.6);
+    ctx.beginPath();
+    ctx.rect(zoneStart, 0, W - zoneStart, H);
+    ctx.clip();
+
+    // Soft left-edge fade so the zone blends into the dark banner
+    const fade = ctx.createLinearGradient(zoneStart, 0, zoneStart + W*0.12, 0);
+    fade.addColorStop(0,'rgba(0,0,0,0)');
+    fade.addColorStop(1,'rgba(0,0,0,0)'); // placeholder — actual fade done per-particle via alpha
+
+    // grid ribs — now horizontal flow lines converging into right VP
+    for(let i=0;i<12;i++){
+      const phase=((i/12)+(t*0.00018))%1;
+      const eased=Math.pow(phase,2.0);
+      // flow from left edge of zone toward right vanishing point
+      const x = zoneStart + (1-eased)*zoneSpan*0.9;
+      const spread = (1-eased)*H*0.55;
+      const alpha=0.22*Math.min(1,(1-eased)*2)*eased;
       ctx.strokeStyle='oklch(0.78 0.16 255 / '+alpha+')';
-      ctx.lineWidth=1+eased;
+      ctx.lineWidth=1+(1-eased)*1.2;
       ctx.beginPath();
-      ctx.moveTo(x, vpY - H*0.55*eased);
-      ctx.lineTo(x, vpY + H*0.55*eased);
+      ctx.moveTo(x, vpY - spread);
+      ctx.lineTo(x, vpY + spread);
       ctx.stroke();
     }
-    ctx.restore();
 
-    // particles streaming from vanishing point (right) outward-left
-    ctx.save();
+    // particles flowing RIGHT toward vanishing point at zoneEnd
     ctx.globalCompositeOperation='lighter';
     for(const p of particles){
       p.progress+=p.speed*0.008;
       if(p.progress>1)Object.assign(p,newP(0));
-      const eased=Math.pow(p.progress,2.1);
-      const x=vpX - eased*(W*1.1);
-      const y=vpY + p.u*eased*H*0.6;
-      const a=Math.min(1,eased*2.2)*(0.35+0.65*Math.sin(p.flicker+t*0.005));
+      const eased=Math.pow(p.progress,1.8);
+      // start spread open on the left, converge on the right
+      const x = zoneStart + eased*zoneSpan;
+      const spreadFactor = (1-eased);
+      const y = vpY + p.u*spreadFactor*H*0.55;
+
+      // left-fade: particles barely visible near zoneStart, fully bright as they travel right
+      const leftFade = Math.min(1, eased*2.5);
+      const a=Math.min(1,eased*2.2)*(0.35+0.65*Math.sin(p.flicker+t*0.005))*leftFade;
       const size=p.size*(0.4+eased*3);
 
       const tailProg=Math.max(0,p.progress-0.05);
-      const tailE=Math.pow(tailProg,2.1);
-      const tailX=vpX - tailE*(W*1.1);
-      const tailY=vpY + p.u*tailE*H*0.6;
+      const tailE=Math.pow(tailProg,1.8);
+      const tailX = zoneStart + tailE*zoneSpan;
+      const tailSpread = (1-tailE);
+      const tailY = vpY + p.u*tailSpread*H*0.55;
 
       const grad=ctx.createLinearGradient(tailX,tailY,x,y);
       grad.addColorStop(0,'oklch(0.82 0.18 250 / 0)');
@@ -1125,14 +1146,16 @@ document.addEventListener('keydown',e=>{
       ctx.fillStyle='oklch(0.85 0.18 250 / '+a+')';
       ctx.beginPath();ctx.arc(x,y,size,0,Math.PI*2);ctx.fill();
     }
-    ctx.restore();
 
-    // right-side glow
-    const g=ctx.createRadialGradient(vpX,vpY,0,vpX,vpY,H*0.9);
-    g.addColorStop(0,'oklch(0.78 0.2 250 / 0.25)');
-    g.addColorStop(0.4,'oklch(0.55 0.22 260 / 0.08)');
+    // right-edge convergence glow
+    ctx.globalCompositeOperation='lighter';
+    const g=ctx.createRadialGradient(zoneEnd-W*0.05,vpY,0,zoneEnd-W*0.05,vpY,H*0.9);
+    g.addColorStop(0,'oklch(0.78 0.2 250 / 0.35)');
+    g.addColorStop(0.4,'oklch(0.55 0.22 260 / 0.1)');
     g.addColorStop(1,'transparent');
-    ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+    ctx.fillStyle=g;ctx.fillRect(zoneStart,0,W-zoneStart,H);
+
+    ctx.restore();
 
     requestAnimationFrame(frame);
   }

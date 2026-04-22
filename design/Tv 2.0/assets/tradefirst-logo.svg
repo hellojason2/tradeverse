@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 160" fill="none">
+  <defs>
+    <linearGradient id="tfGrad" x1="20" y1="10" x2="180" y2="150" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#5BB1FF"></stop>
+      <stop offset="55%" stop-color="#1E8AFF"></stop>
+      <stop offset="100%" stop-color="#0468E8"></stop>
+    </linearGradient>
+  </defs>
+  
+  <path fill="url(#tfGrad)" d="&#xA;    M 22 22&#xA;    C 22 16, 26 12, 32 12&#xA;    L 74 12&#xA;    C 80 12, 84 16, 84 22&#xA;    L 84 40&#xA;    C 84 44, 81 46, 77 46&#xA;    L 66 46&#xA;    L 66 78&#xA;    C 66 98, 58 114, 44 124&#xA;    C 38 128, 30 128, 24 124&#xA;    C 20 120, 18 114, 18 108&#xA;    L 18 46&#xA;    C 18 42, 21 40, 25 40&#xA;    L 40 40&#xA;    C 42 40, 44 38, 44 36&#xA;    L 44 22&#xA;    Z"></path>
+  
+  <path fill="url(#tfGrad)" d="&#xA;    M 86 12&#xA;    L 164 12&#xA;    C 170 12, 174 16, 174 22&#xA;    L 174 40&#xA;    C 174 44, 171 46, 167 46&#xA;    L 128 46&#xA;    L 128 122&#xA;    C 128 136, 122 146, 110 150&#xA;    C 98 154, 88 148, 86 136&#xA;    L 86 48&#xA;    C 86 46, 88 44, 90 44&#xA;    L 96 44&#xA;    C 98 44, 100 42, 100 40&#xA;    L 100 22&#xA;    C 100 16, 92 12, 86 12&#xA;    Z"></path>
+  
+  <path fill="#FFFFFF" opacity="0.35" d="&#xA;    M 98 104&#xA;    L 128 134&#xA;    L 128 142&#xA;    L 96 112&#xA;    Z"></path>
+</svg>

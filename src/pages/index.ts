@@ -1,5 +1,4 @@
 export { DashboardPage } from './Dashboard/DashboardPage';
-export { StrategiesPage } from './Strategy/StrategiesPage';
 export { CopyTradingPage } from './CopyTrading/CopyTradingPage';
 export { WalletPage } from './Wallet/WalletPage';
 export { NotificationsPage } from './Notifications/NotificationsPage';

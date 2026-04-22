@@ -1,5 +1,5 @@
 import { Suspense, lazy } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import '@/i18n';
 import { TooltipProvider } from '@/components/ui/tooltip';
@@ -9,7 +9,6 @@ import { RequireAuth, RequireRole, GuestGuard } from '@/routes/guards';
 
 const LandingPage = lazy(() => import('@/pages').then((m) => ({ default: m.LandingPage })));
 const DashboardPage = lazy(() => import('@/pages').then((m) => ({ default: m.DashboardPage })));
-const StrategiesPage = lazy(() => import('@/pages').then((m) => ({ default: m.StrategiesPage })));
 const CopyTradingPage = lazy(() => import('@/pages').then((m) => ({ default: m.CopyTradingPage })));
 const WalletPage = lazy(() => import('@/pages').then((m) => ({ default: m.WalletPage })));
 const NotificationsPage = lazy(() => import('@/pages').then((m) => ({ default: m.NotificationsPage })));
@@ -28,6 +27,8 @@ const HistoryPage = lazy(() => import('@/pages').then((m) => ({ default: m.Histo
 const ReferralsPage = lazy(() => import('@/pages').then((m) => ({ default: m.ReferralsPage })));
 const ActivitiesPage = lazy(() => import('@/pages').then((m) => ({ default: m.ActivitiesPage })));
 const CommunityPage = lazy(() => import('@/pages').then((m) => ({ default: m.CommunityPage })));
+const ClientLayout = lazy(() => import('@/routes/client/layout').then((m) => ({ default: m.ClientLayout })));
+const SignalPlazaPage = lazy(() => import('@/routes/client/signal-plaza').then((m) => ({ default: m.SignalPlazaPage })));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -57,6 +58,13 @@ export default function App() {
               <Route path="/privacy" element={<PrivacyPage />} />
               <Route path="/oauth/callback" element={<OAuthCallbackPage />} />
 
+              {/* Ported client shell (1:1 dark-mode port from design HTML) — auth-gated */}
+              <Route element={<RequireAuth />}>
+                <Route path="/client" element={<ClientLayout />}>
+                  <Route path="signals" element={<SignalPlazaPage />} />
+                </Route>
+              </Route>
+
               {/* Guest routes */}
               <Route element={<GuestGuard />}>
                 <Route path="/login" element={<LoginPage />} />
@@ -73,7 +81,6 @@ export default function App() {
                   <Route path="/admin/*" element={<AdminPage />} />
                 </Route>
                 <Route element={<AppShell />}>
-                  <Route path="/strategies" element={<StrategiesPage />} />
                   <Route path="/copy-trading" element={<CopyTradingPage />} />
                   <Route path="/wallet" element={<WalletPage />} />
                   <Route path="/notifications" element={<NotificationsPage />} />
@@ -86,6 +93,10 @@ export default function App() {
                   <Route path="/community" element={<CommunityPage />} />
                 </Route>
               </Route>
+
+              {/* /strategies retired — redirect to signal plaza */}
+              <Route path="/strategies" element={<Navigate to="/client/signals" replace />} />
+              <Route path="/strategies/*" element={<Navigate to="/client/signals" replace />} />
 
               {/* Catch-all */}
               <Route path="*" element={<NotFoundPage />} />

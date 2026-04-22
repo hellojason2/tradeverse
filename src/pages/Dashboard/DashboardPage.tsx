@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 import { useAuth } from '@/hooks/useAuth';
@@ -19,6 +19,11 @@ export function DashboardPage() {
     .slice(0, 2) ?? 'JD';
 
   const [collapsed, setCollapsed] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const location = useLocation();
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [location.pathname]);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   // Force light theme for ported overview layout
@@ -185,10 +190,15 @@ export function DashboardPage() {
     []
   );
 
-  const sbClass = collapsed ? 'sidebar c' : 'sidebar';
+  const sbClass = ['sidebar', collapsed ? 'c' : '', mobileOpen ? 'mo' : ''].filter(Boolean).join(' ');
 
   return (
     <>
+      <div
+        className={mobileOpen ? 'sb-backdrop on' : 'sb-backdrop'}
+        onClick={() => setMobileOpen(false)}
+        aria-hidden="true"
+      />
       {/* SIDEBAR */}
       <aside className={sbClass} id="sb">
         <div className="sb-head">
@@ -222,7 +232,7 @@ export function DashboardPage() {
           </div>
           <div className="nav-sec">
             <div className="nav-sec-t">{t('sidebar.sections.trading')}</div>
-            <NavLink to="/strategies" className={({ isActive }) => `nav-i${isActive ? ' act' : ''}`}>
+            <NavLink to="/client/signals" className={({ isActive }) => `nav-i${isActive ? ' act' : ''}`}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
               </svg>
@@ -318,6 +328,28 @@ export function DashboardPage() {
       <div className="main" id="main">
         <header className="topbar">
           <div className="tb-left">
+            <button
+              className="tb-menu-btn"
+              onClick={() => setMobileOpen((v) => !v)}
+              aria-label={mobileOpen ? 'Close navigation menu' : 'Open navigation menu'}
+              aria-expanded={mobileOpen}
+              type="button"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                {mobileOpen ? (
+                  <>
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                  </>
+                ) : (
+                  <>
+                    <line x1="3" y1="6" x2="21" y2="6" />
+                    <line x1="3" y1="12" x2="21" y2="12" />
+                    <line x1="3" y1="18" x2="21" y2="18" />
+                  </>
+                )}
+              </svg>
+            </button>
             <div>
               <div className="tb-title" id="pgTitle">
                 {t('topbar.title')}

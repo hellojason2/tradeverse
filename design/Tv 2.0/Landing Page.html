@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Sonar — Compose your signature sound</title>
+<title>TradeVerse — Insured trading for every position</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -39,13 +39,15 @@
   }
   .logo{display:flex; align-items:center; gap:12px}
   .logo-mark{
-    width:36px; height:36px; position:relative;
+    width:38px; height:38px; position:relative;
     display:grid; place-items:center;
-    border-radius:10px;
-    background: radial-gradient(circle at 30% 30%, rgba(110,150,255,0.35), rgba(20,30,70,0.4) 70%);
-    border: 1px solid rgba(120,160,255,0.25);
   }
   .logo-mark svg{width:22px;height:22px}
+  .logo-mark-tf{
+    background:transparent; border:none;
+    filter: drop-shadow(0 0 14px oklch(0.68 0.2 255 / 0.55));
+  }
+  .logo-mark-tf img{ width:100%; height:100%; object-fit:contain; display:block; }
   .logo-text{font-family:'Instrument Serif',serif; font-size:22px; letter-spacing:0.02em; line-height:1}
   .logo-sub{font-size:9px; letter-spacing:0.45em; color:var(--ink-2); margin-top:4px; font-weight:500}
 
@@ -284,6 +286,205 @@
     box-shadow: 0 0 0 3px oklch(0.6 0.2 255 / 0.5);
   }
 
+  /* ───── PHONE — MetaFive Trader mockup ───── */
+  .phone-wrap{
+    position:relative;
+    width:100%; max-width:420px; justify-self:end;
+    background:transparent !important; border:none !important; box-shadow:none !important;
+    padding:0 !important; backdrop-filter:none !important;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .phone-wrap canvas{
+    position:absolute; inset:-40px -90px; width:calc(100% + 180px); height:calc(100% + 80px);
+    z-index:0; pointer-events:none;
+  }
+  .phone{
+    position:relative; z-index:1;
+    width:380px; height:660px;
+    background: linear-gradient(180deg, #111827, #0a0f20);
+    border-radius: 46px;
+    border: 1px solid rgba(120,160,255,0.22);
+    box-shadow:
+      0 40px 100px -20px rgba(0,0,0,0.7),
+      0 0 80px -10px oklch(0.55 0.22 260 / 0.35),
+      inset 0 0 0 3px rgba(255,255,255,0.04),
+      inset 0 1px 0 rgba(255,255,255,0.08);
+    padding: 12px;
+    display:flex; flex-direction:column;
+  }
+  .phone-notch{
+    position:absolute; top:12px; left:50%; transform:translateX(-50%);
+    width:110px; height:28px; border-radius:999px;
+    background:#000;
+    border:1px solid rgba(255,255,255,0.06);
+    z-index:3;
+  }
+  .phone-home{
+    position:absolute; bottom:8px; left:50%; transform:translateX(-50%);
+    width:120px; height:4px; border-radius:2px;
+    background: rgba(255,255,255,0.3);
+  }
+  .phone-screen{
+    flex:1; border-radius: 34px;
+    background:
+      radial-gradient(ellipse at 50% 0%, oklch(0.22 0.06 260) 0%, oklch(0.12 0.04 260) 60%, oklch(0.06 0.02 260) 100%);
+    overflow:hidden; position:relative;
+    display:flex; flex-direction:column;
+    padding: 44px 0 20px;
+  }
+
+  .mt-top{
+    display:flex; justify-content:space-between; align-items:center;
+    font-size:12px; color:var(--ink-2);
+    margin: 0 16px 6px;
+  }
+  .mt-top-l{display:flex; align-items:center; gap:6px; font-family:'JetBrains Mono',monospace; letter-spacing:0.04em; color:var(--ink-1); font-size:10px; text-transform:uppercase; white-space:nowrap}
+  .mt-top-l svg{width:14px;height:14px; color:var(--blue-2); flex-shrink:0}
+  .mt-top-r{display:flex; align-items:center; gap:6px; font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.08em; color:oklch(0.85 0.15 245); text-transform:uppercase; white-space:nowrap}
+  .mt-dot-live{width:6px;height:6px; border-radius:50%; background:oklch(0.8 0.18 245); box-shadow:0 0 8px oklch(0.8 0.18 245)}
+
+  .mt-bal{margin: 10px 16px 14px; padding-bottom:14px; border-bottom:1px solid var(--line)}
+  .mt-bal-lbl{font-size:10px; color:var(--ink-3); letter-spacing:0.16em; text-transform:uppercase; font-family:'JetBrains Mono',monospace}
+  .mt-bal-val{font-family:'Instrument Serif',serif; font-size:34px; color:oklch(0.88 0.16 145); margin-top:4px; letter-spacing:-0.01em; line-height:1}
+  .mt-bal-sub{font-size:10px; color:var(--ink-3); letter-spacing:0.08em; margin-top:6px; font-family:'JetBrains Mono',monospace}
+
+  /* ───── Curved P/L flow stage ───── */
+  .flow-stage{
+    position:relative;
+    flex:1;
+    overflow:hidden;
+    margin: 4px 0 0;
+  }
+
+  /* SVG holds the curved path (top-left → bottom-right). */
+  .flow-svg{
+    position:absolute; inset:0;
+    width:100%; height:100%;
+    pointer-events:none;
+    z-index: 1;
+    overflow:visible;
+  }
+  .flow-path-raw{
+    fill:none;
+    stroke: rgba(160,180,220,0.22);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+  }
+  .flow-path-sec{
+    fill:none;
+    stroke: url(#secGrad);
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    filter: drop-shadow(0 0 6px oklch(0.7 0.2 255 / 0.8));
+  }
+  /* Animated dashed "moving current" overlay on the secured half */
+  .flow-path-dash{
+    fill:none;
+    stroke: oklch(0.95 0.1 255 / 0.9);
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-dasharray: 4 14;
+    animation: dashFlow 1.6s linear infinite;
+  }
+  @keyframes dashFlow{
+    to{ stroke-dashoffset: -36; }
+  }
+
+  /* Floating P/L numbers — positioned absolutely by JS at points along the path */
+  .pl-num{
+    position:absolute;
+    top:0; left:0;
+    font-family:'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    white-space:nowrap;
+    will-change: transform, opacity;
+    transition: none;
+    display:inline-flex; align-items:center; gap:5px;
+    z-index: 2;
+  }
+  .pl-num.raw.up{ color: oklch(0.78 0.15 145 / 0.7); }
+  .pl-num.raw.dn{ color: oklch(0.72 0.18 25 / 0.7); }
+  .pl-num.raw .pl-shield{ display:none; }
+
+  .pl-num.sec{
+    padding: 3px 9px 3px 6px;
+    border-radius: 999px;
+    background: linear-gradient(180deg, oklch(0.16 0.04 260), oklch(0.08 0.03 260));
+    border: 1px solid oklch(0.6 0.22 262 / 0.6);
+    box-shadow:
+      0 0 0 1px oklch(0.8 0.18 245 / 0.25),
+      0 4px 14px -2px oklch(0.6 0.22 262 / 0.55),
+      inset 0 0 10px -2px oklch(0.85 0.17 245 / 0.25);
+    font-weight: 700;
+  }
+  .pl-num.sec.up{ color: oklch(0.9 0.18 145); text-shadow: 0 0 10px oklch(0.8 0.2 145 / 0.5); }
+  .pl-num.sec.dn{ color: oklch(0.84 0.2 25); text-shadow: 0 0 10px oklch(0.75 0.22 25 / 0.5); }
+  .pl-num.sec .pl-shield{
+    width:14px; height:14px;
+    display:grid; place-items:center;
+    color: oklch(0.9 0.15 245);
+    filter: drop-shadow(0 0 4px oklch(0.8 0.18 245 / 0.9));
+    flex-shrink:0;
+  }
+  .pl-num.sec .pl-shield svg{ width:14px; height:14px; }
+  .pl-num.crossing{
+    filter: blur(0.5px) brightness(1.4);
+  }
+
+  /* TradeVerse SQUARE logo sitting at the midpoint of the curve */
+  .tv-pill{
+    position:absolute;
+    top:0; left:0; /* positioned by JS */
+    z-index: 5;
+    pointer-events:none;
+    transform: translate(-50%, -50%);
+    width: 76px; height: 82px;
+    display:grid; place-items:center;
+  }
+  /* Shield sits BEHIND the logo, protecting it */
+  .tv-shield{
+    position:absolute; inset:0;
+    display:grid; place-items:center;
+    filter: drop-shadow(0 0 18px oklch(0.7 0.2 255 / 0.9));
+    transition: transform .3s cubic-bezier(.4,2,.6,1), filter .3s ease;
+  }
+  .tv-shield svg{ width:100%; height:100%; }
+  .tv-shield-bg{ fill: url(#shieldFill); stroke: oklch(0.88 0.15 245 / 0.9); stroke-width: 1.2; }
+  /* Logo sits on top of the shield */
+  .tv-pill-inner{
+    position:relative;
+    z-index: 2;
+    width: 40px; height: 40px;
+    display:grid; place-items:center;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.45));
+    transition: transform .3s cubic-bezier(.4,2,.6,1);
+  }
+  .tv-pill-inner img{ width:100%; height:100%; object-fit:contain; display:block; }
+  .tv-pill.pulse .tv-shield{
+    transform: scale(1.08);
+    filter: drop-shadow(0 0 28px oklch(0.78 0.2 255 / 1));
+  }
+  .tv-pill.pulse .tv-pill-inner{ transform: scale(1.06); }
+
+  .flow-legend{
+    display:flex; justify-content:space-between; align-items:center;
+    margin: 10px 16px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--ink-3);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .flow-leg{display:flex; align-items:center; gap:6px}
+  .leg-dot{width:8px; height:8px; border-radius:50%}
+  .leg-dot.raw{ background: rgba(160,180,220,0.4) }
+  .leg-dot.sec{
+    background: oklch(0.7 0.2 255);
+    box-shadow: 0 0 6px oklch(0.7 0.2 255 / 0.9);
+  }
+
   /* ───── Featured drops ───── */
   .section{
     position:relative; z-index:2;
@@ -382,14 +583,12 @@
 <!-- ───── NAV ───── -->
 <nav class="nav">
   <div class="logo">
-    <div class="logo-mark">
-      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round">
-        <path d="M3 12 L6 12 L8 5 L10 19 L12 8 L14 16 L16 10 L18 13 L21 12"/>
-      </svg>
+    <div class="logo-mark logo-mark-tf">
+      <img src="assets/tradefirst-logo.png" alt="TradeVerse"/>
     </div>
     <div>
-      <div class="logo-text">Sonar</div>
-      <div class="logo-sub">STUDIO</div>
+      <div class="logo-text">TradeVerse</div>
+      <div class="logo-sub">INSURED</div>
     </div>
   </div>
 
@@ -431,66 +630,86 @@
 
   <div class="hero-inner">
     <div class="hero-copy">
-      <div class="pill"><span class="pill-badge">AI</span> New: Studio-grade stems in one prompt</div>
+      <div class="pill"><span class="pill-badge">NEW</span> Every trade insured the moment it opens</div>
       <h1 class="headline">
-        Compose your<br/>
-        <em>signature sound</em> in<br/>
-        seconds
+        Trade with<br/>
+        <em>every position</em><br/>
+        insured
       </h1>
-      <p class="sub">Sonar turns your ideas into royalty-free tracks tuned for streaming, shorts and live sessions. Describe the mood, length and energy — our engine scores, mixes and masters on the fly.</p>
+      <p class="sub">TradeVerse routes your live P/L through an on-chain shield the moment a trade is opened — so profits and drawdowns are protected end to end. Connect your broker, set your coverage, and watch every trade clear the shield in real time.</p>
       <div class="cta-row">
-        <a class="btn btn-primary btn-lg">Generate a track
+        <a class="btn btn-primary btn-lg">Insure your trades
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
         </a>
         <a class="btn btn-ghost btn-lg">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-          Watch demo</a>
+          See it live</a>
       </div>
-      <div class="legal">No copyright claims <span class="dot">·</span> Full commercial license included <span class="dot">·</span> 14-day free trial</div>
+      <div class="legal">Works with MT4, MT5 &amp; cTrader <span class="dot">·</span> Payouts in under 24h <span class="dot">·</span> 14-day free trial</div>
     </div>
 
-    <!-- Player card -->
-    <div class="player">
-      <div class="player-top">
-        <span>Session orbit</span>
-        <span style="display:flex; align-items:center; gap:6px"><span class="dot-live" style="width:6px;height:6px;border-radius:50%;background:oklch(0.78 0.2 145); box-shadow:0 0 8px oklch(0.78 0.2 145)"></span>Live trends</span>
-      </div>
+    <!-- Phone — P/L flow: raw → TradeVerse pill → secured -->
+    <div class="player phone-wrap">
+      <div class="phone">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="mt-top">
+            <div class="mt-top-l">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
+              <span>Live P/L Flow</span>
+            </div>
+            <div class="mt-top-r">
+              <span class="mt-dot-live"></span>Insuring
+            </div>
+          </div>
 
-      <div class="player-orb">
-        <div class="orb-chip c1">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
-          AI playlist
-        </div>
-        <div class="orb-chip c2">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 18V8l6-2v10"/><circle cx="6" cy="16" r="2"/></svg>
-          Lo-fi focus
-        </div>
-        <div class="orb-chip c3">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="11" rx="3"/><path d="M8 12h2M14 12h2M11 10v4"/></svg>
-          Game mode
-        </div>
-        <div class="orb-center">
-          <h3 class="orb-title">Trending Mix</h3>
-          <div class="orb-meta">128 BPM · CHILLWAVE</div>
-        </div>
-      </div>
+          <div class="mt-bal">
+            <div class="mt-bal-lbl">Secured P/L</div>
+            <div class="mt-bal-val" id="mtTotal">+$0.00</div>
+            <div class="mt-bal-sub" id="mtCount">0 trades shielded</div>
+          </div>
 
-      <div class="scrub"><div class="scrub-fill"></div></div>
-      <div class="time-row"><span>00:47</span><span>02:27</span></div>
+          <!-- Curved flow stage -->
+          <div class="flow-stage" id="flowStage">
+            <svg class="flow-svg" id="flowSvg" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="secGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="oklch(0.55 0.22 262)"/>
+                  <stop offset="50%" stop-color="oklch(0.78 0.18 255)"/>
+                  <stop offset="100%" stop-color="oklch(0.55 0.22 262)"/>
+                </linearGradient>
+              </defs>
+              <path id="flowPathRaw" class="flow-path-raw" d=""/>
+              <path id="flowPathSec" class="flow-path-sec" d=""/>
+              <path id="flowPathDash" class="flow-path-dash" d=""/>
+            </svg>
 
-      <div class="player-bar">
-        <div class="prompt"><span>PROMPT</span>neon midnight drive</div>
-        <div class="player-controls">
-          <button class="ctl" aria-label="mute">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="m16 9 5 6M21 9l-5 6"/></svg>
-          </button>
-          <button class="ctl play" aria-label="play" id="playBtn">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-          </button>
-          <button class="ctl" aria-label="next">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 4v16l10-8zM17 5v14"/></svg>
-          </button>
+            <!-- The TradeVerse logo protected by a shield the numbers pass through -->
+            <div class="tv-pill" id="tvBadge">
+              <div class="tv-shield" aria-hidden="true">
+                <svg viewBox="0 0 76 82" preserveAspectRatio="xMidYMid meet">
+                  <defs>
+                    <linearGradient id="shieldFill" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="oklch(0.42 0.18 262)"/>
+                      <stop offset="55%" stop-color="oklch(0.28 0.16 265)"/>
+                      <stop offset="100%" stop-color="oklch(0.14 0.08 262)"/>
+                    </linearGradient>
+                  </defs>
+                  <path class="tv-shield-bg" d="M38 3 L70 12 L70 42 C70 58 56 72 38 79 C20 72 6 58 6 42 L6 12 Z"/>
+                </svg>
+              </div>
+              <div class="tv-pill-inner">
+                <img src="assets/tradefirst-logo.png" alt="TradeVerse"/>
+              </div>
+            </div>
+          </div>
+
+          <div class="flow-legend">
+            <div class="flow-leg"><span class="leg-dot raw"></span>Raw P/L</div>
+            <div class="flow-leg"><span class="leg-dot sec"></span>Insured by TradeVerse</div>
+          </div>
         </div>
+        <div class="phone-home"></div>
       </div>
     </div>
   </div>
@@ -734,33 +953,204 @@ function init(){
 }
 init();
 
-/* ───── Waveform bars (live) ───── */
-// orb waveform ribbon
-const ribbon = document.createElement('div');
-ribbon.className='wave';
-ribbon.style.cssText='position:absolute; left:14%; right:14%; bottom:32px; height:26px; z-index:2; gap:3px; display:flex; align-items:center;';
-document.querySelector('.player-orb').appendChild(ribbon);
-const BARS = 32;
-const bars = [];
-for(let i=0;i<BARS;i++){
-  const b = document.createElement('span');
-  b.style.cssText='display:block; width:2px; flex:1; border-radius:2px; background:linear-gradient(180deg, oklch(0.88 0.14 225), oklch(0.58 0.2 260)); height:6px;';
-  ribbon.appendChild(b);
-  bars.push(b);
-}
-let playing = true;
-function animWave(t){
-  for(let i=0;i<BARS;i++){
-    const n = Math.sin(i*0.6 + t*0.004) * Math.cos(i*0.23 + t*0.002) * 0.5 + 0.5;
-    const h = playing ? 4 + n * 24 + (Math.random()*3) : 4;
-    bars[i].style.height = h+'px';
-    bars[i].style.opacity = playing ? (0.5 + n*0.5) : 0.25;
-  }
-  requestAnimationFrame(animWave);
-}
-requestAnimationFrame(animWave);
+/* ───── P/L Flow along curved path through TradeVerse logo ─────
+   A single SVG bezier from top-left to bottom-right. Numbers walk the path
+   as parameter t in [0,1]. Before t=0.5 they are raw/dim; at midpoint they
+   pass through the TradeVerse square and become secured chips with a shield. */
+(function plFlow(){
+  const stage   = document.getElementById('flowStage');
+  const svg     = document.getElementById('flowSvg');
+  const pRaw    = document.getElementById('flowPathRaw');
+  const pSec    = document.getElementById('flowPathSec');
+  const pDash   = document.getElementById('flowPathDash');
+  const pill    = document.getElementById('tvBadge');
+  if(!stage) return;
 
-document.getElementById('playBtn').addEventListener('click', ()=>{ playing = !playing; });
+  const totalEl = document.getElementById('mtTotal');
+  const countEl = document.getElementById('mtCount');
+
+  const SHIELD_SVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.2-2.9 8-7 9.4-4.1-1.4-7-5.2-7-9.4V6z"/><path d="m9 12 2 2 4-4"/></svg>`;
+
+  const POOL = [
+    +243.50, -112.00, +87.20, +412.40, -48.90, +156.25,
+    -204.80, +312.55, +91.10, -66.40, +528.00, +72.15,
+    -18.35, +204.00, -128.70, +847.20, +44.60, -52.35,
+    +168.90, -96.00, +312.00, +55.40, -184.25, +220.10
+  ];
+  let poolIdx = 0;
+  function nextVal(){
+    const v = POOL[poolIdx % POOL.length];
+    poolIdx++;
+    return +(v + (Math.random()-0.5)*6).toFixed(2);
+  }
+  function fmt(v){ return (v>=0?'+':'-') + '$' + Math.abs(v).toFixed(2); }
+
+  // Stage geometry + path definition
+  let W = 0, H = 0;
+  // Sample points along a cubic bezier from top-left to bottom-right
+  // P0: (pad, pad), P1: (W*0.85, H*0.12), P2: (W*0.15, H*0.88), P3: (W-pad, H-pad)
+  // This creates a smooth S-ish curve.
+  let P = [];
+  function setPath(){
+    const r = stage.getBoundingClientRect();
+    W = r.width; H = r.height;
+    svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+    const padX = 14, padY = 14;
+    const p0 = {x: padX,       y: padY};
+    const p1 = {x: W*0.85,     y: H*0.18};
+    const p2 = {x: W*0.15,     y: H*0.82};
+    const p3 = {x: W - padX,   y: H - padY};
+    P = [p0, p1, p2, p3];
+    const d = `M ${p0.x} ${p0.y} C ${p1.x} ${p1.y}, ${p2.x} ${p2.y}, ${p3.x} ${p3.y}`;
+    pRaw.setAttribute('d', d);
+    // Secured half: sample curve from t=0.5 to t=1 as a polyline
+    pSec.setAttribute('d', splitPathD(0.5, 1));
+    pDash.setAttribute('d', splitPathD(0.5, 1));
+    // Place pill at t=0.5
+    const mid = pointAt(0.5);
+    pill.style.left = mid.x + 'px';
+    pill.style.top  = mid.y + 'px';
+  }
+
+  function pointAt(t){
+    const [p0,p1,p2,p3] = P;
+    const u = 1 - t;
+    const x = u*u*u*p0.x + 3*u*u*t*p1.x + 3*u*t*t*p2.x + t*t*t*p3.x;
+    const y = u*u*u*p0.y + 3*u*u*t*p1.y + 3*u*t*t*p2.y + t*t*t*p3.y;
+    return {x, y};
+  }
+  function splitPathD(tStart, tEnd){
+    // sample as polyline
+    const N = 30;
+    let d = '';
+    for(let i=0; i<=N; i++){
+      const t = tStart + (tEnd - tStart) * (i/N);
+      const p = pointAt(t);
+      d += (i===0 ? 'M ' : 'L ') + p.x.toFixed(1) + ' ' + p.y.toFixed(1) + ' ';
+    }
+    return d;
+  }
+
+  const SPEED = 0.075;       // t-units per second (takes ~13s end to end)
+  const CROSS_FLASH_MS = 260;
+  const nums = [];
+
+  function spawnOne(t0){
+    const v  = nextVal();
+    const el = document.createElement('div');
+    el.className = 'pl-num raw ' + (v>=0?'up':'dn');
+    el.innerHTML = `<span class="pl-shield">${SHIELD_SVG}</span><span class="pl-val">${fmt(v)}</span>`;
+    stage.appendChild(el);
+    return {
+      el, v,
+      t: t0,
+      state: 'raw',
+      speed: SPEED * (0.85 + Math.random()*0.35),
+    };
+  }
+
+  function seed(){
+    nums.forEach(n => n.el.remove());
+    nums.length = 0;
+    // Evenly space ~9 numbers along the path
+    const COUNT = 9;
+    for(let i=0; i<COUNT; i++){
+      nums.push(spawnOne(i / COUNT));
+    }
+  }
+
+  let securedCount = 0, securedTotal = 0;
+  function updateHeader(){
+    totalEl.textContent = fmt(securedTotal);
+    totalEl.style.color = securedTotal >= 0 ? 'oklch(0.88 0.16 145)' : 'oklch(0.82 0.2 25)';
+    countEl.textContent = securedCount + ' trades shielded';
+  }
+
+  let lastPulse = 0;
+  function pulsePill(){
+    const now = performance.now();
+    if(now - lastPulse < 180) return;
+    lastPulse = now;
+    pill.classList.add('pulse');
+    setTimeout(()=>pill.classList.remove('pulse'), 380);
+  }
+
+  let last = performance.now();
+  function tick(now){
+    const dt = Math.min(0.05, (now - last) / 1000);
+    last = now;
+
+    for(let i = nums.length - 1; i >= 0; i--){
+      const n = nums[i];
+      n.t += n.speed * dt;
+
+      // Transition at midpoint
+      if(n.state === 'raw' && n.t >= 0.5){
+        n.state = 'sec';
+        n.el.classList.remove('raw');
+        n.el.classList.add('sec', 'crossing');
+        setTimeout(()=>n.el.classList.remove('crossing'), CROSS_FLASH_MS);
+        pulsePill();
+        securedCount++;
+        securedTotal += n.v;
+        updateHeader();
+      }
+
+      // Recycle at end
+      if(n.t >= 1){
+        n.el.remove();
+        nums.splice(i, 1);
+        continue;
+      }
+
+      // Fade in/out near ends
+      let opacity = 1;
+      if(n.t < 0.06) opacity = n.t / 0.06;
+      else if(n.t > 0.94) opacity = (1 - n.t) / 0.06;
+      // Fade around the pill so numbers disappear "into" it
+      const dist = Math.abs(n.t - 0.5);
+      if(dist < 0.04) opacity *= (dist / 0.04);
+
+      const p = pointAt(n.t);
+      n.el.style.opacity = opacity;
+      n.el.style.transform = `translate(${p.x}px, ${p.y}px) translate(-50%, -50%)`;
+    }
+
+    // Maintain density — spawn a fresh number at t≈0 if the front of the queue has moved on
+    const minT = nums.reduce((m, n) => Math.min(m, n.t), Infinity);
+    if(minT > 1/9 || nums.length < 8){
+      nums.push(spawnOne(0));
+    }
+
+    requestAnimationFrame(tick);
+  }
+
+  function start(){
+    setPath();
+    seed();
+    // Prime: count initial secured items
+    securedCount = 0; securedTotal = 0;
+    nums.forEach(n => {
+      if(n.t >= 0.5){
+        n.state = 'sec';
+        n.el.classList.remove('raw');
+        n.el.classList.add('sec');
+        securedCount++;
+        securedTotal += n.v;
+      }
+    });
+    updateHeader();
+    last = performance.now();
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(start);
+
+  let resizeT;
+  window.addEventListener('resize', ()=>{
+    clearTimeout(resizeT);
+    resizeT = setTimeout(()=>{ setPath(); }, 150);
+  });
+})();
 
 /* ───── Featured drops ───── */
 const DROPS = [
