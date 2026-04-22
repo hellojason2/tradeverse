@@ -2,10 +2,10 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 function getInitialTheme(): 'dark' | 'light' {
-  if (typeof window === 'undefined') return 'dark';
+  if (typeof window === 'undefined') return 'light';
   const stored = localStorage.getItem('tv-theme') as 'dark' | 'light' | null;
   if (stored) return stored;
-  return 'dark';
+  return 'light';
 }
 
 const initialTheme = getInitialTheme();
