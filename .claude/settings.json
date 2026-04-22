@@ -1,6 +1,5 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
-
   "permissions": {
     "allow": [
       "Bash(npm run lint *)",
@@ -39,7 +38,6 @@
       "Edit(**/*.key)"
     ]
   },
-
   "hooks": {
     "PreToolUse": [
       {
@@ -47,19 +45,19 @@
         "hooks": [
           {
             "type": "command",
-            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/protect-files.sh",
+            "command": "\"$CLAUDE_PROJECT_DIR/.claude/hooks/protect-files.sh\"",
             "timeout": 5000,
             "statusMessage": "Checking file protections..."
           },
           {
             "type": "command",
-            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/warn-large-files.sh",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/warn-large-files.sh",
             "timeout": 5000,
             "statusMessage": "Checking for build artifacts..."
           },
           {
             "type": "command",
-            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/scan-secrets.sh",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/scan-secrets.sh",
             "timeout": 5000,
             "statusMessage": "Scanning for secrets..."
           }
@@ -70,7 +68,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/block-dangerous-commands.sh",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/block-dangerous-commands.sh",
             "timeout": 5000,
             "statusMessage": "Checking command safety..."
           }
@@ -83,7 +81,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/format-on-save.sh",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/format-on-save.sh",
             "timeout": 15000,
             "statusMessage": "Formatting..."
           }
@@ -96,7 +94,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.sh",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/session-start.sh",
             "timeout": 5000,
             "statusMessage": "Loading project context..."
           }

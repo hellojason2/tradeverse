@@ -1,3 +1,7 @@
+---
+description: Tradeverse 2.0 development standards enforcing architecture, error handling, financial-data discipline, and code quality at the agent level.
+---
+
 # @tradeverse-dev-standards — Tradeverse 2.0 Development Standards
 
 ## Purpose

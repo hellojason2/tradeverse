@@ -32,3 +32,16 @@ CLAUDE.local.md
 
 # Responsive audit screenshots (generated)
 .responsive-audit/
+
+# AI agent session logs (never commit)
+.omc/
+**/.omc/
+
+# Playwright test artifacts (never commit)
+.playwright-mcp/
+
+# Root-level screenshots from test runs (never commit)
+/*.png
+
+# Agent tracking files (never commit)
+DONE-agent*.md

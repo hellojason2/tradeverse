@@ -1,7 +1,0 @@
-{
-  "tool_name": "Bash",
-  "tool_input_preview": "{\"command\":\"cd \\\"/Users/thuanle/Documents/JSR/TV 2.0\\\" && cat /tmp/tv2-executor-prompt.txt | claude --print --dangerously-skip-permissions 2>&1\",\"timeout\":300000,\"description\":\"Run executor subagent v...",
-  "error": "Exit code 1\nError: Input must be provided either through stdin or as a prompt argument when using --print",
-  "timestamp": "2026-04-20T12:29:39.837Z",
-  "retry_count": 1
-}
