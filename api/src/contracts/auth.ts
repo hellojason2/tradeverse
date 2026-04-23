@@ -23,7 +23,7 @@ import type {
  * TRADER   — strategy owner (can create strategies, has master MT accounts)
  * ADMIN    — platform operator (full back-office access, config writes, user management)
  */
-export type UserRole = 'USER' | 'TRADER' | 'ADMIN';
+export type UserRole = 'USER' | 'TRADER' | 'ADMIN' | 'MANAGER' | 'SUPER_ADMIN';
 
 // ---------------------------------------------------------------------------
 // 2. JWT
@@ -49,6 +49,8 @@ export interface JwtPayload {
   exp: number;
   /** Discriminates access tokens from refresh tokens. */
   type: 'access' | 'refresh';
+  /** Session ID for token rotation and logout. */
+  sessionId: string;
 }
 
 // ---------------------------------------------------------------------------

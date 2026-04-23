@@ -104,6 +104,10 @@ TV 2.0/
 - Optimize images and assets
 - Use memoization where appropriate (React.memo, useMemo, useCallback)
 
+## Interaction Patterns
+
+See [BEHAVIOR.md](./BEHAVIOR.md) for the complete interaction authority. Every page must pass the agent checklist at the bottom of BEHAVIOR.md before declaring done. New external-reference types register in `src/lib/externalLinks.ts` — never hardcode external URLs in components.
+
 ## Accessibility
 
 - Follow WCAG 2.1 AA standards

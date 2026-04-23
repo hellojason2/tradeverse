@@ -5,7 +5,7 @@ dotenv.config();
 
 const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
-  PORT: z.string().default('3001').transform(Number),
+  PORT: z.string().default('4800').transform(Number),
   HOST: z.string().default('0.0.0.0'),
   DATABASE_URL: z.string().min(1),
   JWT_SECRET: z.string().min(32),
@@ -15,6 +15,7 @@ const envSchema = z.object({
   COPYPRO_BASE_URL: z.string().url().default('https://copyback3.mrpc.pro'),
   COPYPRO_FRONTEND_URL: z.string().url().default('https://copy3.mrpc.pro'),
   COPYPRO_MANAGER_KEY: z.string().optional(),
+  COPYPRO_WEBHOOK_SECRET: z.string().min(16).optional(),
   RATE_LIMIT_MAX: z.string().default('100').transform(Number),
   RATE_LIMIT_WINDOW_MS: z.string().default('60000').transform(Number),
 });

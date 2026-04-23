@@ -711,6 +711,8 @@ Since the frontend uses Tailwind CSS, map design tokens to Tailwind classes or a
 
 ## 13. Design Decision Framework
 
+> **Behavior:** For interaction rules (clickable elements, external links, dismissibility, back navigation, copy-to-clipboard), see [BEHAVIOR.md](./BEHAVIOR.md).
+
 When designing something not explicitly covered in this doc, follow this hierarchy:
 
 1. **Copy an existing pattern.** Look at §5 (Components) or §6 (Page Patterns). If something close exists, adapt it.
@@ -976,6 +978,8 @@ Rules:
 ---
 
 ## 21. Accessibility Rules
+
+> **Related:** Interaction completeness + dismissibility patterns: [BEHAVIOR.md](./BEHAVIOR.md).
 
 Minimum requirements for every component:
 - **Color contrast:** All text on backgrounds must be ≥ 4.5:1. `--ink-1` on `--bg-2` passes. `--ink-3` on `--bg-0` does NOT — use `--ink-3` only for decorative/non-essential text.

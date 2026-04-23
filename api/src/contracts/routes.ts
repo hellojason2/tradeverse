@@ -176,8 +176,8 @@ export interface OAuthRequest {
 // 1.5 Shared User types
 // ---------------------------------------------------------------------------
 
-export type UserRole = 'USER' | 'PROVIDER' | 'ADMIN' | 'MANAGER';
-export type UserStatus = 'NOT_VERIFIED' | 'ACTIVE' | 'SUSPENDED' | 'BANNED';
+export type UserRole = 'USER' | 'TRADER' | 'ADMIN' | 'MANAGER' | 'SUPER_ADMIN';
+export type UserStatus = 'NOT_VERIFIED' | 'ACTIVE' | 'SUSPENDED' | 'BANNED' | 'DELETED';
 export type KycStatus = 'NOT_STARTED' | 'PENDING' | 'VERIFIED' | 'REJECTED';
 
 export interface UserSummary {

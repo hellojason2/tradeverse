@@ -1,15 +1,24 @@
 // OWNED BY AGENT 1 — see OWNERSHIP.md. Other agents: read-only.
 
 model User {
-  id           String     @id @default(cuid())
-  email        String     @unique
-  passwordHash String     @map("password_hash")
-  name         String?
-  role         UserRole   @default(USER)
-  status       UserStatus @default(ACTIVE)
-  createdAt    DateTime   @default(now()) @map("created_at")
-  updatedAt    DateTime   @updatedAt @map("updated_at")
-  deletedAt    DateTime?  @map("deleted_at")
+  id              String     @id @default(cuid())
+  email           String     @unique
+  passwordHash    String     @map("password_hash")
+  name            String?
+  displayName     String?    @map("display_name")
+  avatarUrl       String?    @map("avatar_url")
+  phone           String?
+  role            UserRole   @default(USER)
+  status          UserStatus @default(ACTIVE)
+  kycStatus       KycStatus  @default(NOT_STARTED) @map("kyc_status")
+  referralCode    String?    @unique @map("referral_code")
+  referredByCode  String?    @map("referred_by_code")
+  twoFaEnabled    Boolean    @default(false) @map("two_fa_enabled")
+  twoFaSecret     String?    @map("two_fa_secret")
+  emailVerifiedAt DateTime?  @map("email_verified_at")
+  createdAt       DateTime   @default(now()) @map("created_at")
+  updatedAt       DateTime   @updatedAt @map("updated_at")
+  deletedAt       DateTime?  @map("deleted_at")
 
   @@map("users")
 }
