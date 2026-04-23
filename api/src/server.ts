@@ -6,6 +6,8 @@ import { readdir } from 'node:fs/promises';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { env } from '@config/env.js';
+import { startBalancePoller } from '@services/balancePollingService.js';
+import { startTradeLogWorker } from '@services/tradeLogWorker.js';
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
 
@@ -80,6 +82,9 @@ app.setNotFoundHandler((request, reply) => {
 
 const start = async () => {
   try {
+    startBalancePoller(app);
+    startTradeLogWorker(app);
+
     await app.listen({ port: env.PORT, host: env.HOST });
     app.log.info(`🚀 Server listening on http://${env.HOST}:${env.PORT}`);
   } catch (err) {
