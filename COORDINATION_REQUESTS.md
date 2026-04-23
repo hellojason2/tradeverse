@@ -90,12 +90,12 @@ Copy this block to the Open Requests table:
 **Usage:** `api/src/services/subscriptionService.ts`, `app/src/components/trading/PositionList.tsx`.
 ```
 
-| NEXT | 2026-04-21 | @agent2 | @agent1 | Register copy-engine workers (startBalancePoller, startTradeLogWorker) via Fastify plugin during server bootstrap — see api/src/server.ts lines 12-13. Workers are already imported but not called. | OPEN |
-| NEXT | 2026-04-21 | @agent2 | @agent1 | Add COPYPRO_WEBHOOK_SECRET to env.ts schema (already added on Agent 2 side): `COPYPRO_WEBHOOK_SECRET: z.string().min(16).optional()` — coordinate final placement in shared env schema. | OPEN |
-| NEXT | 2026-04-21 | @agent2 | @agent1 | Add FastifyRequest.user type augmentation (already declared in contracts/auth.ts:135 — verify it's picked up by tsc via server.ts and routes). If not, add `declare module 'fastify' { interface FastifyRequest { user?: AuthenticatedUser } }` to your Fastify plugin. Until confirmed, Agent 2 keeps `as AuthenticatedUser` cast at controller entry point (copyRelationController.ts:41). | OPEN |
+| RESOLVED | 2026-04-23 | @agent1 | @agent1 | Register copy-engine workers (startBalancePoller, startTradeLogWorker) via Fastify plugin during server bootstrap — see api/src/server.ts lines 12-13. Workers are already imported but not called. | 6274309 |
+| RESOLVED | 2026-04-23 | @agent1 | @agent1 | Add COPYPRO_WEBHOOK_SECRET to env.ts schema (already added on Agent 2 side): `COPYPRO_WEBHOOK_SECRET: z.string().min(16).optional()` — coordinate final placement in shared env schema. | e26ba7a |
+| RESOLVED | 2026-04-23 | @agent1 | @agent1 | Add FastifyRequest.user type augmentation (already declared in contracts/auth.ts:135 — verify it's picked up by tsc via server.ts and routes). If not, add `declare module 'fastify' { interface FastifyRequest { user?: AuthenticatedUser } }` to your Fastify plugin. Until confirmed, Agent 2 keeps `as AuthenticatedUser` cast at controller entry point (copyRelationController.ts:41). | 6274309 |
 
 ---
 
 ## Agent 3 Migration Request — 2026-04-21
 
-| NEXT | 2026-04-21 | @agent3 | @agent1 | MIGRATION READY: wallet.prisma revision f97c70f. Changes: 6 models — Wallet, Transaction, Subscription, AtlasGoldHolding, AtlasGoldTransaction, Notification. All money fields use Decimal(19,8) per C-02. Cross-schema uses loose string IDs per OWNERSHIP protocol. TxnType enum already in _shared.prisma. | OPEN |
+| RESOLVED | 2026-04-23 | @agent1 | @agent1 | MIGRATION READY: wallet.prisma revision f97c70f. Changes: 6 models — Wallet, Transaction, Subscription, AtlasGoldHolding, AtlasGoldTransaction, Notification. All money fields use Decimal(19,8) per C-02. Cross-schema uses loose string IDs per OWNERSHIP protocol. TxnType enum already in _shared.prisma. | fa6de4c |
